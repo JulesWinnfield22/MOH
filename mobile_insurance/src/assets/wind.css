@@ -1,0 +1,105 @@
+@import  url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --topnav-height: 4rem;
+  color: darkred;
+}
+
+
+[data-theme*='default'] {
+  --primary: 147 51 234; /* 116 14 160; */
+  --primary-light: 126 127 215;
+  --secondary: 232 235 244;
+  --border-clr: 196 198 255;
+  --table-clr: 255 255 255;
+  --border-focus-clr: var(--primary);
+  --sidebar-clr: 255 255 255;
+  --text-clr: 0 0 50;  /*  2 5 1 */
+  --button-clr: 37 99 235;
+  --bg-clr: var(--secondary);
+  --form-modal-clr: var(--table-clr);
+  --error-bg: 254 240 138;
+  --error-border: 239 68 68;
+  --error-text: 2 5 19
+}
+
+[data-theme*='dark'] {
+  --primary: 95 97 230;
+  --primary-light: 126 127 215;
+  --secondary: 2 5 19;
+  --border-clr: 196 198 255;
+  --table-clr: var(--secondary);
+  --sidebar-clr: var(--secondary);
+  --border-focus-clr: var(--primary);
+  --text-clr: 255 255 255;
+  --button-clr: 37 99 235;
+  --bg-clr: 17 24 39;
+  --form-modal-clr: var(--bg-clr);
+  --error-bg: 254 240 138;
+  --error-border: 239 68 68;
+  --error-text: 2 5 19;
+}
+
+
+@layer base {  
+  * {
+    scrollbar-width: none;
+  }
+
+  *:focus,
+  *:focus-visible {
+    outline: none !important;
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  select.custom-input {
+    appearance: none;
+  }
+  
+  #app,
+  html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    background-color: rgb(var(--bg-clr));
+    color: rgb(var(--text-clr));
+    @apply bg-gray-200;
+  }
+
+  input:focus,
+  button:focus,
+  .photo-input:focus,
+  .form-input:focus,
+  a:focus,
+  select:focus {
+    box-shadow: 0 0 0 1px rgb(var(--primary));
+  }
+}
+
+@layer components {
+  .dropdown-btn {
+    padding: .25rem;
+    text-align: left;
+    border-radius: 5px;
+    background-color: #fff;
+  }
+}
+
+.router-link-active {
+  @apply text-primary
+}
+
+.router-link-active.sidebar-item {
+  @apply border-l-4 transition-all duration-200 ease-in-out border-l-primary bg-bg-clr;
+}

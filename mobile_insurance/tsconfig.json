@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@com/*": ["src/components/*"],
+      "@agencies/*": ["src/features/agencies/*"],
+      "@users/*": ["src/features/user_management/*"],
+      "@roles/*": ["src/features/role_management/*"],
+      "@privilege/*": ["./src/features/privileges/*"],
+      "@auth/*": ["./src/features/auth/*"],
+      "@directives/*": ["src/directives/*"],
+      "@assets/*": ["src/assets/*"],
+      "@layout/*": ["src/layouts/*"],
+      "@service/*": ["src/service/*"],
+      "@pages/*": ["src/views/*"],
+      "@skl/*": ["src/skeletons/*"],
+      "@store/*": ["src/stores/*"],
+      "@modals/*": ["src/modals/*"],
+      "@toast/*": ["src/toast/*"],
+      "@composable/*": ["src/composables/*"]
+    }
+  },
+  "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
+}
