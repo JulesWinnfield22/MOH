@@ -1,0 +1,73 @@
+{
+  "name": "CertificateForm",
+  "data": "certificate",
+  "props": [
+    {
+      "name": "certificate",
+      "type": "Object"
+    },
+    {
+      "name": "pending",
+      "type": "Boolean",
+      "default": true
+    },
+    {
+      "name": "onSubmit",
+      "type": "Function",
+      "required": true
+    },
+    {
+      "name": "btnText",
+      "type": "String",
+      "required": true
+    },
+    {
+      "name": "agenceies",
+      "type": "Array",
+      "required": true
+    },
+    {
+      "name": "users",
+      "type": "Array",
+      "required": true
+    }
+  ],
+  "form": [
+    {
+      "name": "agency",
+      "type": "select",
+      "placeholder": "Agnecy",
+      "label": "Agnecy",
+      "validation": "required",
+      "options": "agenceies"
+    },
+    {
+      "name": "user",
+      "type": "select",
+      "placeholder": "User",
+      "label": "user",
+      "validation": "required",
+      "options": "users"
+    },
+    {
+      "name": "numberOfInsurd",
+      "type": "input",
+      "label": "Number Of Insured",
+      "placeholder": "Number Of Insured",
+      "validation": "required|num"
+    },
+    {
+      "name": "file",
+      "type": "inputFile",
+      "placeholder": "Memebers",
+      "label": "import Memebers",
+      "validation": "required"
+    },
+    {
+      "name": "attachments",
+      "type": "inputFile",
+      "placeholder": "Attachments",
+      "label": "Attachments"
+    }
+  ]
+}

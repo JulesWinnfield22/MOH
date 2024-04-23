@@ -1,0 +1,43 @@
+#!/usr/bin/env node
+const { readFile, writeFile } = require('fs')
+const path = process.argv?.[2]
+
+const routeDetail = {}
+readFile(path, {encoding: 'utf-8'}, (err, data) => {
+  if(err) return
+  const lines = data.split("\n")
+
+  for(let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim()
+
+    if(line.startsWith('import')) {
+      const [_, fileName, __, path,] = line.split(' ')
+      routeDetail[fileName] = {filePath: path.replace(/['"]+/g, ''), routes: []}
+    }
+
+    if(line.startsWith('component:')) {
+      const [_, component] = line.split(' ')
+      routeDetail[component.replace(/,$/, '')].routes.push(
+        lines[i - 1]?.trim().split(' ')?.[1]?.replace(/,$/, '').replace(/['"]*/g, '')
+      )
+    }
+  }
+
+  let changesFile = 'export default ['
+  Object.values(routeDetail)
+  .forEach(({filePath, routes}) => {
+    routes.forEach(route => {
+      changesFile += `{
+        path: '${route}',
+        component: () => import('${filePath}')
+      },`
+    })
+  })
+  changesFile += ']'
+
+  writeFile(path, changesFile, {encoding: 'utf-8'}, (err, res) => {
+    console.log(err, res)
+  })
+
+  console.log(routeDetail)
+})

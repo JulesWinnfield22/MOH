@@ -1,0 +1,7 @@
+- Update agency must be proccessed
+- fetch agencies with status
+- on the remove tab fetch the suspeneded agencies
+- Payment Detail Recipt date valdation
+- close modal on claim process
+- Claim Payment Voucher / Claim Payment Order to pdf
+- claim payment validation date must be less than or equal to today

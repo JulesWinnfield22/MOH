@@ -1,0 +1,12 @@
+<script setup>
+import { ModalParent } from '@/modals';
+import Attachement from './AttachmetnCertificate.vue'
+
+</script>
+<template>
+  <ModalParent class="overflow-y-scroll flex justify-center p-3 bg-black/50 h-full inset-0" v-slot="{ modal }" name="InsuredAttachemetns">
+    <Attachement
+      :attachment="modal.data?.attachment"
+    />
+  </ModalParent>
+</template>
