@@ -22,6 +22,7 @@ function submitForm({ values }) {
     </div>
     <Form v-slot="{ submit }" id="verifyEmail" class="flex flex-col gap-4">
       <Input
+			  :focus="true"
         label="Email"
         name="email"
         :attributes="{
