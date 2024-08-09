@@ -1,0 +1,87 @@
+<script setup>
+	import Button from '@/components/Button.vue';
+import { computed, ref, shallowRef } from 'vue';
+import VerifyEmail from '@/features/verification/components/VerifyEmail.vue';
+import RestPassword from '../components/RestPassword.vue';
+import VerificationCode from '@/features/verification/components/VerificationCode.vue';
+
+function verifyEmail(values) {
+	setActive('verify')
+}
+
+function verifyCode(values) {
+	setActive('reset')
+}
+
+const components = shallowRef([{ name: 'email', component: VerifyEmail }, { name: 'verify', component: VerificationCode }, {name: 'reset', component: RestPassword}]);
+
+const active = ref('email');
+
+const activeCom = computed(() => components.value.find(el => el.name == active.value)?.component)
+const activeIdx = computed(() => components.value.findIndex(el => el.name == active.value))
+
+function setActive(name) {
+	active.value = name
+}
+</script>
+<template>
+  <div class="w-[90vw] h-screen flex flex-col gap-8 mx-auto">
+    <div class="flex py-6 items-center justify-between">
+      <div class="h-10">
+        <img src="/src/assets/moh_logo.svg" />
+      </div>
+      <Button
+        @click="$router.push('/login')"
+        class="border border-primary text-primary bg-white"
+      >
+        Login
+      </Button>
+    </div>
+    <div class="w-[28rem] flex flex-col mx-auto gap-14">
+      <div class="flex items-center flex-col gap-4">
+        <p class="font-bold text-3xl text-center">Get Started</p>
+        <p class="text-center text-lg">
+          Please fill the form below to receive a confirmation code in your
+          email to continue.
+        </p>
+      </div>
+      <div class="inline-flex items-center justify-center gap-2">
+        <div class="__active __circle">1</div>
+				<template v-for="(com, idx) in components.concat().slice(1)" :key="com.name">
+					<div class="__line"></div>
+					<div :class="[idx < activeIdx && '__active']" class="__circle">{{idx + 2}}</div>
+				</template>
+      </div>
+      <component
+				:verifyEmail="verifyEmail"
+				:verifyCode='verifyCode'
+				:is="activeCom"
+			/>
+    </div>
+  </div>
+</template>
+<style>
+.__circle {
+  display: grid;
+  place-items: center;
+  color: theme('colors.dark');
+  width: 2rem;
+	font-size: 14px;
+  height: 2rem;
+  border-radius: 100%;
+  background-color: theme('colors.gray.200');
+}
+
+.__active.__circle,
+.__active.__circle + .__line {
+  background-color: theme('colors.primary');
+	color: #fff;
+}
+
+.__line {
+  width: 10rem;
+  height: 3px;
+  border-radius: 1000px;
+  background-color: theme('colors.gray.200');
+}
+</style>

@@ -27,15 +27,14 @@ watch(file, () => {
     v-slot="{ setRef, error, value, changeValue }"
   >
     <InputLayout :error="error" :label="$attrs?.label">
-      <div class="flex gap-4 items-center">
+      <div class="flex max-w-full gap-4 items-center">
         <label
-          class="flex-1 cursor-pointer flex items-center h-full bg-secondary px-2 rounded"
+          class="flex-1 w-full cursor-pointer gap-1 flex items-center h-full px-2 rounded"
         >
-          <div class="size-8 grid place-items-center">
+          <div class="min-w-[2rem] min-h-[2rem] grid place-items-center">
             <img src="@/assets/img/ArrowAction.svg" />
-            <!-- <BaseIcon :size="20" :path="mdiAttachment" /> -->
           </div>
-          <p :class="[!value?.name ? 'text-white font-bold' : '']">
+          <p class="truncate w-[calc(100% - 2rem)] text-sm" :class="[!value?.name ? 'text-sm text-gray-400' : '']">
             {{ value?.name || attributes?.placeholder }}
           </p>
           <input class="hidden" :ref="setRef" />

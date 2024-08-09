@@ -10,8 +10,15 @@ import Students from '@/features/students/pages/Students.vue'
 import Users from './features/users/pages/Users.vue'
 import UsersIndex from './features/users/pages/UsersIndex.vue'
 import AddUsers from './features/users/pages/AddUsers.vue'
+import Verification from './features/verification/pages/Verification.vue'
 
 const routes = [
+  {
+    path: '/vertification',
+    name: 'verification',
+    component: Verification,
+    meta: { layout: 'empty' },
+  },
   {
     path: '/login',
     name: 'Login',

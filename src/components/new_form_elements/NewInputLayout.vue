@@ -9,7 +9,7 @@ const props = defineProps(["label", "error"]);
     <div class="flex flex-col gap-1 w-full">
       <span :title="label" class="text-sm capitalize truncate" v-if="label">{{ label }}</span>
       <div
-        class="focus-within:border-primary border border-dark overflow-hidden text-base rounded-md min-h-11 flex"
+        class="focus-within:border-primary border max-w-full border-dark overflow-hidden text-base rounded-md min-h-11 flex"
         :class="$attrs.class"
       >
         <slot></slot>

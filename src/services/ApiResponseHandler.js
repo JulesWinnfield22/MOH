@@ -18,16 +18,22 @@ export async function responseHandler(request, config) {
     .catch(async (error) => {
       // this is true when the request gets to the server
       // and there is some error on the server
-      if(error.response && error.response.status == 401) {
+      if(error.response && error.response.status == 401 && location.pathname != '/login') {
         const auth = useAuth()
 
         try {
           const res = await refreshToken({token: auth.auth?.user?.refreshToken})
+          console.log(res)
+          if(!res.success) {
+            localStorage.clear()
+           location = '/login?redirect=' + location.pathname
+           return
+          }
           auth.setToken(res.data)
           return await responseHandler.call(this, this.addAuthenticationHeader().api(config))
         } catch(err) {
           localStorage.clear()
-          location = '/login'
+          location = '/login?redirect=' + location.pathname
         }
       } else if (error.response) {
         return {
