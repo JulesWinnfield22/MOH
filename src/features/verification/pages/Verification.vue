@@ -23,6 +23,14 @@ const activeIdx = computed(() => components.value.findIndex(el => el.name == act
 function setActive(name) {
 	active.value = name
 }
+
+function goBack() {
+	if(active.value == 'verify') {
+		active.value = 'email'
+	} else if(active.value == 'reset') {
+		active.value = 'verify'
+	}
+}
 </script>
 <template>
   <div class="w-[90vw] h-screen flex flex-col gap-8 mx-auto">
@@ -52,11 +60,14 @@ function setActive(name) {
 					<div :class="[idx < activeIdx && '__active']" class="__circle">{{idx + 2}}</div>
 				</template>
       </div>
-      <component
-				:verifyEmail="verifyEmail"
-				:verifyCode='verifyCode'
-				:is="activeCom"
-			/>
+			<div>
+				<button @click="goBack" v-if="active != 'email'" class="text-left text-xs italic text-primary hover:underline">go back</button>
+				<component
+					:verifyEmail="verifyEmail"
+					:verifyCode='verifyCode'
+					:is="activeCom"
+				/>
+			</div>
     </div>
   </div>
 </template>
