@@ -33,7 +33,7 @@ const props = defineProps({
         label="Confirm Password"
         name="confirmPassword"
         :attributes="{
-          placeholder: 'Password',
+          placeholder: 'Confirm Password',
         }"
         validation="required|equalTo-password"
       />
