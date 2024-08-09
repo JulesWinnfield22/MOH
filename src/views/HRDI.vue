@@ -135,11 +135,11 @@ const fileInput = ref(null)
       </div>
     </div>
     <div>
-      <button
+      <!-- <button
         class="bg-[#21618C] text-white  flex gap-2 font-dm-sans  p-2 rounded-md" @click="showModalAdd = true"
       >
         Add Student
-      </button>
+      </button> -->
 
       <div
         v-if="showModalAdd"
@@ -360,23 +360,23 @@ const fileInput = ref(null)
             <td class="w-[100px] Table-contents">
               <span :style="{ color: item.status === 'Confirmed' ? '#36CB56' : 'inherit' }">{{ item.status }}</span>
             </td>
-            <td>
+            <!-- <td>
               <button class="text-end button-open" @click="openModal(item)">
                 Open
               </button>
-            </td>
+            </td> -->
           </tr>
         </tbody>
       </table>
       <div v-if="isModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 overflow-auto">
         <div>
-          <div class="relative w-full ml-[200px] max-w-screen-lg bg-white border border-gray-300 rounded-lg shadow-md p-4">
+          <div class="relative w-full ml-[200px] my-10 bg-white border border-gray-300 rounded-lg shadow-md p-4">
             <!-- Table Container -->
             <div class="overflow-x-auto">
-              <h2 class="text-lg bg-[#FBFBFB] font-dm-sans font-bold">
+              <h2 class="text-lg my-10 bg-[#FBFBFB] font-dm-sans font-bold">
                 Edit Student
               </h2>
-              <table class="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
+              <table class=" bg-white border border-gray-300 rounded-lg shadow-md">
                 <thead>
                   <tr class="bg-gray-200 text-left border-b">
                     <th class="p-2 w-[23.5px]" />

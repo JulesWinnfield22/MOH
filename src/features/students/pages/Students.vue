@@ -119,6 +119,9 @@ const isRoleHrdi = computed(() => auth.auth?.user?.privileges?.[0] == 'ROLE_Univ
         </button>
       </div>
     </div>
+    <p class=" font-bold pb-8 " v-if="sudents.students.length"> 
+      {{sudents.students[0].unversityName}}
+    </p>
     <Table
       :Fallback="TableRowSkeleton"
       :firstCol="isRoleHrdi"

@@ -108,7 +108,7 @@ async function loginUser() {
           </div>
           <div class="flex mt-4 items-center font-dm-sans">
             <span class="text-gray-700">Don't have an account yet?</span>
-            <a href="/src/views/pages/signup.vue" class="text-blue-500 hover:text-blue-700 text-sm font-bold"> Sign up </a>
+            <a href="/Signup" class="text-blue-500 hover:text-blue-700 text-sm font-bold"> Sign up </a>
             <span class="text-gray-700">now to join our community.</span>
           </div>
         </form>

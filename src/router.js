@@ -10,13 +10,28 @@ import Students from '@/features/students/pages/Students.vue'
 import Users from './features/users/pages/Users.vue'
 import UsersIndex from './features/users/pages/UsersIndex.vue'
 import AddUsers from './features/users/pages/AddUsers.vue'
-
+import Signup from './views/signup.vue'
+import Profile from './views/Profile.vue'
 const routes = [
   {
     path: '/login',
     name: 'Login',
     component: Login,
     meta: { layout: 'empty' },
+  },
+  {
+    path: '/Signup',
+    name: 'Signup',
+    component: Signup,
+    meta: { layout: 'empty' },
+  },
+  {
+    path: '/Profile',
+    name: 'Profile',
+    component: Profile,
+    meta: {
+      requiresAuth: true,
+    }
   },
   {
     path: '/Dashboard',
