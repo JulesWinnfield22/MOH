@@ -12,7 +12,15 @@ import UsersIndex from './features/users/pages/UsersIndex.vue'
 import AddUsers from './features/users/pages/AddUsers.vue'
 import Signup from './views/signup.vue'
 import Profile from './views/Profile.vue'
+import Verification from './features/verification/pages/Verification.vue'
+
 const routes = [
+  {
+    path: '/vertification',
+    name: 'verification',
+    component: Verification,
+    meta: { layout: 'empty' },
+  },
   {
     path: '/login',
     name: 'Login',

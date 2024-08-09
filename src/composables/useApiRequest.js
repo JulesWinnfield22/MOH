@@ -34,11 +34,11 @@ export function useApiRequest(provideValues = true) {
         // setTimeout(() => {
           pending.value = false;
           if (!(typeof cb == "function")) return;
-          if (res.success) {
+          if (res?.success) {
             response.value = res.data;
           } else {
-            error.value = res.error;
-            response.value = res.data;
+            error.value = res?.error;
+            response.value = res?.data;
           }
           cb(res);
         // }, 0);
