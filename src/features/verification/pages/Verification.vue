@@ -88,8 +88,8 @@ function goBack() {
 	color: #fff;
 }
 
-.__active.__circle + .__line.__half::after,
-.__active.__circle + .__line.__full::after {
+.__circle + .__line.__half::after,
+.__circle + .__line.__full::after {
 	content: '';
 	position: absolute;
 	top: 0;
@@ -97,7 +97,14 @@ function goBack() {
 	height: 100%;
 	width: 0%;
   background-color: theme('colors.primary');
-	transition: width .2s linear;
+}
+
+.__circle + .__line.__half::after {
+	transition: all .2s .2s linear;
+}
+
+.__circle + .__line.__full::after {
+	transition: all .2s linear;
 }
 
 .__active.__circle + .__line.__half::after {
