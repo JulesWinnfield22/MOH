@@ -23,6 +23,14 @@ const activeIdx = computed(() => components.value.findIndex(el => el.name == act
 function setActive(name) {
 	active.value = name
 }
+
+function goBack() {
+	if(active.value == 'verify') {
+		active.value = 'email'
+	} else if(active.value == 'reset') {
+		active.value = 'verify'
+	}
+}
 </script>
 <template>
   <div class="w-[90vw] h-screen flex flex-col gap-8 mx-auto">
@@ -48,19 +56,22 @@ function setActive(name) {
       <div class="inline-flex items-center justify-center gap-2">
         <div class="__active __circle">1</div>
 				<template v-for="(com, idx) in components.concat().slice(1)" :key="com.name">
-					<div class="__line"></div>
+					<div :class="idx + 1 <= activeIdx ? '__full' : '__half'" class="relative overflow-hidden  __line"></div>
 					<div :class="[idx < activeIdx && '__active']" class="__circle">{{idx + 2}}</div>
 				</template>
       </div>
-      <component
-				:verifyEmail="verifyEmail"
-				:verifyCode='verifyCode'
-				:is="activeCom"
-			/>
+			<div>
+				<button @click="goBack" v-if="active != 'email'" class="text-left text-xs italic text-primary hover:underline"> &lt; go back</button>
+				<component
+					:verifyEmail="verifyEmail"
+					:verifyCode='verifyCode'
+					:is="activeCom"
+				/>
+			</div>
     </div>
   </div>
 </template>
-<style>
+<style scoped>
 .__circle {
   display: grid;
   place-items: center;
@@ -72,10 +83,36 @@ function setActive(name) {
   background-color: theme('colors.gray.200');
 }
 
-.__active.__circle,
-.__active.__circle + .__line {
+.__active.__circle {
   background-color: theme('colors.primary');
 	color: #fff;
+}
+
+.__circle + .__line.__half::after,
+.__circle + .__line.__full::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 0%;
+  background-color: theme('colors.primary');
+}
+
+.__circle + .__line.__half::after {
+	transition: all .2s .2s linear;
+}
+
+.__circle + .__line.__full::after {
+	transition: all .2s linear;
+}
+
+.__active.__circle + .__line.__half::after {
+	width: 50%
+}
+
+.__active.__circle + .__line.__full::after {
+	width: 100%
 }
 
 .__line {

@@ -22,6 +22,7 @@ const props = defineProps({
     </div>
     <Form v-slot="{ submit }" id="restPassword" class="flex flex-col gap-4">
       <InputPassword
+				:focus="true"
         label="Password"
         name="password"
         :attributes="{
@@ -33,7 +34,7 @@ const props = defineProps({
         label="Confirm Password"
         name="confirmPassword"
         :attributes="{
-          placeholder: 'Password',
+          placeholder: 'Confirm Password',
         }"
         validation="required|equalTo-password"
       />

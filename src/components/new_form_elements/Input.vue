@@ -1,6 +1,10 @@
 <script setup>
 import InputParent from "../../new_form_builder/InputParent.vue";
 import InputLayout from "./NewInputLayout.vue";
+
+const props = defineProps({
+  focus: Boolean
+})
 </script>
 <template>
   <InputParent v-slot="{ setRef, error, value, changeValue }">
@@ -8,6 +12,7 @@ import InputLayout from "./NewInputLayout.vue";
       <div class="flex w-full">
         <slot class="" name="left" />
         <input
+          v-focus='focus'
           :ref="setRef"
         />
         <slot name="right" />
