@@ -4,7 +4,8 @@ import { usePaginationTemp } from '../composables/usePaginaionTemp'
 import { useApiRequest } from '../composables/useApiRequest'
 import { importNewBatch } from '../features/hrdi/hrdiAPi'
 import { addStudent, getStudents } from './pages/api/StudentApi'
-
+import Table from '@com/Table.vue'
+	import Button from '@com/Button.vue'
 const currentItem = ref({})
 const showModalAdd = ref(false)
 const isEditing = ref(null)
@@ -135,11 +136,13 @@ const fileInput = ref(null)
       </div>
     </div>
     <div>
-      <button
-        class="bg-[#21618C] text-white  flex gap-2 font-dm-sans  p-2 rounded-md" @click="showModalAdd = true"
-      >
-        Add Student
-      </button>
+      
+      <button 
+      class="bg-[#21618C] text-white  flex gap-2 font-dm-sans  p-2 rounded-md"
+		 @click="$router.push('/AddStudents')" type="primary">
+			Add user
+		</Button>
+	
 
       <div
         v-if="showModalAdd"
@@ -297,10 +300,14 @@ const fileInput = ref(null)
 
             <p>Import New Batch</p>
             <input
-              accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" type="file" class="hidden" @change="ev => {
-                file = ev.target.files?.[0]
-              }"
-            >
+  accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+  type="file"
+  class="hidden"
+  @change="ev => {
+    file = ev.target.files?.[0]
+  }"
+/>
+
           </label>
         </div>
         <button v-if="file" class="rounded bg-green-500 text-white p-2" @click="uploadFile">
@@ -360,23 +367,23 @@ const fileInput = ref(null)
             <td class="w-[100px] Table-contents">
               <span :style="{ color: item.status === 'Confirmed' ? '#36CB56' : 'inherit' }">{{ item.status }}</span>
             </td>
-            <td>
+            <!-- <td>
               <button class="text-end button-open" @click="openModal(item)">
                 Open
               </button>
-            </td>
+            </td> -->
           </tr>
         </tbody>
       </table>
       <div v-if="isModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 overflow-auto">
         <div>
-          <div class="relative w-full ml-[200px] max-w-screen-lg bg-white border border-gray-300 rounded-lg shadow-md p-4">
+          <div class="relative w-full ml-[200px] my-10 bg-white border border-gray-300 rounded-lg shadow-md p-4">
             <!-- Table Container -->
             <div class="overflow-x-auto">
-              <h2 class="text-lg bg-[#FBFBFB] font-dm-sans font-bold">
+              <h2 class="text-lg my-10 bg-[#FBFBFB] font-dm-sans font-bold">
                 Edit Student
               </h2>
-              <table class="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
+              <table class=" bg-white border border-gray-300 rounded-lg shadow-md">
                 <thead>
                   <tr class="bg-gray-200 text-left border-b">
                     <th class="p-2 w-[23.5px]" />

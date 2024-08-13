@@ -2,39 +2,38 @@
 import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { usePaginationTemp } from '@/composables/usePaginaionTemp'
-import { getStudents } from '@/views/pages/api/StudentApi'
-import {getUniStudents} from '@/features/students/api/studentApi.js'
+import {FindAllByContractStatus} from '@/features/students/api/contractApi'
 import { useAuth } from '@/store/auth.js'
 import Table from '@com/Table.vue'
-import { useStudents } from '../store/studentsStore'
+import { useContracts } from '../store/contractStore'
 import TableRowSkeleton from '@/skeletons/TableRowSkeleton.vue'
-import { confirmStudent, rejectStudent } from '@/features/students/api/studentApi.js'
+import { confirmContract, rejectContract } from '@/features/students/api/contractApi'
 import { useApiRequest } from '@/composables/useApiRequest'
 import { toasted } from '@/utils/utils'
 
-const sudents = useStudents()
+const contract = useContracts()
 const auth = useAuth()
 
 const selected = ref([])
 
 const route = useRoute()
-const uniId = route.params.uniId
+const uniId = route.params.id
 
 const request = useApiRequest()
 
 const pagination = usePaginationTemp({
-  store: sudents,
-  cb: (data, config) => getUniStudents(uniId || auth.auth?.user?.officialOfUnivesity),
+  store: contract,
+  cb: (data, config) => FindAllByContractStatus(),
 })
 
 function confirmSelection() {
   if(!selected.value?.length || request.pending.value) return
 
   request.send(
-    () => confirmStudent(selected.value),
+    () => confirmContract(selected.value),
     res => {
       if(res.success) {
-        sudents.updateStatus('registered', selected.value)
+        contract.updateStatus('registered', selected.value)
         selected.value = []
       }
       toasted(res.success, 'Registered', res.error)
@@ -46,10 +45,10 @@ function rejectSelection() {
   if(!selected.value?.length || request.pending.value) return
   
   request.send(
-    () => rejectStudent(selected.value),
+    () => rejectContract(selected.value),
     res => {
       if(res.success) {
-        sudents.updateStatus('rejected', selected.value)
+        contract.updateStatus('rejected', selected.value)
         selected.value = []
       }
       toasted(res.success, 'Rejected', res.error)
@@ -71,14 +70,14 @@ function selectUser(item) {
 function selectAll(select) {
   console.log(select)
   if(select) {
-    selected.value = (sudents.students || []).map(el => el.ernpId) || []
+    selected.value = (contract.contracts || []).map(el => el.ernpId) || []
   } else {
     selected.value = []
   }
 }
 
 const allSelected = computed(() => {
-  const len = (sudents.students || []).length
+  const len = (contract.contracts || []).length
   return len != 0 && len == selected.value?.length
 })
 
@@ -88,11 +87,11 @@ const isRoleHrdi = computed(() => auth.auth?.user?.privileges?.[0] == 'ROLE_Univ
   <div class="bg-[#FBFBFB]">
     <div v-if="isRoleHrdi" class="flex justify-between items-center">
       <div class="p-4 text-[#4E585F] font-dm-sans text-[16px] font-bold leading-[24px] text-left">
-        Students
+        contracts
       </div>
       <div class="p-4 gap-2.5 flex">
         <p class="p-4 text-[#4E585F] font-dm-sans text-[14px] font-normal leading-[24px] text-left">
-          Selected {{ selected?.length || 0 }} of {{ (sudents.students || []).length }} Students
+          Selected {{ selected?.length || 0 }} of {{ (contract.contracts || []).length }} contracts
         </p>
 
         <button
@@ -119,17 +118,17 @@ const isRoleHrdi = computed(() => auth.auth?.user?.privileges?.[0] == 'ROLE_Univ
         </button>
       </div>
     </div>
-    <p class=" font-bold pb-8 " v-if="sudents.students.length"> 
-      {{sudents.students[0].unversityName}}
+    <p class=" font-bold pb-8 " v-if="contract.contracts.length"> 
+      {{contract.contracts[0].unversityName}}
     </p>
     <Table
       :Fallback="TableRowSkeleton"
       :firstCol="isRoleHrdi"
       :headers="{
-        head: ['Ernp ID', 'Full Name', 'Gender', 'Program', 'Duration', 'Salary', 'Total Salary', 'Status',],
-        row: ['ernpId', 'fullName', 'gender', 'programName', 'duration', 'salary', 'totalSalary', 'registrationStatus']
+        head: ['Ernp ID', 'Full Name', 'Gender', 'university', 'Duration', 'Salary', 'Total Salary', 'region','city','subCity','woreda','houseNumber','Actions'],
+        row: ['id', 'fullName', 'program', 'university', 'duration', 'salary', 'totalSalary', 'totalTrainingCost','subCity','city','woreda','houseNumber','actions']
       }"
-      :rows="sudents.students || []"
+      :rows="contract.contracts || []"
     >
       <template #headerFirst>
         <div class="px-1">
@@ -139,6 +138,7 @@ const isRoleHrdi = computed(() => auth.auth?.user?.privileges?.[0] == 'ROLE_Univ
       <template #select="{row}" >
         <input @change="selectUser(row?.ernpId)" :checked="selected.includes(row.ernpId)" type="checkbox" />
       </template>
+      <template #actions>open</template>
     </Table>
     <div class="flex justify-center items-center">
     </div>

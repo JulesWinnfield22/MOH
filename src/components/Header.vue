@@ -2,7 +2,8 @@
 import { ref } from 'vue';
 import { useSidebar } from '../composables/useSidebar';
 import { useRouter } from 'vue-router';
-
+import { useAuth } from '../store/auth'
+const auth=useAuth()
 const router = useRouter();
 
 const dropdownOpen = ref(false);
@@ -11,6 +12,14 @@ const { isOpen } = useSidebar();
 function logout() {
   localStorage.clear && localStorage.clear();
   location = '/login';
+
+// Define a reactive variable
+const isVisible = ref(true);
+
+// Define the method to toggle visibility
+const toggleVisibility = () => {
+  isVisible.value = !isVisible.value;
+};
 }
 </script>
 
@@ -60,7 +69,13 @@ function logout() {
       </div>
     </div>
 
-    <div class="flex items-center">
+    <div class="flex items-center text-[#4E585F] font-sans gap-3">
+      <p class="font-bold  ">Welcome </p>
+      
+      <a
+             href="/Profile"
+              class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"
+              >  {{ auth.auth?.user?.name}}</a>
       <button class="flex mx-4 text-gray-600 focus:outline-none">
         <svg
           class="w-6 h-6"
@@ -77,7 +92,7 @@ function logout() {
           />
         </svg>
       </button>
-
+   
       <div class="relative">
         <button
           class="relative z-10 block w-8 h-8 overflow-hidden rounded-full shadow focus:outline-none"
@@ -109,7 +124,7 @@ function logout() {
             class="absolute right-0 z-20 w-48 py-2 mt-2 bg-white rounded-md shadow-xl"
           >
             <a
-              href="#"
+             href="/Profile"
               class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"
               >Profile</a
             >
@@ -126,6 +141,24 @@ function logout() {
           </div>
         </transition>
       </div>
+      
     </div>
   </header>
 </template>
+<style scoped>
+.slide-right-enter-active {
+  transition: transform 0.5s ease-out;
+}
+
+.slide-right-enter {
+  transform: translateX(-100%);
+}
+
+.slide-right-leave-active {
+  transition: transform 0.5s ease-out;
+}
+
+.slide-right-leave-to {
+  transform: translateX(100%);
+}
+</style>

@@ -18,86 +18,71 @@ const totalStudents = ref(72) // Example total number of students
 const items = ref([])
 
 const pagination = usePaginationTemp({
-  cb: (data, config) =>
-    getStudents(
-    ),
+  cb: (data, config) => getStudents(),
 })
+
+// Functions to handle modal visibility
 function showModal() {
-  isModalVisible.value = true // Show the modal
+  isModalVisible.value = true // Show the reject modal
 }
 
 function showModalApprove(item) {
   selectedItem.value = item
-  isModalVisibleApprove.value = true // Show the modal
-}
-function showModalContractReview() {
-  isModalVisibleApprove.value = false // Close approve modal
-  isModalVisibleContractReview.value = true // Open contract review modal
-  currentItem.value = { ...items } // Create a copy of the item to edit
+  isModalVisibleApprove.value = true // Show the approve modal
 }
 
+function showModalContractReview() {
+  isModalVisibleApprove.value = false // Close the approve modal
+  isModalVisibleContractReview.value = true // Open contract review modal
+  currentItem.value = { ...selectedItem.value } // Create a copy of the item to edit
+}
+
+// Function to confirm approval
 function confirmApproval() {
   if (selectedItem.value) {
     // Update the status directly in the local state
     selectedItem.value.status = 'Confirmed'
+    updateItem(selectedItem.value) // Update the item in the list
     closeModal()
   }
-
-  function updateItem() {
-    const index = items.value.findIndex(item => item.id === currentItem.value.id)
-    if (index !== -1)
-      items.value.splice(index, 1, currentItem.value) // Update the item in the array
-
-    function approveItem(item) {
-      item.status = 'confirmed'
-      // You can also save the updated item to your backend or a data store
-      console.log('Reason for Approval:', reason.value)
-      closeModal() // Close the modal after submission
-      reason.value = '' // Clear the reason
-    }
-  } function showModal() {
-    isModalVisible.value = true // Show the modal
-  }
-  function editRow(index) {
-    isEditing.value = index
-  }
-
-  // Function to save the changes (if necessary)
-  function saveChanges() {
-    isEditing.value = null
-  }
-
-  // Function to cancel the changes (if necessary)
-  function cancelChanges() {
-    isEditing.value = null
-  } closeModal()
 }
 
+// Function to update an item in the list
+function updateItem(item) {
+  const index = items.value.findIndex(i => i.id === item.id)
+  if (index !== -1) {
+    items.value.splice(index, 1, item) // Update the item in the array
+  }
+}
+
+// Function to submit reason for rejection
 function submitReason() {
   console.log('Reason for rejection:', reason.value)
   closeModal() // Close the modal after submission
   reason.value = '' // Clear the reason
 }
+
+// Function to submit reason for approval
 function submitReasonForApproval() {
   console.log('Reason for Approval:', reason.value)
   closeModal() // Close the modal after submission
   reason.value = '' // Clear the reason
 }
+
+// Functions to close modals
 function closeModal() {
-  isModalVisible.value = false // Close the modal
+  isModalVisible.value = false
   isModalVisibleApprove.value = false
+  isModalVisibleContractReview.value = false
   selectedItem.value = null
 }
-function closeContractModal() {
-  isModalVisibleContractReview.value = false // Open contract review modal
 
+function closeContractModal() {
+  isModalVisibleContractReview.value = false
   isModalVisibleApprove.value = true
 }
-function confirmSelection() {
-  // Logic to handle confirmation
-  alert('Selected students confirmed!')
-}
 
+// Pagination functions
 function prevPage() {
   if (currentPage.value > 1) {
     currentPage.value--
@@ -113,9 +98,8 @@ function nextPage() {
 function goToPage(page) {
   currentPage.value = page
 }
-const $refs = {
-  fileInput: null,
-}
+
+// Selection functions
 const selected = ref([])
 
 function selectUser(item) {
@@ -284,11 +268,15 @@ function isSelected(item) {
         </thead>
         <tbody>
           <tr
-            v-for="(item, index) in pagination.data.value"
-            :key="index"
-            :class="{'bg-gray-200': isSelected(item), 'hover:bg-gray-100': !isSelected(item)}"
-            class="Table-contents"
-          >
+    v-for="(item, index) in pagination.data.value.filter(item => item.registrationStatus === 'registered')"
+    :key="index"
+    :class="{
+      'bg-gray-200': isSelected(item),
+      'hover:bg-gray-100': !isSelected(item)
+    }"
+    class="Table-contents"
+  >
+          
             <td class="py-2 Table-header w-[23.5px] px-4 border-b">
               <input
                 type="checkbox"

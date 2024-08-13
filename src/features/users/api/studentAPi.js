@@ -6,13 +6,13 @@ import ApiService from '../../../services/ApiService'
 const URL = import.meta.env?.v_API_URL
 const api = new ApiService(URL)
 
-const path = '/users'
+const path = '/student'
 
-export function getAllusers(query = {}) {
+export function getAllstudents(query = {}) {
 	const qr = getQueryFormObject(query)
 	return api.addAuthenticationHeader().get(`${path}/all${qr}`)
 }
 
-export function createUser(data) {
-	return api.addAuthenticationHeader().post(`${path}/CreateUser`, data)
+export function createStudent(data) {
+	return api.addAuthenticationHeader().post(`${path}/create`, data)
 }

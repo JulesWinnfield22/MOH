@@ -5,20 +5,27 @@ import University from './views/University.vue'
 import Login from './views/Login.vue'
 import MoHLegal from './views/MoHLegal.vue'
 import HRDI from './views/HRDI.vue'
-import Resident from './views/Resident.vue'
+import SigninDocuments from './views/SigninDocuments.vue'
+import Requirements from './views/Requirements.vue'
+import Status from './views/Status.vue'
 import Students from '@/features/students/pages/Students.vue'
+import Contracts from '@/features/students/pages/Contracts.vue'
 import Users from './features/users/pages/Users.vue'
 import UsersIndex from './features/users/pages/UsersIndex.vue'
 import AddUsers from './features/users/pages/AddUsers.vue'
+import AddStudents from './views/AddStudents.vue'
+import Signup from './views/signup.vue'
+import Profile from './views/Profile.vue'
 import Verification from './features/verification/pages/Verification.vue'
 
 const routes = [
   {
-    path: '/vertification',
+    path: '/verification',
     name: 'verification',
     component: Verification,
     meta: { layout: 'empty' },
   },
+  
   {
     path: '/login',
     name: 'Login',
@@ -26,11 +33,26 @@ const routes = [
     meta: { layout: 'empty' },
   },
   {
+    path: '/Signup',
+    name: 'Signup',
+    component: Signup,
+    meta: { layout: 'empty' },
+  },
+  {
+    path: '/Profile',
+    name: 'Profile',
+    component: Profile,
+    meta: {
+      requiresAuth: true,
+    }
+  },
+  {
     path: '/Dashboard',
     name: 'Dashboard',
     component: Dashboard,
     meta: {
       requiresAuth: true,
+      
     }
   },
   {
@@ -49,6 +71,15 @@ const routes = [
     meta: {
       requiresAuth: true,
       privileges: ['University',]
+    }
+  },
+  {
+    path: '/contracts',
+    name: 'contracts',
+    component: Contracts,
+    meta: {
+      requiresAuth: true,
+      privileges: ['LegalOffice',]
     }
   },
   {
@@ -97,12 +128,36 @@ const routes = [
         name: 'Add User',
         component: AddUsers
       }
+   
     ]
   },
   {
-    path: '/Resident',
-    name: 'Resident',
-    component: Resident,
+    path: '/AddStudents',
+    name: 'Add Student',
+    component: AddStudents
+  },
+  {
+    path: '/Status',
+    name: 'Status',
+    component: Status,
+    meta: {
+      requiresAuth: true,
+      privileges: ['Student']
+    }
+  },
+  {
+    path: '/Requirements',
+    name: 'Requirements',
+    component: Requirements,
+    meta: {
+      requiresAuth: true,
+      privileges: ['Student']
+    }
+  },
+  {
+    path: '/SigninDocuments',
+    name: 'SigninDocuments',
+    component: SigninDocuments,
     meta: {
       requiresAuth: true,
       privileges: ['Student']
