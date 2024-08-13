@@ -15,9 +15,9 @@ const props = defineProps({
 <template>
   <div class="flex flex-col gap-6">
     <div>
-      <p class="font-bold text-2xl">Reset Password</p>
+      <p class="font-bold text-2xl">Create Password</p>
       <p class="text-base max-w-[70%]">
-        Reset Password
+        Create Password
       </p>
     </div>
     <Form v-slot="{ submit }" id="restPassword" class="flex flex-col gap-4">
@@ -40,7 +40,7 @@ const props = defineProps({
       />
       <div class="flex justify-end">
         <Button @click.prevent="submit(submitForm)" type="primary">
-          Reset
+          Create
         </Button>
       </div>
     </Form>

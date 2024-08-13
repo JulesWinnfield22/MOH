@@ -71,11 +71,11 @@ const toggleVisibility = () => {
 
     <div class="flex items-center text-[#4E585F] font-sans gap-3">
       <p class="font-bold  ">Welcome </p>
-      <!-- {{ auth.auth.user.name}} -->
+      
       <a
              href="/Profile"
               class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"
-              >aa</a>
+              >  {{ auth.auth?.user?.name}}</a>
       <button class="flex mx-4 text-gray-600 focus:outline-none">
         <svg
           class="w-6 h-6"

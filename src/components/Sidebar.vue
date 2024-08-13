@@ -38,7 +38,7 @@ const inactiveClass = ref(
         </div>
       </div>
 
-      <nav class="mt-10">
+      <nav class="mt-10 ">
         <router-link
           class="flex items-center px-6 py-2 mt-4 duration-200 border-l-4"
           :class="[$route.name === 'Dashboard' ? activeClass : inactiveClass]"
@@ -127,7 +127,7 @@ const inactiveClass = ref(
           v-privilage="['LegalOffice']"
           class="flex items-center px-6 py-2 mt-4 duration-200 border-l-4"
           :class="[$route.name === 'MoHLegal' ? activeClass : inactiveClass]"
-          to="/MoHLegal"
+          to="/contracts"
         >
           <svg
             width="18" height="19" viewBox="0 0 18 19" fill="none"
@@ -136,12 +136,11 @@ const inactiveClass = ref(
           </svg>
           <span class="mx-4">Moh-Legeal</span>
         </router-link>
-
         <router-link
           v-privilage="['Student']"
           class="flex items-center px-6 py-2 mt-4 duration-200 border-l-4"
-          :class="[$route.name === 'Resident' ? activeClass : inactiveClass]"
-          to="/Resident"
+          :class="[$route.name === 'Status' ? activeClass : inactiveClass]"
+          to="/Status"
         >
           <svg
             width="18" height="19" viewBox="0 0 18 19" fill="none"
@@ -154,12 +153,50 @@ const inactiveClass = ref(
             <path d="M15.4606 16.7726C17.0689 16.6625 18.3333 15.788 18.3333 14.7254C18.3333 13.6728 17.0908 12.8047 15.5035 12.6816C15.9529 13.2376 16.25 13.9141 16.25 14.701C16.25 15.5126 15.9338 16.2069 15.4606 16.7726Z" fill="currentColor" />
 
           </svg>
-          <span class="mx-4">Resident</span>
+          <span class="mx-4">Status</span>
+        </router-link>
+        <router-link
+          v-privilage="['Student']"
+          class="flex items-center px-6 py-2 mt-4 duration-200 border-l-4"
+          :class="[$route.name === 'Requirements' ? activeClass : inactiveClass]"
+          to="/Requirements"
+        >
+          <svg
+            width="18" height="19" viewBox="0 0 18 19" fill="none"
+          >
+            <path d="M12.9166 7.20096C12.9166 8.81179 11.6107 10.1176 9.99992 10.1176C8.38909 10.1176 7.08325 8.81179 7.08325 7.20096C7.08325 5.59013 8.38909 4.28429 9.99992 4.28429C11.6107 4.28429 12.9166 5.59013 12.9166 7.20096Z" fill="currentColor" />
+            <path d="M15 14.701C15 16.3118 12.7614 17.6176 10 17.6176C7.23858 17.6176 5 16.3118 5 14.701C5 13.0901 7.23858 11.7843 10 11.7843C12.7614 11.7843 15 13.0901 15 14.701Z" fill="currentColor" />
+            <path d="M5.93512 5.11763C6.08301 5.11763 6.22738 5.13214 6.36679 5.15976C6.02716 5.76301 5.83341 6.45936 5.83341 7.20096C5.83341 7.9245 6.01784 8.60497 6.34224 9.19793C6.21045 9.22248 6.07435 9.23535 5.93512 9.23535C4.75644 9.23535 3.80093 8.31356 3.80093 7.17649C3.80093 6.03941 4.75644 5.11763 5.93512 5.11763Z" fill="currentColor" />
+            <path d="M4.53953 16.7726C4.06627 16.2069 3.75008 15.5126 3.75008 14.701C3.75008 13.9141 4.04723 13.2376 4.49656 12.6816C2.90933 12.8047 1.66675 13.6728 1.66675 14.7254C1.66675 15.788 2.93117 16.6625 4.53953 16.7726Z" fill="currentColor" />
+            <path d="M14.1667 7.20096C14.1667 7.9245 13.9823 8.60498 13.6578 9.19793C13.7896 9.22249 13.9257 9.23535 14.065 9.23535C15.2437 9.23535 16.1992 8.31356 16.1992 7.17649C16.1992 6.03941 15.2437 5.11763 14.065 5.11763C13.9171 5.11763 13.7727 5.13214 13.6333 5.15976C13.9729 5.76301 14.1667 6.45936 14.1667 7.20096Z" fill="currentColor" />
+            <path d="M15.4606 16.7726C17.0689 16.6625 18.3333 15.788 18.3333 14.7254C18.3333 13.6728 17.0908 12.8047 15.5035 12.6816C15.9529 13.2376 16.25 13.9141 16.25 14.701C16.25 15.5126 15.9338 16.2069 15.4606 16.7726Z" fill="currentColor" />
+
+          </svg>
+          <span class="mx-4">Requirements</span>
+        </router-link>
+        <router-link
+          v-privilage="['Student']"
+          class="flex items-center px-6 py-2 mt-4 duration-200 border-l-4"
+          :class="[$route.name === 'SigninDocuments' ? activeClass : inactiveClass]"
+          to="/SigninDocuments"
+        >
+          <svg
+            width="18" height="19" viewBox="0 0 18 19" fill="none"
+          >
+            <path d="M12.9166 7.20096C12.9166 8.81179 11.6107 10.1176 9.99992 10.1176C8.38909 10.1176 7.08325 8.81179 7.08325 7.20096C7.08325 5.59013 8.38909 4.28429 9.99992 4.28429C11.6107 4.28429 12.9166 5.59013 12.9166 7.20096Z" fill="currentColor" />
+            <path d="M15 14.701C15 16.3118 12.7614 17.6176 10 17.6176C7.23858 17.6176 5 16.3118 5 14.701C5 13.0901 7.23858 11.7843 10 11.7843C12.7614 11.7843 15 13.0901 15 14.701Z" fill="currentColor" />
+            <path d="M5.93512 5.11763C6.08301 5.11763 6.22738 5.13214 6.36679 5.15976C6.02716 5.76301 5.83341 6.45936 5.83341 7.20096C5.83341 7.9245 6.01784 8.60497 6.34224 9.19793C6.21045 9.22248 6.07435 9.23535 5.93512 9.23535C4.75644 9.23535 3.80093 8.31356 3.80093 7.17649C3.80093 6.03941 4.75644 5.11763 5.93512 5.11763Z" fill="currentColor" />
+            <path d="M4.53953 16.7726C4.06627 16.2069 3.75008 15.5126 3.75008 14.701C3.75008 13.9141 4.04723 13.2376 4.49656 12.6816C2.90933 12.8047 1.66675 13.6728 1.66675 14.7254C1.66675 15.788 2.93117 16.6625 4.53953 16.7726Z" fill="currentColor" />
+            <path d="M14.1667 7.20096C14.1667 7.9245 13.9823 8.60498 13.6578 9.19793C13.7896 9.22249 13.9257 9.23535 14.065 9.23535C15.2437 9.23535 16.1992 8.31356 16.1992 7.17649C16.1992 6.03941 15.2437 5.11763 14.065 5.11763C13.9171 5.11763 13.7727 5.13214 13.6333 5.15976C13.9729 5.76301 14.1667 6.45936 14.1667 7.20096Z" fill="currentColor" />
+            <path d="M15.4606 16.7726C17.0689 16.6625 18.3333 15.788 18.3333 14.7254C18.3333 13.6728 17.0908 12.8047 15.5035 12.6816C15.9529 13.2376 16.25 13.9141 16.25 14.701C16.25 15.5126 15.9338 16.2069 15.4606 16.7726Z" fill="currentColor" />
+
+          </svg>
+          <span class="mx-4">Sign in Documents</span>
         </router-link>
         <router-link
           v-privilage="['HRDI']"
           class="flex items-center px-6 py-2 mt-4 duration-200 border-l-4"
-          :class="[$route.name === 'Resident' ? activeClass : inactiveClass]"
+          :class="[$route.name === 'SigninDocuments' ? activeClass : inactiveClass]"
           to="/users"
         >
           <svg

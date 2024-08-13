@@ -4,13 +4,49 @@ import { computed, ref, shallowRef } from 'vue';
 import VerifyEmail from '@/features/verification/components/VerifyEmail.vue';
 import RestPassword from '../components/RestPassword.vue';
 import VerificationCode from '@/features/verification/components/VerificationCode.vue';
+import { useApiRequest } from '@/composables/useApiRequest';
+import {resetPasswordApi, sendEmailVerification,sendVerificationCode} from "../api/VerifyEmailApi"
+import { toasted } from '@/utils/utils';
+import { useRouter } from 'vue-router';
+const router=useRouter();
 
+const verifyEmailRequest=useApiRequest();
+const email=ref('')
 function verifyEmail(values) {
-	setActive('verify')
+  verifyEmailRequest.send(()=>sendEmailVerification({email:values.email}),res=>{
+    if(res.success){
+      email.value=values.email
+      setActive('verify');
+      toasted(res.success, 'Confirmation code sent to your email', res.error)
+    }
+    else{
+      toasted(false, '','your email is not verified please enter the valid email')
+    }
+  })
+
 }
 
 function verifyCode(values) {
-	setActive('reset')
+  verifyEmailRequest.send(()=>sendVerificationCode({email:email.value,code:values.code}),res=>{
+    if(res.success){
+      setActive('reset')
+      toasted(res.success, 'Successfully submit', res.error)
+    }
+    else{
+      toasted(false, '','You have entered wrong varification code please try again')
+    }
+  })
+}
+function resetPassword(values) {
+  verifyEmailRequest.send(()=>resetPasswordApi({email:email.value,password :values.password }),res=>{
+    if(res.success){
+      toasted(res.success, 'Password created successfuly', res.error)
+      router.push('/login')
+    }
+    else{
+      toasted(false, '','something got wrong try again')
+    }
+  })
 }
 
 const components = shallowRef([{ name: 'email', component: VerifyEmail }, { name: 'verify', component: VerificationCode }, {name: 'reset', component: RestPassword}]);
@@ -65,6 +101,7 @@ function goBack() {
 				<component
 					:verifyEmail="verifyEmail"
 					:verifyCode='verifyCode'
+          :resetPassword="resetPassword"
 					:is="activeCom"
 				/>
 			</div>

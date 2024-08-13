@@ -62,7 +62,7 @@ function submitForm({ values, reset, setErrors }) {
     </div>
     <div class="grid grid-cols-3 gap-4">
       <Input
-        label="Phone"
+        label="phone"
         name="phone"
         validation="required|phone"
         :attributes="{ type: 'number', placeholder: 'Enter your phone number' }"
@@ -90,7 +90,7 @@ function submitForm({ values, reset, setErrors }) {
         v-model="type"
         label="User Type"
         name="usertype"
-        :options="['HRDI', 'University', 'LegalOffice', 'Student']"
+        :options="['HRDI', 'University', 'LegalOffice']"
         validation="required"
         :attributes="{ type: 'text', placeholder: 'Select User Type' }"
       />
@@ -104,7 +104,7 @@ function submitForm({ values, reset, setErrors }) {
         :attributes="{ type: 'text', placeholder: 'Select University' }"
       />
     </div>
-    <div class="grid grid-cols-2 gap-4">
+    <!-- <div class="grid grid-cols-2 gap-4">
       <InputPassword
         label="Password"
         name="password"
@@ -118,7 +118,7 @@ function submitForm({ values, reset, setErrors }) {
         validation="required|equalTo-password"
         :attributes="{ type: 'text', placeholder: 'Confirm your password' }"
       />
-    </div>
+    </div> -->
     <Button :pending="pending" @click.prevent="submit(submitForm)" type="secondary">
       Submit
     </Button>

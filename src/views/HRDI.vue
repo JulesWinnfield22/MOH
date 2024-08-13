@@ -4,7 +4,8 @@ import { usePaginationTemp } from '../composables/usePaginaionTemp'
 import { useApiRequest } from '../composables/useApiRequest'
 import { importNewBatch } from '../features/hrdi/hrdiAPi'
 import { addStudent, getStudents } from './pages/api/StudentApi'
-
+import Table from '@com/Table.vue'
+	import Button from '@com/Button.vue'
 const currentItem = ref({})
 const showModalAdd = ref(false)
 const isEditing = ref(null)
@@ -135,11 +136,13 @@ const fileInput = ref(null)
       </div>
     </div>
     <div>
-      <!-- <button
-        class="bg-[#21618C] text-white  flex gap-2 font-dm-sans  p-2 rounded-md" @click="showModalAdd = true"
-      >
-        Add Student
-      </button> -->
+      
+      <button 
+      class="bg-[#21618C] text-white  flex gap-2 font-dm-sans  p-2 rounded-md"
+		 @click="$router.push('/AddStudents')" type="primary">
+			Add user
+		</Button>
+	
 
       <div
         v-if="showModalAdd"
@@ -297,10 +300,14 @@ const fileInput = ref(null)
 
             <p>Import New Batch</p>
             <input
-              accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" type="file" class="hidden" @change="ev => {
-                file = ev.target.files?.[0]
-              }"
-            >
+  accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+  type="file"
+  class="hidden"
+  @change="ev => {
+    file = ev.target.files?.[0]
+  }"
+/>
+
           </label>
         </div>
         <button v-if="file" class="rounded bg-green-500 text-white p-2" @click="uploadFile">
