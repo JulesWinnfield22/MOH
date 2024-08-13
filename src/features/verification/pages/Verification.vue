@@ -56,7 +56,7 @@ function goBack() {
       <div class="inline-flex items-center justify-center gap-2">
         <div class="__active __circle">1</div>
 				<template v-for="(com, idx) in components.concat().slice(1)" :key="com.name">
-					<div :class="idx + 1 <= activeIdx ? '__full' : '__half'" class="relative overflow-hidden  __line"></div>
+					<div :class="idx + 1 <= activeIdx ? '__full' : '__half'" class="__line"></div>
 					<div :class="[idx < activeIdx && '__active']" class="__circle">{{idx + 2}}</div>
 				</template>
       </div>
@@ -112,13 +112,16 @@ function goBack() {
 }
 
 .__active.__circle + .__line.__full::after {
-	width: 100%
+	width: 100%;
+	transition: all .2s .2s linear;
 }
 
 .__line {
   width: 10rem;
   height: 3px;
   border-radius: 1000px;
+	position: relative;
+	overflow: hidden;
   background-color: theme('colors.gray.200');
 }
 </style>
