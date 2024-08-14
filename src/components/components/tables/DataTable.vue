@@ -92,6 +92,7 @@ const props = defineProps({
   font-size: 14px;
   font-weight: 700; 
   color: #343C6A;
+
  }
  td {
    font-family: 'Ubuntu';
@@ -100,7 +101,6 @@ const props = defineProps({
    color: #263558;
    opacity: 60%;
 
- 
   }
 
   .select,span {

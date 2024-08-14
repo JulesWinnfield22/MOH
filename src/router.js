@@ -14,9 +14,10 @@ import Users from './features/users/pages/Users.vue'
 import UsersIndex from './features/users/pages/UsersIndex.vue'
 import AddUsers from './features/users/pages/AddUsers.vue'
 import AddStudents from './views/AddStudents.vue'
-import Signup from './views/signup.vue'
+
 import Profile from './views/Profile.vue'
 import Verification from './features/verification/pages/Verification.vue'
+import ContractFile from './features/students/pages/ContractFile.vue'
 
 const routes = [
   {
@@ -30,12 +31,6 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login,
-    meta: { layout: 'empty' },
-  },
-  {
-    path: '/Signup',
-    name: 'Signup',
-    component: Signup,
     meta: { layout: 'empty' },
   },
   {
@@ -77,6 +72,15 @@ const routes = [
     path: '/contracts',
     name: 'contracts',
     component: Contracts,
+    meta: {
+      requiresAuth: true,
+      privileges: ['LegalOffice',]
+    }
+  },
+  {
+    path: '/contract-file/:contractId',
+    name: 'contracts file',
+    component: ContractFile,
     meta: {
       requiresAuth: true,
       privileges: ['LegalOffice',]

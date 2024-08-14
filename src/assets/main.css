@@ -11,6 +11,15 @@
   --secondary: 9 37 55;
 }
 
+.show-scrollbar {
+  scrollbar-width: thin;
+}
+
+.show-scrollbar::-webkit-scrollbar-track {
+  display: block;
+  width: 5px;
+}
+
 *,
 *:focus {
   scrollbar-width: none;
@@ -21,9 +30,11 @@
 ::-webkit-scrollbar {
   width: 7px;
 }
+
 .dm-sans{
   font-family: dmSans;
 }
+
 ::-webkit-scrollbar-track{
   background: #2D3748;
 }

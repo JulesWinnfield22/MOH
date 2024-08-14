@@ -9,7 +9,7 @@ import { useContracts } from '../store/contractStore'
 import TableRowSkeleton from '@/skeletons/TableRowSkeleton.vue'
 import { confirmContract, rejectContract } from '@/features/students/api/contractApi'
 import { useApiRequest } from '@/composables/useApiRequest'
-import { toasted } from '@/utils/utils'
+import { formatCurrency, toasted } from '@/utils/utils'
 
 const contract = useContracts()
 const auth = useAuth()
@@ -84,7 +84,7 @@ const allSelected = computed(() => {
 const isRoleHrdi = computed(() => auth.auth?.user?.privileges?.[0] == 'ROLE_University')
 </script>
 <template>
-  <div class="bg-[#FBFBFB]">
+  <div class="bg-[#FBFBFB] overflow-x-scroll show-scrollbar">
     <div v-if="isRoleHrdi" class="flex justify-between items-center">
       <div class="p-4 text-[#4E585F] font-dm-sans text-[16px] font-bold leading-[24px] text-left">
         contracts
@@ -126,7 +126,15 @@ const isRoleHrdi = computed(() => auth.auth?.user?.privileges?.[0] == 'ROLE_Univ
       :firstCol="isRoleHrdi"
       :headers="{
         head: ['Ernp ID', 'Full Name', 'Gender', 'university', 'Duration', 'Salary', 'Total Salary', 'region','city','subCity','woreda','houseNumber','Actions'],
-        row: ['id', 'fullName', 'program', 'university', 'duration', 'salary', 'totalSalary', 'totalTrainingCost','subCity','city','woreda','houseNumber','actions']
+        row: ['id', 'fullName', 'program', 'university', 'duration', 'salary', 'totalSalary', 'totalTrainingCost','subCity','city','woreda','houseNumber']
+      }"
+      :cells="{
+        totalSalary: totalSalary => {
+          return formatCurrency(totalSalary)
+        },
+        salary: salary => {
+          return formatCurrency(salary)
+        }
       }"
       :rows="contract.contracts || []"
     >
@@ -138,7 +146,11 @@ const isRoleHrdi = computed(() => auth.auth?.user?.privileges?.[0] == 'ROLE_Univ
       <template #select="{row}" >
         <input @change="selectUser(row?.ernpId)" :checked="selected.includes(row.ernpId)" type="checkbox" />
       </template>
-      <template #actions>open</template>
+      <template #actions="{row}">
+        <button @click="$router.push('/contract-file/' + row?.id)" class="bg-secondary text-white rounded px-4 py-1">
+          open
+        </button>
+      </template>
     </Table>
     <div class="flex justify-center items-center">
     </div>
