@@ -327,7 +327,7 @@ const fileInput = ref(null)
     </div>
 
     <div class="bg-[#FBFBFB] p-4 rounded-md mb-4 text-[#4E585F]">
-      <table class="min-w-full bg-white border border-gray-300">
+      <!-- <table class="min-w-full bg-white border border-gray-300">
         <thead>
           <tr class="bg-gray-200">
             <th class="text-left w-[13px] Table-header">
@@ -383,26 +383,27 @@ const fileInput = ref(null)
             <td class="w-[100px] Table-contents">
               <span :style="{ color: item.status === 'Confirmed' ? '#36CB56' : 'inherit' }">{{ item.status }}</span>
             </td>
-            <!-- <td>
+            <td>
               <button class="text-end button-open" @click="openModal(item)">
                 Open
               </button>
-            </td> -->
+            </td>
           </tr>
         </tbody>
-      </table>
+      </table> -->
       <Table class="Table-header"
     :pending="paginationn.pending.value"
     :Fallback="TableRowSkeleton"
+   
     :headers="{
       head: ['BatchId', 'University Name','No of Members','memo','status', 'actions',],
-      row: ['BatchId','universityName','NoofMembers','	This are the new requested members...','status']
+      row: ['BatchId','universityName','studentsLength','	This are the new requested members...','regstatus']
     }"
     :rows="paginationn.data.value || []"
   > 
     <template #actions="{row}">
-      <button class="text-sm hover:italic hover:underline" @click="$router.push(`/students/${row?.universityId}`)">
-         Students
+      <button class="bg-[#21618C] text-white  flex gap-2 font-dm-sans  p-2 rounded-md" @click="$router.push(`/students/${row?.universityUuid}`)">
+         Open
       </button>
     </template>
   </Table>
