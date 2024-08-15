@@ -28,6 +28,7 @@ function submitForm({ values, reset, setErrors }) {
     // If there are validation errors, display them
     setErrors(result.errors);
   }
+  reset();
 }
 </script>
 

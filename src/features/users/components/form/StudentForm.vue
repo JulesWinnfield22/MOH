@@ -26,6 +26,8 @@ function submitForm({ values, reset, setErrors }) {
   } else if (result && result.errors) {
     setErrors(result.errors); // Handle errors
   }
+  reset(); // This should reset the form fields
+
 }
 </script>
 
@@ -33,12 +35,14 @@ function submitForm({ values, reset, setErrors }) {
   <Form v-slot="{ submit, setErrors, reset }" id="userForm" class="flex flex-col gap-4">
     <div class="grid user-form-grid gap-4">
       <Input
+      
         label="ernpId"
         name="ernpId"
         validation="required"
-        :attributes="{ type: 'text', placeholder: 'Enter Your ERNP ID' }"
+        :attributes="{ type: 'text', placeholder: 'ERNP ID' }"
       />
       <Input
+      
         label="Full Name"
         name="fullName"
         validation="required"

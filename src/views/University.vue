@@ -14,13 +14,13 @@
     :pending="pagination.pending.value"
     :Fallback="TableRowSkeleton"
     :headers="{
-      head: ['University Name', 'actions'],
-      row: ['universityName']
+      head: ['University Name','no' ,'actions'],
+      row: ['universityName','studentsLength']
     }"
     :rows="pagination.data.value || []"
   > 
     <template #actions="{row}">
-      <button class="text-sm hover:italic hover:underline" @click="$router.push(`/students/${row?.universityId}`)">
+      <button class="text-sm hover:italic hover:underline" @click="$router.push(`/students/${row?.universityUuid}`)">
          Students
       </button>
     </template>

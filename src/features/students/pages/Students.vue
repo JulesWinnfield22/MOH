@@ -81,7 +81,7 @@ const allSelected = computed(() => {
   const len = (sudents.students || []).length
   return len != 0 && len == selected.value?.length
 })
-
+console.log(sudents.students, "xxxxx") 
 const isRoleHrdi = computed(() => auth.auth?.user?.privileges?.[0] == 'ROLE_University')
 </script>
 <template>
@@ -126,11 +126,12 @@ const isRoleHrdi = computed(() => auth.auth?.user?.privileges?.[0] == 'ROLE_Univ
       :Fallback="TableRowSkeleton"
       :firstCol="isRoleHrdi"
       :headers="{
-        head: ['Ernp ID', 'Full Name', 'Gender', 'Program', 'Duration', 'Salary', 'Total Salary', 'Status',],
+        head: ['Ernp ID', 'Full Name', 'Gender', 'Programm', 'Duration', 'Salary', 'Total Salary', 'Status',],
         row: ['ernpId', 'fullName', 'gender', 'programName', 'duration', 'salary', 'totalSalary', 'registrationStatus']
       }"
-      :rows="sudents.students || []"
+      :rows="sudents.students.students || []"
     >
+    {{ }}
       <template #headerFirst>
         <div class="px-1">
           <input @click="selectAll($event.target.checked)" :checked="allSelected" type="checkbox" />
