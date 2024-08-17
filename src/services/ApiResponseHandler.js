@@ -23,11 +23,12 @@ export async function responseHandler(request, config) {
 
         try {
           const res = await refreshToken({token: auth.auth?.user?.refreshToken})
+          
           console.log(res)
           if(!res.success) {
             localStorage.clear()
-           location = '/login?redirect=' + location.pathname
-           return
+            location = '/login?redirect=' + location.pathname
+            return
           }
           auth.setToken(res.data)
           return await responseHandler.call(this, this.addAuthenticationHeader().api(config))
