@@ -6,7 +6,7 @@ const api = new ApiService()
 const path = '/student'
 
 export function getUniStudents(id) {
-	return api.addAuthenticationHeader().get(`${path}/FindStudents/${id}`)
+	return api.addAuthenticationHeader().get(`/university/${id}`)
 }
 
 export function rejectStudent(data) {

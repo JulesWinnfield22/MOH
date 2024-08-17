@@ -1,6 +1,11 @@
 <script setup lang="ts">
+  import {getAllUniversities} from '@/features/university/api/uniApI'
+  import TableRowSkeleton from '@skl/TableRowSkeleton.vue'
+  
+  import { usePagination } from '@/composables/usePagination'
+
 import { ref, watch } from 'vue'
-import { usePaginationTemp } from '../composables/usePaginaionTemp'
+import { usePaginationTemp} from '../composables/usePaginaionTemp'
 import { useApiRequest } from '../composables/useApiRequest'
 import { importNewBatch } from '../features/hrdi/hrdiAPi'
 import { addStudent, getStudents } from './pages/api/StudentApi'
@@ -23,7 +28,11 @@ const open = ref(false)
 
 const pagination = usePaginationTemp({
   cb: getStudents,
+  
 })
+const paginationn = usePagination({
+    cb: getAllUniversities
+  })
 
 watch(pagination.data, () => {
   console.log(pagination)
@@ -140,7 +149,7 @@ const fileInput = ref(null)
       <button 
       class="bg-[#21618C] text-white  flex gap-2 font-dm-sans  p-2 rounded-md"
 		 @click="$router.push('/AddStudents')" type="primary">
-			Add user
+			Add Student
 		</Button>
 	
 
@@ -286,6 +295,7 @@ const fileInput = ref(null)
     </div>
 
     <div class="flex justify-between items-center">
+     
       <div class="p-4  text-[#4E585F] font-dm-sans text-[16px] font-bold leading-[24px] text-left">
         HRDI
       </div>
@@ -317,7 +327,7 @@ const fileInput = ref(null)
     </div>
 
     <div class="bg-[#FBFBFB] p-4 rounded-md mb-4 text-[#4E585F]">
-      <table class="min-w-full bg-white border border-gray-300">
+      <!-- <table class="min-w-full bg-white border border-gray-300">
         <thead>
           <tr class="bg-gray-200">
             <th class="text-left w-[13px] Table-header">
@@ -337,6 +347,9 @@ const fileInput = ref(null)
             </th>
             <th class="w-[190px] Table-header">
               memo
+            </th>
+            <th class="w-[10px] Table-header">
+              Status
             </th>
             <th class="w-[10px] Table-header">
               Status
@@ -364,17 +377,36 @@ const fileInput = ref(null)
             <td class="h-[42px] w-[190px] Table-contents">
               {{ item.memo }}
             </td>
+            <th class="w-[10px] Table-header">
+              Status
+            </th>
             <td class="w-[100px] Table-contents">
               <span :style="{ color: item.status === 'Confirmed' ? '#36CB56' : 'inherit' }">{{ item.status }}</span>
             </td>
-            <!-- <td>
+            <td>
               <button class="text-end button-open" @click="openModal(item)">
                 Open
               </button>
-            </td> -->
+            </td>
           </tr>
         </tbody>
-      </table>
+      </table> -->
+      <Table class="Table-header"
+    :pending="paginationn.pending.value"
+    :Fallback="TableRowSkeleton"
+   
+    :headers="{
+      head: ['BatchId', 'University Name','No of Members','memo','status', 'actions',],
+      row: ['BatchId','universityName','studentsLength','	This are the new requested members...','regstatus']
+    }"
+    :rows="paginationn.data.value || []"
+  > 
+    <template #actions="{row}">
+      <button class="bg-[#21618C] text-white  flex gap-2 font-dm-sans  p-2 rounded-md" @click="$router.push(`/students/${row?.universityUuid}`)">
+         Open
+      </button>
+    </template>
+  </Table>
       <div v-if="isModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 overflow-auto">
         <div>
           <div class="relative w-full ml-[200px] my-10 bg-white border border-gray-300 rounded-lg shadow-md p-4">
@@ -565,7 +597,7 @@ const fileInput = ref(null)
         <div class="w-full">
           <!-- Your content goes here -->
         </div>
-        <div class="p-4 flex justify-between items-center w-full mt-4">
+        <!-- <div class="p-4 flex justify-between items-center w-full mt-4">
           <button class="bg-gray-200 px-4 py-2 rounded-md hover:bg-gray-300 mr-4" @click="prevPage">
             <span class="flex items-center">
               <svg
@@ -615,7 +647,7 @@ const fileInput = ref(null)
               </svg>
             </span>
           </button>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

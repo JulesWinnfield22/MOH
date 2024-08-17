@@ -9,6 +9,10 @@
 <line y1="0.5" x2="893" y2="0.5" stroke="#21618C"/>
 </svg>
    <div class="justify-center flex">
+    <!-- <a
+             href="/Profile"
+              class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"
+              >  {{ auth.auth?.user?.name}}</a> -->
       <p class="mt-[36px] w-[800px] ">
         Lorem ipsum dolor sit amet consectetur. Odio maecenas dui mattis
         suspendisse pellentesque vitae gravida diam. Velt quis iaculis pharetra
@@ -50,11 +54,7 @@
   </div>
 </template>  
 
-<script>
-export default {
-  name: 'Notification',
-};
-</script>  
+
 
 <style scoped>
 .container {
