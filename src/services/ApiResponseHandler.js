@@ -41,13 +41,13 @@ export async function responseHandler(request, config) {
         isRefreshing = true;
 
         try {
-          const res = await refreshToken({ token: auth.auth?.user?.refreshToken });
-
-          if (!res.success) {
-            processQueue(null, null);
-            auth.logout();
-            router.push(`/login?redirect=${location.pathname}`);
-            return;
+          const res = await refreshToken({token: auth.auth?.user?.refreshToken})
+          
+          console.log(res)
+          if(!res.success) {
+            localStorage.clear()
+            location = '/login?redirect=' + location.pathname
+            return
           }
 
           auth.setToken(res.data);
