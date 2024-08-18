@@ -24,7 +24,7 @@ export const useStudents = defineStore('studenttsStore', () => {
   
   function set(data) {
 		console.log(data)
-    students.value = data
+    students.value = data?.students || data
   }
 
   function update(id, student) {
@@ -35,13 +35,21 @@ export const useStudents = defineStore('studenttsStore', () => {
     students.value.splice(idx, 1, student)
   }
 	
-	function updateStatus(status, ids) {
-		students.value.forEach(el => {
-			if(ids.includes(el.ernpId)) {
-				el.registrationStatus = status
-			}
-		})
-	}
+  function updateStatus(status, rejectionReason, ids) {
+    // Update registration status
+    students.value.forEach(el => {
+      if (ids.includes(el.ernpId)) {
+        el.registrationStatus = status;
+        el.rejectionReason = rejectionReason;
+      }
+    });
+  
+    // Return the updated students array and other relevant data
+    return {
+      updatedStudents: students.value,
+      status: 'success' // or any other data you want to return
+    };
+  }
 
   function changeAmount(id, amount) {
     const idx = students.value.findIndex(el => el.ernpId == id)

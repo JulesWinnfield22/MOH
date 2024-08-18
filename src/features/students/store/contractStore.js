@@ -38,7 +38,7 @@ export const useContracts = defineStore('contracttsStore', () => {
 	function updateStatus(status, ids) {
 		contracts.value.forEach(el => {
 			if(ids.includes(el.id)) {
-				el.registrationStatus = status
+				el.contractStatus = status
 			}
 		})
 	}

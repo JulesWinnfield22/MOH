@@ -9,7 +9,9 @@ import SigninDocuments from './views/SigninDocuments.vue'
 import Requirements from './views/Requirements.vue'
 import Status from './views/Status.vue'
 import Students from '@/features/students/pages/Students.vue'
-import Contracts from '@/features/students/pages/Contracts.vue'
+import Contracts from '@/features/students/pages/contracts.vue'
+import ContractsApproved from '@/features/students/pages/contractsApp.vue'
+import ContractsDeclined from '@/features/students/pages/contractsDec.vue'
 import Users from './features/users/pages/Users.vue'
 import UsersIndex from './features/users/pages/UsersIndex.vue'
 import AddUsers from './features/users/pages/AddUsers.vue'
@@ -72,6 +74,24 @@ const routes = [
     path: '/contracts',
     name: 'contracts',
     component: Contracts,
+    meta: {
+      requiresAuth: true,
+      privileges: ['LegalOffice',]
+    }
+  },
+  {
+    path: '/contractsApp',
+    name: 'contractsApproved',
+    component: ContractsApproved,
+    meta: {
+      requiresAuth: true,
+      privileges: ['LegalOffice',]
+    }
+  },
+  {
+    path: '/contractsDec',
+    name: 'contractsDeclined',
+    component: ContractsDeclined,
     meta: {
       requiresAuth: true,
       privileges: ['LegalOffice',]
@@ -164,7 +184,8 @@ const routes = [
     component: SigninDocuments,
     meta: {
       requiresAuth: true,
-      privileges: ['Student']
+      privileges: ['Student'],
+      status: 'registered'
     }
   },
 

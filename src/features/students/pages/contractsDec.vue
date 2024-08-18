@@ -18,12 +18,6 @@ const filteredRowsDeclined = computed(() => {
   return contract.contracts.filter(row => row.contractStatus === 'Declined');
 });
 
-const filteredRows = computed(() => {
-  return contract.contracts.filter(row => row.contractStatus === 'submitted');
-});
-const filteredRowsApproved = computed(() => {
-  return contract.contracts.filter(row => row.contractStatus === 'Approved');
-});
 
 
 const selected = ref([])
@@ -33,11 +27,8 @@ const uniId = route.params.id
 
 const request = useApiRequest()
 
+
 const pagination = usePaginationTemp({
-  store: contract,
-  cb: (data, config) => findAllByContractStatus(),
-})
-const paginationn = usePaginationTemp({
   store: contract,
   cb: (data, config) => findAllByContractStatusDeclined(),
 })
@@ -135,39 +126,39 @@ const isRoleHrdi = computed(() => auth.auth?.user?.privileges?.[0] == 'ROLE_Univ
       </div>
     </div>
     <p class=" font-bold pb-8 " v-if="contract.contracts.length"> 
-      {{contract.contracts[0].unversityName}}Approved
+      {{contract.contracts[0].unversityName}}
     </p>
-    <Table
-      :Fallback="TableRowSkeleton"
-      :firstCol="isRoleHrdi"
-      :headers="{
-        head: ['Ernp ID', 'Full Name', 'Gender', 'university', 'Duration', 'Salary', 'Total Salary', 'region','city','subCity','woreda','houseNumber','status','Actions'],
-        row: ['id', 'fullName', 'program', 'university', 'duration', 'salary', 'totalSalary', 'totalTrainingCost','subCity','city','woreda','houseNumber','contractStatus']
-      }"
-      :cells="{
-        totalSalary: totalSalary => {
-          return formatCurrency(totalSalary)
-        },
-        salary: salary => {
-          return formatCurrency(salary)
-        }
-      }"
-      :rows="contract.contracts || []"
-    >
-      <template #headerFirst>
-        <div class="px-1">
-          <input @click="selectAll($event.target.checked)" :checked="allSelected" type="checkbox" />
-        </div>
-      </template>
-      <template #select="{row}" >
-        <input @change="selectUser(row?.ernpId)" :checked="selected.includes(row.ernpId)" type="checkbox" />
-      </template>
-      <template #actions="{row}">
-        <button @click="$router.push('/contract-file/' + row?.id)" class="bg-secondary text-white rounded px-4 py-1">
-          open
-        </button>
-      </template>
-    </Table> i
+   <p class="font-bold pb-8">
+    Declined
+  </p>
+  <Table
+    :Fallback="TableRowSkeleton"
+    :firstCol="isRoleHrdi"
+    :headers="{
+      head: ['Ernp ID', 'Full Name', 'Gender', 'university', 'Duration', 'Salary', 'Total Salary', 'region','city','subCity','woreda','houseNumber','status','Actions'],
+      row: ['id', 'fullName', 'program', 'university', 'duration', 'salary', 'totalSalary', 'totalTrainingCost','subCity','city','woreda','houseNumber','contractStatus']
+    }"
+    :cells="{
+      totalSalary: totalSalary => formatCurrency(totalSalary),
+      salary: salary => formatCurrency(salary)
+    }"
+    :rows="filteredRowsDeclined"
+  >
+    <template #headerFirst>
+      <div class="px-1">
+        <input @click="selectAll($event.target.checked)" :checked="allSelected" type="checkbox" />
+      </div>
+    </template>
+    <template #select="{ row }">
+      <input @change="selectUser(row?.ernpId)" :checked="selected.includes(row.ernpId)" type="checkbox" />
+    </template>
+    <template #actions="{ row }">
+      <button @click="$router.push('/contract-file/' + row?.id)" class="bg-secondary text-white rounded px-4 py-1">
+        open
+      </button>
+    </template>
+  </Table>
+ 
     <div class="flex justify-center items-center">
     </div>
     <div class="p-4 flex flex-col items-center">

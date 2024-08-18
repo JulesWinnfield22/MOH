@@ -397,7 +397,7 @@ const fileInput = ref(null)
    
     :headers="{
       head: ['BatchId', 'University Name','No of Members','memo','status', 'actions',],
-      row: ['BatchId','universityName','studentsLength','	This are the new requested members...','regstatus']
+      row: ['butchNumber','universityName','studentsLength','	This are the new requested members...','regstatus']
     }"
     :rows="paginationn.data.value || []"
   > 
