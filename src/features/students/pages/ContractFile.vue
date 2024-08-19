@@ -5,6 +5,8 @@ import { useApiRequest } from '@/composables/useApiRequest';
 import { getContractById, rejectContract , confirmContract} from '../api/contractApi';
 import { useContracts } from '../store/contractStore';
 import { toasted } from '@/utils/utils';
+import FileMdl from '../components/File.mdl.vue';
+
 const route = useRoute();
 const contractId = route.params.contractId;
 const req = useApiRequest();
@@ -52,7 +54,8 @@ async function rejectEachSelection(id) {
 
   const status = 'Declined';
   try {
-    const response = await rejectContract(id,status,reason.value);
+    const response = await rejectContract(id, status, reason.value);
+    console.log(response)
     if (response.success) {
       sudents.updateStatus(status,[id]); // Update the status of the specific row
       closeModal();
@@ -76,13 +79,56 @@ function submitReason() {
 }
 const address = [{name: 'region', value: 'region'}, {name: 'city', value: 'city'}, {name: 'Sub City', value: 'subCity'}, {name: 'woreda', value: 'woreda'}, {name: 'house Number', value: 'houseNumber'},{name: 'Status', value: 'contractStatus'}, ]
 
-const files = [{name: 'martial Name', value: 'martialCertName'}, {name: 'identity Name', value: 'identityCertName'}, {name: 'agent Name', value: 'agentCertName'}]
+function closeFile() {
+  console.log('sdf')
+  file.value = ''
+}
 
+
+const file = ref('')
+// File handling functions
+async function getFile(fileName) {
+  if (!fileName) {
+    console.error('File name is required');
+    return;
+  }
+
+
+  try {
+    const response = await getContractFileById(fileName);
+    console.log(response)
+    if (response.success && response.data) {
+      file.value = response.data
+    } else {
+      console.error('Failed to retrieve file');
+    }
+  } catch (error) {
+    console.error('Error retrieving file:', error);
+  }
+}
+
+// Function to trigger file viewing
+function viewFile() {
+  const fileName = req.value.response.value?.identityCertName;
+  if (fileName) {
+    getFile(fileName)
+      .then(() => {
+        console.log('File opened successfully');
+      })
+      .catch((error) => {
+        console.error('Error opening file:', error);
+      });
+  } else {
+    console.error('File name is missing');
+  }
+}
 </script>
 
 
 <template>
-	<div class="flex flex-col gap-4">
+  <div class="flex flex-col gap-4">
+    <FileMdl :closeFile="closeFile" v-if="file" :file="file" />
+    
 		<p class="text-gray-500 font-semibold">Address</p>
 		<div class="grid grid-cols-2 gap-4">
 			<div class="flex flex-col gap-1 p-2 bg-gray-200 rounded" v-for="{name, value} in address" :key="name">
@@ -114,10 +160,16 @@ const files = [{name: 'martial Name', value: 'martialCertName'}, {name: 'identit
 			<div class="flex flex-col gap-1 p-2 bg-gray-200 rounded">
 				<div v-if="req.response.value?.identityCertName" class="border-b-2 border-dark/50 pb-2">
 					<p class="text-gray-500">identity Name</p>
-					<p class="flex items-center justify-between	 gap-2">
-						<p>{{ req.response.value?.identityCertName }}</p>
-						<button @click="getFile(req.response.value?.identityCertName)" class="px-4 py-1 rounded text-white bg-secondary">Open</button>
-					</p>
+					
+            <div class="flex items-center justify-between gap-2">
+    <p>{{ req.response.value?.identityCertName }}</p>
+    <button 
+      @click="getFile(req.response.value?.identityCertName)" 
+      class="px-4 py-1 rounded text-white bg-secondary"
+    >
+      Open
+    </button>
+  </div>
 				</div>
 				<div v-if="req.response.value?.agentCertName" class="border-b border-2 pb-2">
 					<p class="text-gray-500 capitalize">agent Name</p>

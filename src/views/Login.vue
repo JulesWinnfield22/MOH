@@ -33,8 +33,13 @@ async function loginUser() {
       })
       localStorage.setItem('userDetail', JSON.stringify(res.data))
 
+      if(auth.auth.user?.userType != 'Student') {
+        router.push('/dashboard')
+      } else {
+        router.push('/Status')
+      }
       // Redirect to dashboard
-      router.push('/dashboard')
+
     }
     else {
       // Handle login failure
