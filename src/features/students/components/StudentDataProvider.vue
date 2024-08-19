@@ -21,14 +21,14 @@ const req = useApiRequest()
 if(Object.keys(student.student).length == 0) {
 	req.send(
 		() => allRequest({
-			contract: getUserContract(auth.auth.user?.userUuid),
+			//contract: getUserContract(auth.auth.user?.userUuid),
 			user: getStudentbuId(auth.auth.user?.userUuid)
 		}),
 		res => {
 			console.log(res)
 			if(res.success) {
 				student.set(res.data?.user)
-				student.setContract(res.data?.contract)
+				//student.setContract(res.data?.contract)
 			}
 		}
 	)

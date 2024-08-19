@@ -22,13 +22,11 @@ export function findAllByContractStatusApproved() {
 }
 export async function rejectContract(id, status, rejectionReason) {
   try {
-    const response = await Promise.all([
-      api
+    const response = await api
         .addAuthenticationHeader()
         .put(
           `${path}/updateContractStatus?id=${id}&status=${status}&reason=${rejectionReason}`
-        ),
-    ]);
+        );
     console.log('Reject Contract Response:', response);
     return response;
   } catch (error) {
@@ -39,13 +37,11 @@ export async function rejectContract(id, status, rejectionReason) {
 
 export async function confirmContract(id, status, rejectionReason) {
   try {
-    const response = await Promise.all([
-      api
+    const response = await api
         .addAuthenticationHeader()
         .put(
           `${path}/updateContractStatus?id=${id}&status=${status}&reason=${rejectionReason}`
-        ),
-    ]);
+        );
     console.log('Reject Contract Response:', response);
     return response;
   } catch (error) {
@@ -65,8 +61,8 @@ export function getContractById(id) {
 export function getContractFileById(documentName) {
   return api
     .addAuthenticationHeader()
-    .get(`${docuPath}/findByDocumentName/${documentName}`, {
-      params: { action: 'view' },
+    .get(`${docuPath}/findByDocumentName`, {
+      params: { action: 'download', documentName },
       responseType: 'blob', // Ensures that file data is handled correctly
     });
 }

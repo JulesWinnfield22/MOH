@@ -42,7 +42,7 @@ const filteredStudents = computed(() => {
 const pagination = usePaginationTemp({
   store: sudents,
   cb: (data, config) =>
-    getUniStudents(uniId || auth.auth?.user?.officialOfUnivesity),
+    getUniStudents(uniId || auth.auth?.user?.universityProviderUuid),
 });
 
 function applyFilter() {
@@ -67,7 +67,7 @@ function confirmSelection() {
     () => confirmStudent(selected.value),
     (res) => {
       if (res.success) {
-        sudents.updateStatus('registered', selected.value);
+        sudents.updateStatus('registered', '', selected.value);
         selected.value = [];
       }
       toasted(res.success, 'Registered', res.error);
@@ -83,10 +83,10 @@ function confirmeachSelection(ernpId) {
     (res) => {
       if (res.success) {
         // Update only the status of this specific row
-        sudents.updateStatus('registered', [ernpId]);
+        sudents.updateStatus('registered', '', [ernpId]);
         selected.value = [];
       }
-      toasted(res[0].success, 'Registered', res.error);
+      toasted(res.success, 'Registered', res.error);
     }
   );
 }
@@ -99,12 +99,13 @@ function rejectEachSelection(ernpId) {
   request.send(
     () => rejectStudent(status, reason.value, [ernpId]), // Pass the ernpId in an array to keep the structure consistent
     (res) => {
+      console.log(res)
       if (res.success) {
         sudents.updateStatus(status, reason.value, [ernpId]); // Update the status of the specific row
       }
       isEachModalVisible.value = !isEachModalVisible.value;
-      status.value = values.status;
-      toasted(res[0].success, 'Rejected', res.error); // Show a toast notification
+      //status.value = values.status;
+      toasted(res.success, 'Rejected', res.error); // Show a toast notification
     }
   );
 }
@@ -118,7 +119,7 @@ function rejectSelection() {
     () => rejectStudent(status, reason.value, selected.value),
     (res) => {
       if (res.success) {
-        students.updateStatus(status, rejectionReason, selected.value);
+        sudents.updateStatus(status, 'rejectionReason', selected.value);
         selected.value = [];
       }
       toasted(res.success, 'Rejected', res.error);

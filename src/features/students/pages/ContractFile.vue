@@ -5,6 +5,7 @@ import { useApiRequest } from '@/composables/useApiRequest';
 import { getContractById, getContractFileById, rejectContract, confirmContract } from '../api/contractApi';
 import { useContracts } from '../store/contractStore';
 import { toasted } from '@/utils/utils';
+import FileMdl from '../components/File.mdl.vue';
 
 const route = useRoute();
 const contractId = route.params.contractId;
@@ -18,7 +19,6 @@ const documentName = 'example.pdf'; // Replace this with the actual document nam
 
 // Fetch contract and file details
 req.send(() => getContractById(contractId));
-req.send(() => getContractFileById(documentName));
 
 // Modal control functions
 function showModalReject(id) {
@@ -59,6 +59,7 @@ async function rejectEachSelection(id) {
   const status = 'Declined';
   try {
     const response = await rejectContract(id, status, reason.value);
+    console.log(response)
     if (response.success) {
       sudents.updateStatus(status, [id]); // Update the status of the specific row
       closeModal();
@@ -82,6 +83,13 @@ function submitReason() {
   closeModal();
 }
 
+function closeFile() {
+  console.log('sdf')
+  file.value = ''
+}
+
+
+const file = ref('')
 // File handling functions
 async function getFile(fileName) {
   if (!fileName) {
@@ -89,22 +97,12 @@ async function getFile(fileName) {
     return;
   }
 
+
   try {
     const response = await getContractFileById(fileName);
-    if (response && response.data) {
-      const fileBlob = response.data;
-      const fileType = fileBlob.type; // Get the MIME type of the file
-      const url = URL.createObjectURL(fileBlob);
-
-      // Open the file in a new tab based on its MIME type
-      if (fileType.startsWith('image/') || fileType === 'application/pdf') {
-        window.open(url, '_blank'); // Directly viewable file types
-      } else {
-        console.error('Unsupported file type');
-      }
-
-      // Clean up
-      URL.revokeObjectURL(url);
+    console.log(response)
+    if (response.success && response.data) {
+      file.value = response.data
     } else {
       console.error('Failed to retrieve file');
     }
@@ -131,7 +129,8 @@ function viewFile() {
 </script>
 
 <template>
-	<div class="flex flex-col gap-4">
+  <div class="flex flex-col gap-4">
+    <FileMdl :closeFile="closeFile" v-if="file" :file="file" />
     
 		<p class="text-gray-500 font-semibold">Address</p>
 		<div class="grid grid-cols-2 gap-4">
@@ -168,7 +167,7 @@ function viewFile() {
             <div class="flex items-center justify-between gap-2">
     <p>{{ req.response.value?.identityCertName }}</p>
     <button 
-      @click="viewFile" 
+      @click="getFile(req.response.value?.identityCertName)" 
       class="px-4 py-1 rounded text-white bg-secondary"
     >
       Open
