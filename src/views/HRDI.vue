@@ -395,7 +395,7 @@ const fileInput = ref(null)
     :rows="paginations.data.value || []"
   > 
     <template #actions="{row}">
-      <button class="bg-[#21618C] text-white  flex gap-2 font-dm-sans  p-2 rounded-md" @click="$router.push(`/students/${row?.universityUuid}`)">
+      <button class="bg-[#21618C] text-white  flex gap-2 font-dm-sans  p-2 rounded-md" @click="$router.push(`/students/${row?.batchNumber}`)">
          Open
       </button>
     </template>

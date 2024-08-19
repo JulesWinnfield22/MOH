@@ -10,6 +10,10 @@ const _filter = ref({
 });
 
 const props = defineProps({
+  disabled: {
+    type: Boolean,
+    default: false
+  },
   filter: {
     type: Object,
     default: {},
@@ -62,6 +66,7 @@ watch(
       :attributes="{
         placeholder: 'Region',
         type: 'text',
+        disabled
       }"
       validation="required"
     />
@@ -71,6 +76,7 @@ watch(
       validation="required"
       :attributes="{
         placeholder: 'Woreda',
+        disabled
       }"
     />
     <Input
@@ -79,6 +85,7 @@ watch(
       validation="required"
       :attributes="{
         placeholder: 'City',
+        disabled
       }"
     />
     <Input
@@ -87,6 +94,7 @@ watch(
       
       :attributes="{
         placeholder: 'Sub City',
+        disabled
       }"
     />
     <Input
@@ -95,6 +103,7 @@ watch(
       
       :attributes="{
         placeholder: 'House Number',
+        disabled
       }"
     />
     <div class="col-span-2 border-t py-2 grid grid-cols-4 gap-4">
@@ -104,6 +113,7 @@ watch(
         name="marriage_file"
         :attributes="{
           placeholder: 'Marriage file',
+          disabled
         }"
         validation="required"
       />
@@ -113,6 +123,7 @@ watch(
         name="identity_file"
         :attributes="{
           placeholder: 'Identity File',
+          disabled
         }"
         validation="required"
       />
@@ -122,6 +133,7 @@ watch(
         name="agent_file"
         :attributes="{
           placeholder: 'Agent File',
+          disabled
         }"
         validation="required"
       />

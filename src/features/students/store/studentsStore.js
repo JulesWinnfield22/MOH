@@ -23,8 +23,8 @@ export const useStudents = defineStore('studenttsStore', () => {
   }
   
   function set(data) {
-		console.log(data)
-    students.value = data?.students || data
+		console.log(data.students, 'herer')
+    students.value = Array.isArray(data) ? data : (data.students || [])
   }
 
   function update(id, student) {
@@ -36,6 +36,7 @@ export const useStudents = defineStore('studenttsStore', () => {
   }
 	
   function updateStatus(status, rejectionReason, ids) {
+    console.log(ids)
     // Update registration status
     students.value.forEach(el => {
       if (ids.includes(el.ernpId)) {
