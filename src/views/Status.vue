@@ -1,26 +1,40 @@
+<script setup lang="ts">
+import StudentDataProvider from '@/features/students/components/StudentDataProvider.vue';
+</script>
+
 <template>
   <div class="container">
-    <div class="message text-center ">
-<div class=" w-full justify-center mb-[36px] flex ">
-      <h1 class="font-bold  w-[650px] text-[#4E585F]  font-dm-sans ">Please Go and Report to Gondar University In Person!</h1>
-  
-  </div>  
-  <svg class="justify-center flex w-[893px]" width="893" height="1" viewBox="0 0 893 1" fill="none" xmlns="http://www.w3.org/2000/svg">
-<line y1="0.5" x2="893" y2="0.5" stroke="#21618C"/>
-</svg>
-   <div class="justify-center flex">
-    <!-- <a
-             href="/Profile"
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"
-              >  {{ auth.auth?.user?.name}}</a> -->
-      <p class="mt-[36px] w-[800px] ">
-        Lorem ipsum dolor sit amet consectetur. Odio maecenas dui mattis
-        suspendisse pellentesque vitae gravida diam. Velt quis iaculis pharetra
-        elit turpis.
-      </p>
-    </div>
-      <div class="w-full py-10 justify-center ">
-            <svg class=" w-full justify-center"
+    <StudentDataProvider v-slot="{ student, pending }">
+      <div v-if="!pending" class="message text-center">
+        <div class="w-full justify-center mb-[36px] flex">
+          <h1 class="font-bold w-[650px] text-[#4E585F] font-dm-sans">
+            Please Go and Report to {{student?.universityName}} In Person!
+          </h1>
+        </div>
+        <svg
+          class="justify-center flex w-[893px]"
+          width="893"
+          height="1"
+          viewBox="0 0 893 1"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <line y1="0.5" x2="893" y2="0.5" stroke="#21618C" />
+        </svg>
+        <div class="justify-center flex">
+          <!-- <a
+               href="/Profile"
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"
+                >  {{ auth.auth?.user?.name}}</a> -->
+          <p class="mt-[36px] w-[800px]">
+            Lorem ipsum dolor sit amet consectetur. Odio maecenas dui mattis
+            suspendisse pellentesque vitae gravida diam. Velt quis iaculis
+            pharetra elit turpis.
+          </p>
+        </div>
+        <div class="w-full py-10 justify-center">
+          <svg
+            class="w-full justify-center"
             width="303"
             height="230"
             viewBox="0 0 303 230"
@@ -49,21 +63,20 @@
               />
             </g>
           </svg>
+        </div>
       </div>
-    </div>
+      <p v-else>Loading...</p>
+    </StudentDataProvider>
   </div>
-</template>  
-
-
+</template>
 
 <style scoped>
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
- 
-  background-color: #FFFFFF;
-  ;
+
+  background-color: #ffffff;
 }
 
 .message {
@@ -73,16 +86,13 @@
 
   height: 600px;
   width: 1133px;
-  
+
   border-radius: 8px;
-  background-color:#FFFFFF;
-  ;
- 
-  text: #4E585F;
+  background-color: #ffffff;
+  text: #4e585f;
 }
 
 h1 {
- 
   font-family: 'DM Sans', sans-serif;
   font-size: 34px;
   font-weight: 700;
@@ -91,7 +101,6 @@ h1 {
 }
 
 p {
-  
   color: #666;
   font-family: 'DM Sans', sans-serif;
   font-size: 18px;

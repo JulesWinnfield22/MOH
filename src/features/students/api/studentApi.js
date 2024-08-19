@@ -8,6 +8,11 @@ const path = '/student'
 export function getUniStudents(id) {
 	return api.addAuthenticationHeader().get(`/university/${id}`)
 }
+
+export function getStudentbuId(uuid) {
+	return api.addAuthenticationHeader().get(`${path}/${uuid}`)
+}
+
 export function getAllStudents(data) {
 	const qr = getQueryFormObject(data)
 	return api.addAuthenticationHeader().get(`${path}/batches${qr}`)
