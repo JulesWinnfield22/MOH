@@ -21,7 +21,7 @@
   > 
     <template #actions="{row}">
       <button class="text-sm hover:italic hover:underline" @click="$router.push(`/students/${row?.universityUuid}`)">
-         Students
+         Open
       </button>
     </template>
   </Table>

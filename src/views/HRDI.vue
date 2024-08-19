@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import {getAllUniversities} from '@/features/university/api/uniApI'
+  import {getAllUniversities ,getAllStudents} from '@/features/university/api/uniApI'
   import TableRowSkeleton from '@skl/TableRowSkeleton.vue'
   
   import { usePagination } from '@/composables/usePagination'
@@ -8,7 +8,7 @@ import { ref, watch } from 'vue'
 import { usePaginationTemp} from '../composables/usePaginaionTemp'
 import { useApiRequest } from '../composables/useApiRequest'
 import { importNewBatch } from '../features/hrdi/hrdiAPi'
-import { addStudent, getStudents } from './pages/api/StudentApi'
+import { addStudent, getStudents ,} from './pages/api/StudentApi'
 import Table from '@com/Table.vue'
 	import Button from '@com/Button.vue'
 const currentItem = ref({})
@@ -33,22 +33,15 @@ const pagination = usePaginationTemp({
 const paginationn = usePagination({
     cb: getAllUniversities
   })
+  const paginations = usePagination({
+    cb: getAllStudents
+  })
 
 watch(pagination.data, () => {
   console.log(pagination)
 }, {deep: true})
 
-const items = ref([
-  {
-    Id: 'RCB878/24',
-    University: 'Gondar University',
-    Location: 'Gondar',
-    TotalMembers: '336',
-    memo: 'This are the new requested members...',
-    status: 'Requested',
-  },
-  // Add more items as needed
-])
+
 const isModalOpen = ref(false)
 
 function openModal(item) {
@@ -392,14 +385,14 @@ const fileInput = ref(null)
         </tbody>
       </table> -->
       <Table class="Table-header"
-    :pending="paginationn.pending.value"
+    :pending="paginations.pending.value"
     :Fallback="TableRowSkeleton"
    
     :headers="{
-      head: ['BatchId', 'University Name','No of Members','memo','status', 'actions',],
-      row: ['BatchId','universityName','studentsLength','	This are the new requested members...','regstatus']
+      head: ['BatchId', 'Universities','No of Members','memo', 'actions',],
+      row: ['batchNumber','universityCount','studentCount','	This are the new requested members...',]
     }"
-    :rows="paginationn.data.value || []"
+    :rows="paginations.data.value || []"
   > 
     <template #actions="{row}">
       <button class="bg-[#21618C] text-white  flex gap-2 font-dm-sans  p-2 rounded-md" @click="$router.push(`/students/${row?.universityUuid}`)">

@@ -5,22 +5,49 @@ const api = new ApiService()
 
 const path = '/contract'
 const docuPath = '/document'
-export function FindAllByContractStatus() {
-	return api.addAuthenticationHeader().get(`${path}/FindAllByContractStatus?contractStatus=Submitted`)
+export function findAllByContractStatus() {
+	return api.addAuthenticationHeader().get(`${path}/findAllByContractStatus?contractStatus=Submitted`)
 }
+export function findAllByContractStatusDeclined() {
+	return api.addAuthenticationHeader().get(`${path}/findAllByContractStatus?contractStatus=Declined`)
+}
+export function findAllByContractStatusApproved() {
+	return api.addAuthenticationHeader().get(`${path}/findAllByContractStatus?contractStatus=Approved`)
+}
+export async function rejectContract(id,status, rejectionReason) {
+	try {
+	  const response = await Promise.all([
+		api.addAuthenticationHeader().put(`${path}/updateContractStatus?id=${id}&status=${status}&reason=${rejectionReason}`)
+	  ]);
+	  console.log("Reject Contract Response:", response);
+	  return response;
+	} catch (error) {
+	  console.error("Failed to reject contract:", error);
+	  throw error;
+	}
+  }
 
-export function rejectContract(data) {
-	return api.addAuthenticationHeader().put(`${path}/updateContractStatus?status=rejected`, data)
-}
+  export async function confirmContract(id,status, rejectionReason) {
+	try {
+	  const response = await Promise.all([
+		api.addAuthenticationHeader().put(`${path}/updateContractStatus?id=${id}&status=${status}&reason=${rejectionReason}`)
+	  ]);
+	  console.log("Reject Contract Response:", response);
+	  return response;
+	} catch (error) {
+	  console.error("Failed to reject contract:", error);
+	  throw error;
+	}
+  }
 
-export function confirmContract(data) {
-	return api.addAuthenticationHeader().put(`${path}/updateContractStatus?status=registered`, data)
-}
 
 export function getContractById(id) {
 	return api.addAuthenticationHeader().get(`${path}/findByContractId/${id}`)
 }
 
-export function getContractFileById(id) {
-	return api.addAuthenticationHeader().get(`${docuPath}/${id}`)
-}
+export function getContractFileById(documentName) {
+	return api.addAuthenticationHeader().get(`${docuPath}/findByDocumentName/${documentName}`, {
+	  params: { action: 'view' },
+	  responseType: 'blob' // Ensures that file data is handled correctly
+	});
+  }

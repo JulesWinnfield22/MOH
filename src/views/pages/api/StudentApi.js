@@ -13,6 +13,7 @@ export function getStudents() {
     .addAuthenticationHeader()
     .get(`${path}/all`)
 }
+
 export function addStudent(data) {
   //   const qr = getQueryFormObject(query);
   return api

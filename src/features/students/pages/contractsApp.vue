@@ -2,7 +2,7 @@
 import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { usePaginationTemp } from '@/composables/usePaginaionTemp'
-import {findAllByContractStatus , findAllByContractStatusDeclined} from '@/features/students/api/contractApi'
+import { findAllByContractStatusApproved} from '@/features/students/api/contractApi'
 import { useAuth } from '@/store/auth.js'
 import Table from '@com/Table.vue'
 import { useContracts } from '../store/contractStore'
@@ -14,9 +14,16 @@ import { formatCurrency, toasted } from '@/utils/utils'
 const contract = useContracts()
 const auth = useAuth()
 
+const filteredRowsDeclined = computed(() => {
+  return contract.contracts.filter(row => row.contractStatus === 'Declined');
+});
 
-
-
+const filteredRows = computed(() => {
+  return contract.contracts.filter(row => row.contractStatus === 'submitted');
+});
+const filteredRowsApproved = computed(() => {
+  return contract.contracts.filter(row => row.contractStatus === 'Approved');
+});
 
 
 const selected = ref([])
@@ -28,9 +35,8 @@ const request = useApiRequest()
 
 const pagination = usePaginationTemp({
   store: contract,
-  cb: (data, config) => findAllByContractStatus(),
+  cb: (data, config) => findAllByContractStatusApproved(),
 })
-
 
 function confirmSelection() {
   if(!selected.value?.length || request.pending.value) return
@@ -125,39 +131,32 @@ const isRoleHrdi = computed(() => auth.auth?.user?.privileges?.[0] == 'ROLE_Univ
       </div>
     </div>
     <p class=" font-bold pb-8 " v-if="contract.contracts.length"> 
-      {{contract.contracts[0].unversityName}}
+      {{contract.contracts[0].unversityName}}Approved
     </p>
-    <Table
-      :Fallback="TableRowSkeleton"
-      :firstCol="isRoleHrdi"
-      :headers="{
-        head: ['Ernp ID', 'Full Name', 'Gender', 'university', 'Duration', 'Salary', 'Total Salary', 'region','city','subCity','woreda','houseNumber','status','Actions'],
-        row: ['id', 'fullName', 'program', 'university', 'duration', 'salary', 'totalSalary', 'totalTrainingCost','subCity','city','woreda','houseNumber','contractStatus']
-      }"
-      :cells="{
-        totalSalary: totalSalary => {
-          return formatCurrency(totalSalary)
-        },
-        salary: salary => {
-          return formatCurrency(salary)
-        }
-      }"
-      :rows="contract.contracts || []"
-    >
-      <template #headerFirst>
-        <div class="px-1">
-          <input @click="selectAll($event.target.checked)" :checked="allSelected" type="checkbox" />
-        </div>
-      </template>
-      <template #select="{row}" >
-        <input @change="selectUser(row?.ernpId)" :checked="selected.includes(row.ernpId)" type="checkbox" />
-      </template>
-      <template #actions="{row}">
-        <button @click="$router.push('/contract-file/' + row?.id)" class="bg-secondary text-white rounded px-4 py-1">
-          open
-        </button>
-      </template>
-    </Table> 
+   
+  <Table
+    :Fallback="TableRowSkeleton"
+    :firstCol="isRoleHrdi"
+    :headers="{
+      head: ['Ernp ID', 'Full Name', 'Program', 'university', 'Duration', 'Salary', 'Total Salary', 'region','city','subCity','woreda','houseNumber','status',],
+      row: ['id', 'fullName', 'program', 'university', 'duration', 'salary', 'totalSalary', 'totalTrainingCost','subCity','city','woreda','houseNumber','contractStatus']
+    }"
+    :cells="{
+      totalSalary: totalSalary => formatCurrency(totalSalary),
+      salary: salary => formatCurrency(salary)
+    }"
+    :rows="filteredRowsApproved"
+  >
+    <template #headerFirst>
+      <div class="px-1">
+        <input @click="selectAll($event.target.checked)" :checked="allSelected" type="checkbox" />
+      </div>
+    </template>
+    <template #select="{ row }">
+      <input @change="selectUser(row?.ernpId)" :checked="selected.includes(row.ernpId)" type="checkbox" />
+    </template>
+    
+  </Table>
     <div class="flex justify-center items-center">
     </div>
     <div class="p-4 flex flex-col items-center">

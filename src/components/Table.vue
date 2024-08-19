@@ -86,6 +86,7 @@ const nextPage = inject("next", null);
 const previousPage = inject("previous", null);
 </script>
 <template>
+  <div class="h-full Table-header">
   <DataTable
     :firstCol="props.firstCol"
     class="bg-table-clr border border-white/10"
@@ -117,6 +118,9 @@ const previousPage = inject("previous", null);
           <template #actions="{ row }">
             <slot name="actions" :row="row" />
           </template>
+          <template #reason="{ row }">
+            <slot name="reason" :row="row" />
+          </template>
         </GenericTableRow>
         <tr v-if="!rows?.length && !pending">
           <td :colspan="spec.head.length + 1">
@@ -136,4 +140,33 @@ const previousPage = inject("previous", null);
       />
     </template>
   </DataTable>
+  </div>
 </template>
+<style scoped>
+.Table-header{
+  font-family: "DM Sans";
+  text-align: left;
+  
+  padding-top: 0.5rem; /* 2 units in Tailwind are equal to 0.5rem */
+  padding-bottom: 0.5rem;
+  line-height: 21px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #4E585F;
+
+}
+
+.Table-contents{
+  font-family: "DM Sans";
+  text-align: start;
+  block-size: 21px;
+  inline-size:9px;
+  padding-top: 0.5rem; /* 2 units in Tailwind are equal to 0.5rem */
+  padding-bottom: 0.5rem;
+  line-height: 21px;
+  font-size: 14px;
+  font-weight: normal;
+  color: #4E585F;
+
+}
+</style>
