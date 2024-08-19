@@ -84,7 +84,7 @@ watch(
     <Input
       label="Sub City"
       name="subCity"
-      validation="required"
+      
       :attributes="{
         placeholder: 'Sub City',
       }"
@@ -92,7 +92,7 @@ watch(
     <Input
       label="House Number"
       name="houseNumber"
-      validation="required|num"
+      
       :attributes="{
         placeholder: 'House Number',
       }"

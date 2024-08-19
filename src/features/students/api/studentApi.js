@@ -8,7 +8,10 @@ const path = '/student'
 export function getUniStudents(id) {
 	return api.addAuthenticationHeader().get(`/university/${id}`)
 }
-
+export function getAllStudents(data) {
+	const qr = getQueryFormObject(data)
+	return api.addAuthenticationHeader().get(`${path}/batches${qr}`)
+}
 export function rejectStudent(status, rejectionReason, data) {
 	return Promise.all([
 	  api.addAuthenticationHeader().put(`${path}/updateStudentStatus?status=${status}&rejectionReason=${rejectionReason}`, data),

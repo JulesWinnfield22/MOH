@@ -1,41 +1,48 @@
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { usePaginationTemp } from '@/composables/usePaginaionTemp';
-import { getStudents } from '@/views/pages/api/StudentApi';
 import { getUniStudents } from '@/features/students/api/studentApi.js';
 import { useAuth } from '@/store/auth.js';
 import Table from '@com/Table.vue';
 import { useStudents } from '../store/studentsStore';
 import TableRowSkeleton from '@/skeletons/TableRowSkeleton.vue';
-import {
-  confirmStudent,
-  rejectStudent
-} from '@/features/students/api/studentApi.js';
+import { confirmStudent, rejectStudent } from '@/features/students/api/studentApi.js';
 import { useApiRequest } from '@/composables/useApiRequest';
 import { toasted } from '@/utils/utils';
 
 const sudents = useStudents();
 const auth = useAuth();
-const isRoleUniversity = computed(() =>
-  auth.auth?.user?.privileges?.includes('ROLE_University')
-);
+const isRoleUniversity = computed(() => auth.auth?.user?.privileges?.includes('ROLE_University'));
 
 const selected = ref([]);
 const reason = ref();
 const isModalVisible = ref(false);
-const isEachModalVisible= ref(false);
+const isEachModalVisible = ref(false);
 const selectedErnpId = ref(null);
 const route = useRoute();
 const uniId = route.params.uniId;
-
 const request = useApiRequest();
+
+const selectedStatus = ref(''); // To hold the selected status filter
+
+// Computed property to filter students based on the selected status
+const filteredStudents = computed(() => {
+  if (!selectedStatus.value) return sudents.students || [];
+  return (sudents.students || []).filter(
+    (student) => student.registrationStatus === selectedStatus.value
+  );
+});
 
 const pagination = usePaginationTemp({
   store: sudents,
-  cb: (data, config) =>
-    getUniStudents(uniId || auth.auth?.user?.officialOfUnivesity),
+  cb: (data, config) => getUniStudents(uniId || auth.auth?.user?.officialOfUnivesity),
 });
+
+function applyFilter() {
+  // Additional logic if needed when applying the filter
+}
+
 function showModal() {
   isModalVisible.value = true ;// Show the reject modal
 }
@@ -159,6 +166,7 @@ const allSelected = computed(() => {
 const isRoleHrdi = computed(
   () => auth.auth?.user?.privileges?.[0] == 'ROLE_University'
 );
+
 </script>
 <template>
   <div class="bg-[#FBFBFB]">
@@ -288,34 +296,44 @@ const isRoleHrdi = computed(
               </div>
             </div>
           </div>
-      <Table
-        :Fallback="TableRowSkeleton"
-        :firstCol="isRoleHrdi"
-        :headers="{
-          head: [
-            'Ernp ID',
-            'Full Name',
-            'Gender',
-            'Program',
-            'Duration',
-            'Salary',
-            'Total Salary',
-            'Status',
-            'actions',
-          ],
-          row: [
-            'ernpId',
-            'fullName',
-            'gender',
-            'programName',
-            'duration',
-            'salary',
-            'totalSalary',
-            'registrationStatus',
-          ],
-        }"
-        :rows="sudents.students || []"
-      >
+          
+          <div class="flex justify-end mb-4">
+      <select v-model="selectedStatus" @change="applyFilter" class="px-4 py-2 border rounded-md">
+        <option value="">All</option>
+        <option value="waiting">waiting</option>
+        <option value="registered">Registered</option>
+        <option value="rejected">Rejected</option>
+      </select>
+    </div>
+
+       <Table
+      :Fallback="TableRowSkeleton"
+      :firstCol="isRoleHrdi"
+      :headers="{
+        head: [
+          'Ernp ID',
+          'Full Name',
+          'Gender',
+          'Program',
+          'Duration',
+          'Salary',
+          'Total Salary',
+          'Status',
+          'Actions'
+        ],
+        row: [
+          'ernpId',
+          'fullName',
+          'gender',
+          'programName',
+          'duration',
+          'salary',
+          'totalSalary',
+          'registrationStatus'
+        ]
+      }"
+      :rows="filteredStudents"
+    >
         <template #actions="{ row }">
           <div v-if="isRoleHrdi" class="flex gap-2">
             <button  @click="showEachModal(row.ernpId)">

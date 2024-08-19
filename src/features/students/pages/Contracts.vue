@@ -14,16 +14,9 @@ import { formatCurrency, toasted } from '@/utils/utils'
 const contract = useContracts()
 const auth = useAuth()
 
-const filteredRowsDeclined = computed(() => {
-  return contract.contracts.filter(row => row.contractStatus === 'Declined');
-});
 
-const filteredRows = computed(() => {
-  return contract.contracts.filter(row => row.contractStatus === 'submitted');
-});
-const filteredRowsApproved = computed(() => {
-  return contract.contracts.filter(row => row.contractStatus === 'Approved');
-});
+
+
 
 
 const selected = ref([])
@@ -37,10 +30,7 @@ const pagination = usePaginationTemp({
   store: contract,
   cb: (data, config) => findAllByContractStatus(),
 })
-const paginationn = usePaginationTemp({
-  store: contract,
-  cb: (data, config) => findAllByContractStatusDeclined(),
-})
+
 
 function confirmSelection() {
   if(!selected.value?.length || request.pending.value) return
@@ -135,7 +125,7 @@ const isRoleHrdi = computed(() => auth.auth?.user?.privileges?.[0] == 'ROLE_Univ
       </div>
     </div>
     <p class=" font-bold pb-8 " v-if="contract.contracts.length"> 
-      {{contract.contracts[0].unversityName}}Approved
+      {{contract.contracts[0].unversityName}}
     </p>
     <Table
       :Fallback="TableRowSkeleton"
@@ -167,7 +157,7 @@ const isRoleHrdi = computed(() => auth.auth?.user?.privileges?.[0] == 'ROLE_Univ
           open
         </button>
       </template>
-    </Table> i
+    </Table> 
     <div class="flex justify-center items-center">
     </div>
     <div class="p-4 flex flex-col items-center">

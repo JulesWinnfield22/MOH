@@ -1,7 +1,7 @@
 <script setup>
-import { Form, Input, Select, InputPassword } from '@com/new_form_elements';
+import { Form, Select, Input } from '@com/new_form_elements';
 import Button from '@com/Button.vue';
-import { ref } from 'vue';
+import { ref, computed, watch } from 'vue';
 
 const props = defineProps({
   pending: {
@@ -9,29 +9,48 @@ const props = defineProps({
     default: false
   },
   universities: {
-    type: Array
+    type: Array,
+    default: () => []
   },
   onSubmit: {
     type: Function
   }
 });
 
-const type = ref();
+const type = ref('');
+const selectedOption = ref('');
+const isOtherSelected = ref(false);
+const InputNewUniversity = ref('');
+
+const combinedOptions = computed(() => {
+  const otherOption = [{ label: 'Other', value: 'other' }];
+  
+  const universityOptions = props.universities.map(el => ({
+    label: el.universityName,
+    value: el.universityId
+  }));
+
+  return [...otherOption, ...universityOptions];
+});
+
+// Watch the selected option to detect when "Other" is selected
+watch(selectedOption, (newVal) => {
+  isOtherSelected.value = newVal === 'other';
+  if (!isOtherSelected.value) {
+    InputNewUniversity.value = ''; // Reset custom gender if "Other" is not selected
+  }
+});
 
 function submitForm({ values, reset, setErrors }) {
-  // Simulate form submission
   const result = props.onSubmit(values);
 
   if (result && result.success) {
-    reset(); // Reset form if submission is successful
+    reset();
   } else if (result && result.errors) {
-    // If there are validation errors, display them
     setErrors(result.errors);
   }
-  reset();
 }
 </script>
-
 <template>
   <Form v-slot="{ submit, setErrors }" id="userForm" class="flex flex-col gap-4">
     <div class="grid user-form-grid gap-4">
@@ -95,15 +114,28 @@ function submitForm({ values, reset, setErrors }) {
         validation="required"
         :attributes="{ type: 'text', placeholder: 'Select User Type' }"
       />
-      <Select
-        v-if="type == 'University'"
-        :obj="true"
-        label="University"
-        name="officialOfUniversity"
-        :options="universities.map(el => ({ label: el.universityName, value: el.universityId }))"
-        validation="required"
-        :attributes="{ type: 'text', placeholder: 'Select University' }"
-      />
+      <div>
+        <Select
+      v-if="type == 'University'"
+      :obj="true"
+      label="University"
+      name="officialOfUniversity"
+      v-model="selectedOption"
+      :options="combinedOptions"
+      validation="required"
+      :attributes="{ type: 'text', placeholder: 'Select University' }"
+    />
+    
+    <!-- Show input if "Other" is selected -->
+    <Input
+      v-if="isOtherSelected"
+      type="text"
+      v-model="InputNewUniversity"
+      name="Input New University"
+       :attributes="{ type: 'text', placeholder: 'Input New University' }"
+    />
+
+    </div>
     </div>
     <!-- <div class="grid grid-cols-2 gap-4">
       <InputPassword

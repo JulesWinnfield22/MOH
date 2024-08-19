@@ -54,6 +54,12 @@ const emit = defineEmits(["row"]);
       >
         <slot name="actions" :row="row" />
       </td>
+      <td
+        class="p-3"
+        v-if="headKeys.find((head) => head.toLowerCase() == 'reason')"
+      >
+        <slot name="reason" :row="row" />
+      </td>
     </tr>
     <slot name="bottom" :row="row" />
   </template>

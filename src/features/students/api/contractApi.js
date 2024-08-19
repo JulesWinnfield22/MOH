@@ -46,5 +46,8 @@ export function getContractById(id) {
 }
 
 export function getContractFileById(documentName) {
-	return api.addAuthenticationHeader().get(`${docuPath}/findByDocumentName/${documentName}`)
-}
+	return api.addAuthenticationHeader().get(`${docuPath}/findByDocumentName/${documentName}`, {
+	  params: { action: 'view' },
+	  responseType: 'blob' // Ensures that file data is handled correctly
+	});
+  }
