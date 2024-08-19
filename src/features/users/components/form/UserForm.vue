@@ -27,7 +27,7 @@ const combinedOptions = computed(() => {
   
   const universityOptions = props.universities.map(el => ({
     label: el.universityName,
-    value: el.universityId
+    value: el.universityUuid
   }));
 
   return [...otherOption, ...universityOptions];
@@ -50,6 +50,7 @@ function submitForm({ values, reset, setErrors }) {
     setErrors(result.errors);
   }
 }
+
 </script>
 <template>
   <Form v-slot="{ submit, setErrors }" id="userForm" class="flex flex-col gap-4">
@@ -119,7 +120,7 @@ function submitForm({ values, reset, setErrors }) {
       v-if="type == 'University'"
       :obj="true"
       label="University"
-      name="officialOfUniversity"
+      name="universityUuid"
       v-model="selectedOption"
       :options="combinedOptions"
       validation="required"
@@ -131,8 +132,8 @@ function submitForm({ values, reset, setErrors }) {
       v-if="isOtherSelected"
       type="text"
       v-model="InputNewUniversity"
-      name="Input New University"
-       :attributes="{ type: 'text', placeholder: 'Input New University' }"
+      name="universityUuid"
+       :attributes="{ type: 'text', placeholder: 'Input University' }"
     />
 
     </div>

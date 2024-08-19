@@ -2,10 +2,9 @@
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useApiRequest } from '@/composables/useApiRequest';
-import { getContractById, getContractFileById, rejectContract, confirmContract } from '../api/contractApi';
+import { getContractById, rejectContract , confirmContract} from '../api/contractApi';
 import { useContracts } from '../store/contractStore';
 import { toasted } from '@/utils/utils';
-
 const route = useRoute();
 const contractId = route.params.contractId;
 const req = useApiRequest();
@@ -14,55 +13,50 @@ const isModalVisibleReject = ref(false);
 const reason = ref('');
 const selectedId = ref(null);
 const sudents = useContracts();
-const documentName = 'example.pdf'; // Replace this with the actual document name
 
-// Fetch contract and file details
 req.send(() => getContractById(contractId));
-req.send(() => getContractFileById(documentName));
 
-// Modal control functions
+
+
 function showModalReject(id) {
   console.log('Opening reject modal with ID:', id); 
   selectedId.value = id;
   isModalVisibleReject.value = true;
 }
-
 function showModalApprove(id) {
-  console.log('Opening approve modal with ID:', id); 
+  console.log('Opening reject modal with ID:', id); 
   selectedId.value = id;
   isModalVisibleApprove.value = true;
 }
 
-// Confirm and reject contract functions
 async function confirmEachSelection(id) {
   if (req.pending.value) return;
 
   const status = 'Approved';
   try {
-    const response = await confirmContract(id, status, reason.value);
+    const response = await confirmContract(id,status,reason.value);
     if (response.success) {
-      sudents.updateStatus(status, [id]); // Update the status of the specific row
+      sudents.updateStatus(status,[id]); // Update the status of the specific row
       closeModal();
-      toasted(true, 'Confirmed', 'Contract has been confirmed.');
+      toasted(true, 'Confirmed', 'Contract has been Declined.');
     } else {
-      toasted(false, 'Confirmed', 'Failed to confirm the contract.');
+      toasted(false, 'Confirmed', 'Failed to reject the contract.');
     }
   } catch (error) {
-    console.error('Error confirming contract:', error);
+    console.error('Error rejecting contract:', error);
     toasted(false, 'Confirmed', 'An error occurred.');
   }
 }
-
 async function rejectEachSelection(id) {
   if (req.pending.value) return;
 
   const status = 'Declined';
   try {
-    const response = await rejectContract(id, status, reason.value);
+    const response = await rejectContract(id,status,reason.value);
     if (response.success) {
-      sudents.updateStatus(status, [id]); // Update the status of the specific row
+      sudents.updateStatus(status,[id]); // Update the status of the specific row
       closeModal();
-      toasted(true, 'Declined', 'Contract has been declined.');
+      toasted(true, 'Declined', 'Contract has been Declined.');
     } else {
       toasted(false, 'Declined', 'Failed to reject the contract.');
     }
@@ -72,7 +66,6 @@ async function rejectEachSelection(id) {
   }
 }
 
-// Modal control functions
 function closeModal() {
   isModalVisibleApprove.value = false;
   isModalVisibleReject.value = false;
@@ -81,58 +74,15 @@ function closeModal() {
 function submitReason() {
   closeModal();
 }
+const address = [{name: 'region', value: 'region'}, {name: 'city', value: 'city'}, {name: 'Sub City', value: 'subCity'}, {name: 'woreda', value: 'woreda'}, {name: 'house Number', value: 'houseNumber'},{name: 'Status', value: 'contractStatus'}, ]
 
-// File handling functions
-async function getFile(fileName) {
-  if (!fileName) {
-    console.error('File name is required');
-    return;
-  }
+const files = [{name: 'martial Name', value: 'martialCertName'}, {name: 'identity Name', value: 'identityCertName'}, {name: 'agent Name', value: 'agentCertName'}]
 
-  try {
-    const response = await getContractFileById(fileName);
-    if (response && response.data) {
-      const fileBlob = response.data;
-      const fileType = fileBlob.type; // Get the MIME type of the file
-      const url = URL.createObjectURL(fileBlob);
-
-      // Open the file in a new tab based on its MIME type
-      if (fileType.startsWith('image/') || fileType === 'application/pdf') {
-        window.open(url, '_blank'); // Directly viewable file types
-      } else {
-        console.error('Unsupported file type');
-      }
-
-      // Clean up
-      URL.revokeObjectURL(url);
-    } else {
-      console.error('Failed to retrieve file');
-    }
-  } catch (error) {
-    console.error('Error retrieving file:', error);
-  }
-}
-
-// Function to trigger file viewing
-function viewFile() {
-  const fileName = req.value.response.value?.identityCertName;
-  if (fileName) {
-    getFile(fileName)
-      .then(() => {
-        console.log('File opened successfully');
-      })
-      .catch((error) => {
-        console.error('Error opening file:', error);
-      });
-  } else {
-    console.error('File name is missing');
-  }
-}
 </script>
+
 
 <template>
 	<div class="flex flex-col gap-4">
-    
 		<p class="text-gray-500 font-semibold">Address</p>
 		<div class="grid grid-cols-2 gap-4">
 			<div class="flex flex-col gap-1 p-2 bg-gray-200 rounded" v-for="{name, value} in address" :key="name">
@@ -164,16 +114,10 @@ function viewFile() {
 			<div class="flex flex-col gap-1 p-2 bg-gray-200 rounded">
 				<div v-if="req.response.value?.identityCertName" class="border-b-2 border-dark/50 pb-2">
 					<p class="text-gray-500">identity Name</p>
-					
-            <div class="flex items-center justify-between gap-2">
-    <p>{{ req.response.value?.identityCertName }}</p>
-    <button 
-      @click="viewFile" 
-      class="px-4 py-1 rounded text-white bg-secondary"
-    >
-      Open
-    </button>
-  </div>
+					<p class="flex items-center justify-between	 gap-2">
+						<p>{{ req.response.value?.identityCertName }}</p>
+						<button @click="getFile(req.response.value?.identityCertName)" class="px-4 py-1 rounded text-white bg-secondary">Open</button>
+					</p>
 				</div>
 				<div v-if="req.response.value?.agentCertName" class="border-b border-2 pb-2">
 					<p class="text-gray-500 capitalize">agent Name</p>
@@ -185,14 +129,14 @@ function viewFile() {
 			</div>
 		</div>
 		<div class="flex justify-between items-center p-4  text-[#4E585F] font-dm-sans text-[16px] font-bold leading-[24px] text-left">
-      <div class="flex justify-between items-center p-4">
-      <button @click="showModalReject(contractId)" class="btn-reject">
-        Reject
-      </button>
-      <button @click="showModalApprove(contractId)" class="btn-approve">
-        Approve
-      </button>
-    </div>
+      <div class="flex justify-end items-right space-x-4 p-4">
+  <button @click="showModalReject(contractId)" class="btn-reject">
+    Reject
+  </button>
+  <button @click="showModalApprove(contractId)" class="btn-approve">
+    Approve
+  </button>
+</div>
 
     <!-- Reject Modal -->
       <div v-if="isModalVisibleReject" class="modal-container">
@@ -237,7 +181,7 @@ function viewFile() {
           placeholder="State any note or remark"
           class="modal-textarea"
         />
-        <div class="modal-footer">
+        <div class="modal-footer items-end">
           <button @click="confirmEachSelection(selectedId)" class="btn-confirm-approve">
             Approve
           </button>
@@ -266,7 +210,7 @@ function viewFile() {
   height: 40px;
   padding: 8px 16px;
   border-radius: 6px;
-  background-color: #36CB56;
+  background-color: #21618C;
   color: white;
 }
 
@@ -305,7 +249,7 @@ function viewFile() {
 
 .btn-confirm-reject,
 .btn-confirm-approve {
-  background-color: #FF4040;
+  background-color: #21618C;
   color: white;
   padding: 8px 16px;
   border-radius: 4px;

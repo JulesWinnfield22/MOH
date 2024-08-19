@@ -2,7 +2,7 @@
 import { useApiRequest } from '@/composables/useApiRequest';
 import { createContract } from '@/features/resident/components/form/api/contractApi';
 import ResidentForm from '@/features/resident/components/form/ResidentForm.vue';
-import { getFormData } from '@/utils/utils';
+import { getFormData, toasted } from '@/utils/utils';
 import { computed, ref, watch } from 'vue'
 
 
@@ -44,6 +44,7 @@ function submit(values) {
     () => createContract({...values, martialStatus: married.value}, fd),
     res => {
       console.log(res)
+      toasted(res.success, 'Created', res.error)
     }
   )
 }

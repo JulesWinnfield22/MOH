@@ -36,7 +36,7 @@ const filteredStudents = computed(() => {
 
 const pagination = usePaginationTemp({
   store: sudents,
-  cb: (data, config) => getUniStudents(uniId || auth.auth?.user?.officialOfUnivesity),
+  cb: (data, config) => getUniStudents(uniId || auth.auth?.user?.universityProviderUuid),
 });
 
 function applyFilter() {
@@ -335,7 +335,7 @@ const isRoleHrdi = computed(
       :rows="filteredStudents"
     >
         <template #actions="{ row }">
-          <div v-if="isRoleHrdi" class="flex gap-2">
+          <div v-if="isRoleHrdi && row?.registrationStatus == 'waiting'" class="flex gap-2">
             <button  @click="showEachModal(row.ernpId)">
               <svg
                 width="18"
@@ -380,6 +380,9 @@ const isRoleHrdi = computed(
             </button>
            
           </div>
+          <div v-else-if="row?.registrationStatus == 'rejected'">
+            row.rejectionReason
+          </div>
         </template>
         
         <template #headerFirst>
@@ -401,6 +404,9 @@ const isRoleHrdi = computed(
       </Table>
     </div>
     <div v-else>
+      <button class="text-sm hover:italic hover:underline" @click="$router.push(`/students/${row?.universityUuid}`)">
+         Open
+      </button>
       <Table
         :Fallback="TableRowSkeleton"
         :headers="{
