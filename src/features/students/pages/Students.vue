@@ -50,7 +50,8 @@ function applyFilter() {
 }
 
 function showModal() {
-  isModalVisible.value = true; // Show the reject modal
+  if(selected.value?.length > 0)
+    isModalVisible.value = true; // Show the reject modal
 }
 function showEachModal(ernpId) {
   selectedErnpId.value = ernpId; // Store the specific `ernpId`
@@ -102,6 +103,7 @@ function rejectEachSelection(ernpId) {
       console.log(res)
       if (res.success) {
         sudents.updateStatus(status, reason.value, [ernpId]); // Update the status of the specific row
+        reason = ''
       }
       isEachModalVisible.value = !isEachModalVisible.value;
       //status.value = values.status;
@@ -121,6 +123,7 @@ function rejectSelection() {
       if (res.success) {
         sudents.updateStatus(status, 'rejectionReason', selected.value);
         selected.value = [];
+        reason = ''
       }
       toasted(res.success, 'Rejected', res.error);
     }

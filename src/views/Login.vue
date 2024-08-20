@@ -111,10 +111,10 @@ async function loginUser() {
               Log in
             </button>
           </div>
-          <div class="flex mt-4 items-center font-dm-sans">
-            <span class="text-gray-700">Don't have an account yet?</span>
-            <a href="/verification" class="text-blue-500 hover:text-blue-700 text-sm font-bold"> Sign up </a>
-            <span class="text-gray-700">now to join our community.</span>
+          <div class="flex flex-wrap text-sm gap-2 mt-4 items-center font-dm-sans">
+            <span class="whitespace-nowrap text-gray-700">Don't have an account?</span>
+            <a href="/verification" class="whitespace-nowrap text-blue-500 hover:text-blue-700 text-sm font-bold"> Verify your Account </a>
+            <span class="whitespace-nowrap text-gray-700">to join our community.</span>
           </div>
         </form>
       </div>

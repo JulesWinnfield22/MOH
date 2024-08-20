@@ -42,7 +42,6 @@ function submitForm({ values, reset, setErrors }) {
         :attributes="{ type: 'text', placeholder: 'ERNP ID' }"
       />
       <Input
-      
         label="Full Name"
         name="fullName"
         validation="required"

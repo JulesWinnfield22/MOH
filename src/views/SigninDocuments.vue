@@ -6,9 +6,6 @@ import { getFormData, toasted } from '@/utils/utils';
 import { computed, ref, watch } from 'vue'
 import { getStudentbuId } from '@/features/students/api/studentApi';
 import StudentDataProvider from '@/features/students/components/StudentDataProvider.vue';
-//import { useAuth } from '@/store/auth.js';
-import { getFormData, toasted } from '@/utils/utils.js';
-import { computed, ref, watch } from 'vue';
 import { useAuth } from '@/store/auth';
 
 const auth = useAuth();
