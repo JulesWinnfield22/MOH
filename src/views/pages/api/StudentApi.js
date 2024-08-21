@@ -14,6 +14,13 @@ export function getStudents() {
     .get(`${path}/all`)
 }
 
+export function getBatchStudents(batchId) {
+  //   const qr = getQueryFormObject(query);
+    return api
+      .addAuthenticationHeader()
+      .get(`${path}/batches/${batchId}`)
+  }
+  
 export function addStudent(data) {
   //   const qr = getQueryFormObject(query);
   return api

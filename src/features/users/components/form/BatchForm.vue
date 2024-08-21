@@ -6,28 +6,28 @@ import { ref, computed, watch } from 'vue';
 const props = defineProps({
   pending: {
     type: Boolean,
-    default: false,
+    default: false
   },
   universities: {
     type: Array,
-    default: [],
+    default: () => []
   },
   onSubmit: {
-    type: Function,
-  },
+    type: Function
+  }
 });
 
 const type = ref('');
-const selectedOption = ref([]);
+const selectedOption = ref('');
 const isOtherSelected = ref(false);
 const InputNewUniversity = ref('');
 
 const combinedOptions = computed(() => {
   const otherOption = [{ label: 'Other', value: 'other' }];
-
-  const universityOptions = props.universities.map((el) => ({
+  
+  const universityOptions = props.universities.map(el => ({
     label: el.universityName,
-    value: el.universityUuid,
+    value: el.universityUuid
   }));
 
   return [...otherOption, ...universityOptions];
@@ -41,14 +41,19 @@ watch(selectedOption, (newVal) => {
   }
 });
 
-function submitForm({ values, reset }) {
-  props.onSubmit(values);
-  console.log('sdf');
-  reset();
+function submitForm({ values, reset, setErrors }) {
+  const result = props.onSubmit(values);
+
+  if (result && result.success) {
+    reset();
+  } else if (result && result.errors) {
+    setErrors(result.errors);
+  }
 }
+
 </script>
 <template>
-  <Form v-slot="{ submit }" id="userForm" class="flex flex-col gap-4">
+  <Form v-slot="{ submit, setErrors }" id="userForm" class="flex flex-col gap-4">
     <div class="grid user-form-grid gap-4">
       <Select
         label="Title"
@@ -73,10 +78,7 @@ function submitForm({ values, reset }) {
         label="Grand Fathers Name"
         name="grandFathersName"
         validation="required"
-        :attributes="{
-          type: 'text',
-          placeholder: 'Enter Your Grandfathers Name',
-        }"
+        :attributes="{ type: 'text', placeholder: 'Enter Your Grandfathers Name' }"
       />
     </div>
     <div class="grid grid-cols-3 gap-4">
@@ -84,7 +86,7 @@ function submitForm({ values, reset }) {
         label="phone"
         name="phone"
         validation="required|phone"
-        :attributes="{ placeholder: 'Enter your phone number' }"
+        :attributes="{ type: 'number', placeholder: 'Enter your phone number' }"
       />
       <Input
         label="Email"
@@ -115,25 +117,26 @@ function submitForm({ values, reset }) {
       />
       <div>
         <Select
-          v-if="type == 'University'"
-          :obj="true"
-          label="University"
-          name="universityUuid"
-          v-model="selectedOption"
-          :options="combinedOptions"
-          validation="required"
-          :attributes="{ type: 'text', placeholder: 'Select University' }"
-        />
+      v-if="type == 'University'"
+      :obj="true"
+      label="University"
+      name="universityUuid"
+      v-model="selectedOption"
+      :options="combinedOptions"
+      validation="required"
+      :attributes="{ type: 'text', placeholder: 'Select University' }"
+    />
+    
+    <!-- Show input if "Other" is selected -->
+    <Input
+      v-if="isOtherSelected"
+      type="text"
+      v-model="InputNewUniversity"
+      name="universityUuid"
+       :attributes="{ type: 'text', placeholder: 'Input University' }"
+    />
 
-        <!-- Show input if "Other" is selected -->
-        <Input
-          v-if="isOtherSelected"
-          type="text"
-          v-model="InputNewUniversity"
-          name="universityUuid"
-          :attributes="{ type: 'text', placeholder: 'Input University' }"
-        />
-      </div>
+    </div>
     </div>
     <!-- <div class="grid grid-cols-2 gap-4">
       <InputPassword
@@ -150,11 +153,7 @@ function submitForm({ values, reset }) {
         :attributes="{ type: 'text', placeholder: 'Confirm your password' }"
       />
     </div> -->
-    <Button
-      :pending="pending"
-      @click.prevent="submit(submitForm)"
-      type="secondary"
-    >
+    <Button :pending="pending" @click.prevent="submit(submitForm)" type="secondary">
       Submit
     </Button>
   </Form>
@@ -165,3 +164,4 @@ function submitForm({ values, reset }) {
   grid-template-columns: 6rem repeat(3, 1fr);
 }
 </style>
+

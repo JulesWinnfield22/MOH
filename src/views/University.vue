@@ -20,7 +20,7 @@
     :rows="pagination.data.value || []"
   > 
     <template #actions="{row}">
-      <button class="text-sm hover:italic hover:underline" @click="$router.push(`/students/${row?.universityUuid}`)">
+      <button class="text-[#21618C] text-sm hover:italic hover:underline" @click="$router.push(`/students/${row?.universityUuid}`)">
          Open
       </button>
     </template>

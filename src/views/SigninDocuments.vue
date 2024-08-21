@@ -4,11 +4,10 @@ import { createContract } from '@/features/resident/components/form/api/contract
 import ResidentForm from '@/features/resident/components/form/ResidentForm.vue';
 import { getFormData, toasted } from '@/utils/utils';
 import { computed, ref, watch } from 'vue'
-import { getStudentbuId } from '@/features/students/api/studentApi';
+
 import StudentDataProvider from '@/features/students/components/StudentDataProvider.vue';
 import { useAuth } from '@/store/auth';
-import { getFormData, toasted } from '@/utils/utils';
-import { computed, ref, watch } from 'vue';
+
 
 const auth = useAuth();
 
@@ -68,10 +67,10 @@ function submit(values) {
 </script>
 <template>
   <div class="flex flex-col gap-2">
-    <StudentDataProvider v-slot="{ pending, status }">
+    <StudentDataProvider v-slot="{ pending, isRegistered }">
       <div
         class="p-2 border-l-4 border-red-500 bg-orange-200"
-        v-if="!pending && !status"
+        v-if="!pending && !isRegistered"
       >
         you need to be registered
       </div>
@@ -83,7 +82,7 @@ function submit(values) {
             class="gap-2 rounded px-2 flex items-center flex-1 h-10 border"
           >
             <input
-              :disabled="!status"
+              :disabled="!isRegistered"
               value="Single"
               @change="married = $event.target.value"
               :checked="married == 'Single'"
@@ -96,7 +95,7 @@ function submit(values) {
             class="rounded px-2 flex items-center gap-2 flex-1 h-10 border"
           >
             <input
-              :disabled="!status"
+              :disabled="!isRegistered"
               value="Married"
               @change="married = $event.target.value"
               :checked="married == 'Married'"
@@ -109,7 +108,7 @@ function submit(values) {
             class="rounded px-2 flex items-center gap-2 flex-1 h-10 border"
           >
             <input
-              :disabled="!status"
+              :disabled="!isRegistered"
               value="Divorced"
               @change="married = $event.target.value"
               :checked="married == 'Divorced'"
@@ -122,7 +121,7 @@ function submit(values) {
             class="rounded px-2 flex items-center gap-2 flex-1 h-10 border"
           >
             <input
-              :disabled="!status"
+              :disabled="!isRegistered"
               value="Widow"
               @change="married = $event.target.value"
               :checked="married == 'Widow'"
@@ -132,7 +131,7 @@ function submit(values) {
           </div>
         </div>
       </div>
-      <ResidentForm :disabled="!status" :filter="filter" :on-submit="submit" />
+      <ResidentForm v-bind="isRegistered ? {} : {disabled: true}" :filter="filter" :on-submit="submit" />
     </StudentDataProvider>
   </div>
 </template>

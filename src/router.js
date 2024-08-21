@@ -10,6 +10,7 @@ import Requirements from './views/Requirements.vue'
 import Status from './views/Status.vue'
 import Students from '@/features/students/pages/Students.vue'
 import Contracts from '@/features/students/pages/Contracts.vue'
+import Batches from '@/features/students/pages/batchTable.vue'
 import ContractsApproved from '@/features/students/pages/contractsApp.vue'
 import ContractsDeclined from '@/features/students/pages/contractsDec.vue'
 import Users from './features/users/pages/Users.vue'
@@ -77,6 +78,15 @@ const routes = [
     meta: {
       requiresAuth: true,
       privileges: ['LegalOffice',]
+    }
+  },
+  {
+    path: '/student-batch/:batchId',
+    name: 'student batch',
+    component: Batches,
+    meta: {
+      requiresAuth: true,
+      privileges: ['HRDI',]
     }
   },
   {

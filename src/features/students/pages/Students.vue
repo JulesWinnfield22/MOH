@@ -7,19 +7,14 @@ import { useAuth } from '@/store/auth.js';
 import Table from '@com/Table.vue';
 import { useStudents } from '../store/studentsStore';
 import TableRowSkeleton from '@/skeletons/TableRowSkeleton.vue';
-import {
-  confirmStudent,
-  rejectStudent,
-} from '@/features/students/api/studentApi.js';
+import { confirmStudent, rejectStudent } from '@/features/students/api/studentApi.js';
 import { useApiRequest } from '@/composables/useApiRequest';
 import { toasted } from '@/utils/utils';
 
 const sudents = useStudents();
 const auth = useAuth();
-const isRoleUniversity = computed(() =>
-  auth.auth?.user?.privileges?.includes('ROLE_University')
-);
-
+const isRoleUniversity = computed(() => auth.auth?.user?.privileges?.includes('ROLE_University'));
+const currentRow = ref(null);
 const selected = ref([]);
 const reason = ref();
 const isModalVisible = ref(false);
@@ -41,16 +36,22 @@ const filteredStudents = computed(() => {
 
 const pagination = usePaginationTemp({
   store: sudents,
-  cb: (data, config) =>
-    getUniStudents(uniId || auth.auth?.user?.universityProviderUuid),
+  cb: (data, config) => getUniStudents(uniId || auth.auth?.user?.universityProviderUuid),
 });
-
+const showRejectionReasonModal = ref(false);
 function applyFilter() {
   // Additional logic if needed when applying the filter
 }
-
+function closeRejectionReasonModal() {
+  showRejectionReasonModal.value = false;
+  currentRow.value = null;
+}
+function openRejectionReasonModal(row) {
+  currentRow.value = row;
+  showRejectionReasonModal.value = true;
+}
 function showModal() {
-  isModalVisible.value = true; // Show the reject modal
+  isModalVisible.value = true ;// Show the reject modal
 }
 function showEachModal(ernpId) {
   selectedErnpId.value = ernpId; // Store the specific `ernpId`
@@ -58,7 +59,8 @@ function showEachModal(ernpId) {
 }
 function closeModal() {
   isModalVisible.value = false;
-  isEachModalVisible.value = false;
+  isEachModalVisible.value = false ;
+ 
 }
 function confirmSelection() {
   if (!selected.value?.length || request.pending.value) return;
@@ -169,6 +171,7 @@ const allSelected = computed(() => {
 const isRoleHrdi = computed(
   () => auth.auth?.user?.privileges?.[0] == 'ROLE_University'
 );
+
 </script>
 <template>
   <div class="bg-[#FBFBFB]">
@@ -241,161 +244,108 @@ const isRoleHrdi = computed(
     <p class="font-bold pb-8" v-if="!pagination.pending.value">
       {{ sudents.students.universityName }}
     </p>
-
+    {{ sudents.students.universityName }}
     <div v-if="isRoleHrdi">
-      <div
-        v-if="isEachModalVisible"
-        class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50"
-      >
-        <div
-          class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]"
-        >
-          <div class="flex justify-between">
-            <h2
-              class="text-left flex font-dm-sans leading-[24px] text-[14px] font-bold text-[#4E585F]"
-            >
-              Reject?
-            </h2>
-            <button
-              class="h-[13px] w-[13px] px-4 py-2 rounded"
-              @click="closeModal"
-            >
-              <svg
-                width="17"
-                height="17"
-                viewBox="0 0 17 17"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M15 2L2.00005 14.9999M2 1.99995L14.9999 14.9999"
-                  stroke="#FF4040"
-                  stroke-width="3.5"
-                  stroke-linecap="round"
-                />
-              </svg>
-            </button>
+      
+      <div v-if="isEachModalVisible " class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50">
+            <div class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]">
+              <div class=" flex justify-between">
+                <h2 class="text-left flex font-dm-sans leading-[24px] text-[14px] font-bold text-[#4E585F]">
+                  Reject?
+                </h2>
+                <button class="h-[13px] w-[13px] px-4 py-2 rounded" @click="closeModal">
+                  <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15 2L2.00005 14.9999M2 1.99995L14.9999 14.9999" stroke="#FF4040" stroke-width="3.5" stroke-linecap="round" />
+                  </svg>
+                </button>
+              </div>
+              <textarea
+                v-model="reason"
+                placeholder="State the reason for rejection"
+                class="border w-[829px] h-[158px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4"
+              />
+              <div class="flex justify-end">
+                <button class="bg-[#FF4040] h-[40px] w-[82px] text-white px-4 py-2 rounded mr-2" @click="rejectEachSelection(selectedErnpId)">
+                  Reject
+                </button>
+                <button class="bg-gray-300 text-gray-700 px-4 py-2 rounded" @click="closeModal">
+                  Cancel
+                </button>
+              </div>
+            </div>
           </div>
-          <textarea
-            v-model="reason"
-            placeholder="State the reason for rejection"
-            class="border w-[829px] h-[158px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4"
-          />
-          <div class="flex justify-end">
-            <button
-              class="bg-[#FF4040] h-[40px] w-[82px] text-white px-4 py-2 rounded mr-2"
-              @click="rejectEachSelection(selectedErnpId)"
-            >
-              Reject
-            </button>
-            <button
-              class="bg-gray-300 text-gray-700 px-4 py-2 rounded"
-              @click="closeModal"
-            >
-              Cancel
-            </button>
+      <div v-if="isModalVisible && selected?.length > 0" class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50">
+            <div class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]">
+              <div class=" flex justify-between">
+                <h2 class="text-left flex font-dm-sans leading-[24px] text-[14px] font-bold text-[#4E585F]">
+                  Reject?
+                </h2>
+                <button class="h-[13px] w-[13px] px-4 py-2 rounded" @click="closeModal">
+                  <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15 2L2.00005 14.9999M2 1.99995L14.9999 14.9999" stroke="#FF4040" stroke-width="3.5" stroke-linecap="round" />
+                  </svg>
+                </button>
+              </div>
+              <textarea
+                v-model="reason"
+                placeholder="State the reason for rejection"
+                class="border w-[829px] h-[158px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4"
+              />
+              <div class="flex justify-end">
+                <button class="bg-[#FF4040] h-[40px] w-[82px] text-white px-4 py-2 rounded mr-2" @click="rejectSelection">
+                  Reject
+                </button>
+                <button class="bg-gray-300 text-gray-700 px-4 py-2 rounded" @click="closeModal">
+                  Cancel
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div
-        v-if="isModalVisible && selected?.length > 0"
-        class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50"
-      >
-        <div
-          class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]"
-        >
-          <div class="flex justify-between">
-            <h2
-              class="text-left flex font-dm-sans leading-[24px] text-[14px] font-bold text-[#4E585F]"
-            >
-              Reject?
-            </h2>
-            <button
-              class="h-[13px] w-[13px] px-4 py-2 rounded"
-              @click="closeModal"
-            >
-              <svg
-                width="17"
-                height="17"
-                viewBox="0 0 17 17"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M15 2L2.00005 14.9999M2 1.99995L14.9999 14.9999"
-                  stroke="#FF4040"
-                  stroke-width="3.5"
-                  stroke-linecap="round"
-                />
-              </svg>
-            </button>
-          </div>
-          <textarea
-            v-model="reason"
-            placeholder="State the reason for rejection"
-            class="border w-[829px] h-[158px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4"
-          />
-          <div class="flex justify-end">
-            <button
-              class="bg-[#FF4040] h-[40px] w-[82px] text-white px-4 py-2 rounded mr-2"
-              @click="rejectSelection"
-            >
-              Reject
-            </button>
-            <button
-              class="bg-gray-300 text-gray-700 px-4 py-2 rounded"
-              @click="closeModal"
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      </div>
+          
+          <div class="flex justify-end mb-4">
+            <select
+  v-model="selectedStatus"
+  @change="applyFilter"
+  class="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
+>
+  <option value="">All</option>
+  <option value="waiting">Waiting</option>
+  <option value="registered">Registered</option>
+  <option value="rejected">Rejected</option>
+</select>
+    </div>
 
-      <div class="flex justify-end mb-4">
-        <select
-          v-model="selectedStatus"
-          @change="applyFilter"
-          class="px-4 py-2 border rounded-md"
-        >
-          <option value="">All</option>
-          <option value="waiting">waiting</option>
-          <option value="registered">Registered</option>
-          <option value="rejected">Rejected</option>
-        </select>
-      </div>
-
-      <Table
-        :Fallback="TableRowSkeleton"
-        :firstCol="isRoleHrdi"
-        :headers="{
-          head: [
-            'Ernp ID',
-            'Full Name',
-            'Gender',
-            'Program',
-            'Duration',
-            'Salary',
-            'Total Salary',
-            'Status',
-            'Actions',
-          ],
-          row: [
-            'ernpId',
-            'fullName',
-            'gender',
-            'programName',
-            'duration',
-            'salary',
-            'totalSalary',
-            'registrationStatus',
-          ],
-        }"
-        :rows="filteredStudents"
-      >
+       <Table
+      :Fallback="TableRowSkeleton"
+      :firstCol="isRoleHrdi"
+      :headers="{
+        head: [
+          'Ernp ID',
+          'Full Name',
+          'Gender',
+          'Program',
+          'Duration',
+          'Salary',
+          'Total Salary',
+          'Status',
+          'Actions'
+        ],
+        row: [
+          'ernpId',
+          'fullName',
+          'gender',
+          'programName',
+          'duration',
+          'salary',
+          'totalSalary',
+          'registrationStatus'
+        ]
+      }"
+      :rows="filteredStudents"
+    >
         <template #actions="{ row }">
-          <div v-if="isRoleHrdi" class="flex gap-2">
-            <button @click="showEachModal(row.ernpId)">
+          <div v-if="isRoleHrdi && row?.registrationStatus == 'waiting'" class="flex gap-2">
+            <button  @click="showEachModal(row.ernpId)">
               <svg
                 width="18"
                 height="21"
@@ -415,7 +365,9 @@ const isRoleHrdi = computed(
                 />
               </svg>
             </button>
-            <button @click="confirmeachSelection(row.ernpId)">
+            <button
+              @click="confirmeachSelection(row.ernpId)"
+        >
               <svg
                 width="24"
                 height="25"
@@ -435,12 +387,15 @@ const isRoleHrdi = computed(
                 />
               </svg>
             </button>
+           
           </div>
           <div v-else-if="row?.registrationStatus == 'rejected'">
-            row.rejectionReason
+            <button @click="openRejectionReasonModal(row)" class="text-[#21618C] text-sm hover:italic hover:underline" >
+               open
+          </button>
           </div>
         </template>
-
+        
         <template #headerFirst>
           <div class="px-1">
             <input
@@ -460,9 +415,13 @@ const isRoleHrdi = computed(
       </Table>
     </div>
     <div v-else>
-      <button class="text-sm hover:italic hover:underline" @click="$router.push(`/students/${row?.universityUuid}`)">
-         Open
-      </button>
+      <button
+  class="text-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 px-4 py-2 rounded-md shadow-sm transition-transform transform hover:scale-105"
+  @click="$router.push('/university')"
+>
+  Back
+</button>
+
       <Table
         :Fallback="TableRowSkeleton"
         :headers="{
@@ -491,6 +450,30 @@ const isRoleHrdi = computed(
       >
       </Table>
     </div>
+    <div v-if="showRejectionReasonModal " class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50">
+            <div class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]">
+              <div class=" flex justify-between">
+                <h2 class="text-left flex font-dm-sans leading-[24px] text-[14px] font-bold text-[#4E585F]">
+                  Reject Reason
+                </h2>
+                <button class="h-[13px] w-[13px] px-4 py-2 rounded" @click="closeRejectionReasonModal">
+                  <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15 2L2.00005 14.9999M2 1.99995L14.9999 14.9999" stroke="#FF4040" stroke-width="3.5" stroke-linecap="round" />
+                  </svg>
+                </button>
+              </div>
+            
+              <p class="border w-[829px] h-[158px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4 overflow-auto">
+  {{ currentRow?.rejectionReason }}
+</p>
+              <div class="flex justify-end">
+                <button class="bg-[#FF4040] h-[40px] w-[82px] text-white px-4 py-2 rounded mr-2" @click="closeRejectionReasonModal">
+                  Close
+                </button>
+                
+              </div>
+            </div>
+          </div>
     <div class="flex justify-center items-center"></div>
     <div class="p-4 flex flex-col items-center">
       <div class="w-full">

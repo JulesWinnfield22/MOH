@@ -9,8 +9,10 @@ import { usePaginationTemp} from '../composables/usePaginaionTemp'
 import { useApiRequest } from '../composables/useApiRequest'
 import { importNewBatch } from '../features/hrdi/hrdiAPi'
 import { addStudent, getStudents ,} from './pages/api/StudentApi'
+import { getBatchStudents} from './pages/api/BatchApi'
 import Table from '@com/Table.vue'
 	import Button from '@com/Button.vue'
+import { toasted } from '@/utils/utils'
 const currentItem = ref({})
 const showModalAdd = ref(false)
 const isEditing = ref(null)
@@ -30,6 +32,11 @@ const pagination = usePaginationTemp({
   cb: getStudents,
   
 })
+const paginationed = usePaginationTemp({
+  cb:getBatchStudents,
+  
+})
+
 const paginationn = usePagination({
     cb: getAllUniversities
   })
@@ -79,16 +86,15 @@ function uploadFile() {
   hrdiReq.send(
     () => importNewBatch(fd, {
       onUploadProgress(ev) {
-        const per = `${ev.loaded / ev.total * 100}`
-        progress.value.setAttribute('data-per', per)
-        progress.value.style.setProperty('width', per)
+        const per = ev.loaded / ev.total * 100
+        progress.value.setAttribute('data-per', Math.floor(per))
+        progress.value.style.setProperty('width', `${per}%`)
       },
     }),
     (res) => {
       if (res.success)
         file.value = ''
-
-      //      toasted(res.success, 'Successfult Uploaded', res.error)
+        toasted(res.success, 'Successfully Uploaded', res.error)
     },
   )
 }
@@ -139,11 +145,7 @@ const fileInput = ref(null)
     </div>
     <div>
       
-      <button 
-      class="bg-[#21618C] text-white  flex gap-2 font-dm-sans  p-2 rounded-md"
-		 @click="$router.push('/AddStudents')" type="primary">
-			Add Student
-		</Button>
+     
 	
 
       <div
@@ -395,7 +397,7 @@ const fileInput = ref(null)
     :rows="paginations.data.value || []"
   > 
     <template #actions="{row}">
-      <button class="bg-[#21618C] text-white  flex gap-2 font-dm-sans  p-2 rounded-md" @click="$router.push(`/students/${row?.batchNumber}`)">
+      <button class="text-[#21618C] text-sm hover:italic hover:underline" @click="$router.push(`/student-batch/${row?.batchNumber}`)">
          Open
       </button>
     </template>
@@ -691,7 +693,7 @@ const fileInput = ref(null)
 }
 
 .progress {
-  width: var(--per, 0);
+  width: var(--width, 10%);
   display: flex;
   align-items: center;
   justify-content: end;
@@ -699,7 +701,7 @@ const fileInput = ref(null)
 }
 
 .progress::after {
-  content: attr(data-per);
+  content: attr(data-per) '%';
   margin-left: -2.5rem;
   padding: 3px;
   color: white

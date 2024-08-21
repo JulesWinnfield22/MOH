@@ -6,7 +6,7 @@ import { watch, ref } from 'vue'
 
 const props = defineProps({
   modelValue: {
-    type: String
+    type: [String, Array]
   },
   obj: {
     type: Boolean,

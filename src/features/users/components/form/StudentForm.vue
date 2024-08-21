@@ -1,7 +1,7 @@
 <script setup>
 import { Form, Input, Select, InputPassword } from '@com/new_form_elements';
 import Button from '@com/Button.vue';
-import { ref } from 'vue';
+import { ref, computed, watch } from 'vue';
 
 const props = defineProps({
   pending: {
@@ -9,31 +9,52 @@ const props = defineProps({
     default: false
   },
   universities: {
-    type: Array
+    type: Array,
+    default: [],
   },
   onSubmit: {
     type: Function
   }
 });
+const type = ref('');
+const selectedOption = ref([]);
+const isOtherSelected = ref(false);
+const InputNewUniversity = ref('');
+const combinedOptions = computed(() => {
+  const otherOption = [{ label: 'Other', value: 'other' }];
 
-const type = ref();
+  const universityOptions = props.universities.map((el) => ({
+    label: el.universityName,
+    value: el.universityUuid,
+  }));
 
-function submitForm({ values, reset, setErrors }) {
-  const result = props.onSubmit(values);
-
-  if (result && result.success) {
-    reset(); // This should reset the form fields
-  } else if (result && result.errors) {
-    setErrors(result.errors); // Handle errors
+  return [...otherOption, ...universityOptions];
+});
+watch(selectedOption, (newVal) => {
+  isOtherSelected.value = newVal === 'other';
+  if (!isOtherSelected.value) {
+    InputNewUniversity.value = ''; // Reset custom gender if "Other" is not selected
   }
-  reset(); // This should reset the form fields
+});
 
+function submitForm({ values, reset }) {
+  props.onSubmit(values);
+  console.log('sdf');
+  reset();
 }
+
 </script>
 
 <template>
-  <Form v-slot="{ submit, setErrors, reset }" id="userForm" class="flex flex-col gap-4">
+  <Form v-slot="{ submit }" id="userForm" class="flex flex-col gap-4">
     <div class="grid user-form-grid gap-4">
+      <Input
+      
+      label="batchNumber"
+      name="batchNumber"
+      validation="required"
+      :attributes="{ type: 'text', placeholder: 'Batch Number' }"
+    />
       <Input
       
         label="ernpId"
@@ -54,7 +75,7 @@ function submitForm({ values, reset, setErrors }) {
         label="Phone"
         name="phone"
         validation="required|phone"
-        :attributes="{ type: 'number', placeholder: 'Enter Your Phone Number' }"
+        :attributes="{ placeholder: 'Enter Your Phone Number' }"
       />
       <Input
         label="Email"
@@ -99,6 +120,18 @@ function submitForm({ values, reset, setErrors }) {
         name="programName"
         validation="required"
         :attributes="{ type: 'text', placeholder: 'Enter Program Name' }"
+      />
+      <Input
+        label="salary"
+        name="salary"
+        
+        :attributes="{ type: 'text', placeholder: 'salary' }"
+      />
+      <Input
+        label="totalSalary"
+        name="totalSalary"
+       
+        :attributes="{ type: 'text', placeholder: 'Total Salary' }"
       />
     </div>
 

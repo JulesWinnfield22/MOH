@@ -9,8 +9,11 @@ export function getUniStudents(id) {
 	return api.addAuthenticationHeader().get(`/university/${id}`)
 }
 
-export function getStudentbuId(uuid) {
+export function getStudentbyId(uuid) {
 	return api.addAuthenticationHeader().get(`${path}/${uuid}`)
+}
+export function getStudentbyBatch(batchNumber) {
+	return api.addAuthenticationHeader().get(`${path}/batches/${batchNumber}`)
 }
 
 export function getAllStudents(data) {
@@ -23,6 +26,10 @@ export function rejectStudent(status, rejectionReason, data) {
 	export function confirmStudent(data) {
 	return api.addAuthenticationHeader().put(`${path}/updateStudentStatus?status=registered`, data)
 }
+export function updateStudent(ernpId,data) {
+	return api.addAuthenticationHeader().put(`${path}/updateStudent/${ernpId}`,data)
+}
+		
 export function getStudentDetails(id) {
 	return api.addAuthenticationHeader().get(`${path}/${id}`)
 }
