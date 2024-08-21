@@ -4,19 +4,25 @@ import StudentDataProvider from '@/features/students/components/StudentDataProvi
 
 <template>
   <div class="container">
-    <StudentDataProvider v-slot="{ student, pending }">
+    <StudentDataProvider v-slot="{ student, pending, status }">
       <div v-if="!pending" class="message text-center">
-        <div class="w-full justify-center mb-[36px] flex">
-          <h1 class="font-bold w-[650px] text-[#4E585F] font-dm-sans">
-            Please Go and Report to {{student?.universityName}} In Person!
-            <h1 v-if="status">
+        <h1 v-if="status">
           Go to <RouterLink class="text-primary italic" to="/SigninDocuments"> Sign In Documents </RouterLink> For your contract
         </h1>
+        <h1 v-if="student.student?.registrationStatus == 'rejected'">
+          <p>You have been Rejected</p>
+          <p>
+            {{ student.student?.rejectionReason }}
+          </p>
+        </h1>
+        <div v-if="student.student?.registrationStatus == 'waiting'" class="w-full justify-center mb-[36px] flex">
+          <h1 class="font-bold w-[650px] text-[#4E585F] font-dm-sans">
+            Please Go and Report to {{ student?.universityName }} In Person!
           </h1>
         </div>
         <svg
-          class="justify-center flex w-[893px]"
-          width="893"
+        class="justify-center flex w-[893px]"
+        width="893"
           height="1"
           viewBox="0 0 893 1"
           fill="none"
@@ -24,13 +30,21 @@ import StudentDataProvider from '@/features/students/components/StudentDataProvi
         >
           <line y1="0.5" x2="893" y2="0.5" stroke="#21618C" />
         </svg>
-        <div class="justify-center flex">
+        <div v-if="student.student?.registrationStatus == 'waiting'" class="justify-center flex">
           <!-- <a
                href="/Profile"
                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"
                 >  {{ auth.auth?.user?.name}}</a> -->
           <p class="mt-[36px] w-[800px]">
-            
+            To register at the registrar’s office, first gather the necessary
+            documents, such as your identification. Check
+            the registration dates and locate the office on campus, ensuring you
+            visit during open hours. Upon arrival, request and complete the
+            required registration forms, then submit them along with your
+            documents. Be prepared to pay any applicable fees, and keep a record
+            of your submission for future reference. Finally, stay informed by
+            regularly checking your student portal or email for updates on your
+            registration status.
           </p>
         </div>
         <div class="w-full py-10 justify-center">
