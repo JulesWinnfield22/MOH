@@ -451,7 +451,7 @@ const fileInput = ref(null)
                       Salary
                     </th>
                     <th class="p-2 w-[84px]">
-                      Total Salary
+                      Contract Amount
                     </th>
                     <!-- <th class="p-2 w-[74px]">
                       Status

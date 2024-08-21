@@ -131,7 +131,7 @@ function submitForm({ values, reset }) {
         label="totalSalary"
         name="totalSalary"
        
-        :attributes="{ type: 'text', placeholder: 'Total Salary' }"
+        :attributes="{ type: 'text', placeholder: 'COntract Amount' }"
       />
     </div>
 
