@@ -41,6 +41,8 @@ watch(
   },
   { immediate: true }
 );
+
+const dis = ref(props.disabled ? {disabled: true} : {})
 </script>
 <template>
   <Form v-slot="{ submit }" id="contract" class="grid grid-cols-3 gap-4">
@@ -66,7 +68,7 @@ watch(
       :attributes="{
         placeholder: 'Region',
         type: 'text',
-        disabled
+        ...dis
       }"
       validation="required"
     />
@@ -76,7 +78,7 @@ watch(
       validation="required"
       :attributes="{
         placeholder: 'Woreda',
-        disabled
+        ...dis
       }"
     />
     <Input
@@ -85,7 +87,7 @@ watch(
       validation="required"
       :attributes="{
         placeholder: 'City',
-        disabled
+        ...dis
       }"
     />
     <Input
@@ -94,7 +96,7 @@ watch(
       
       :attributes="{
         placeholder: 'Sub City',
-        disabled
+        ...dis
       }"
     />
     <Input
@@ -103,7 +105,7 @@ watch(
       
       :attributes="{
         placeholder: 'House Number',
-        disabled
+        ...dis
       }"
     />
     <div class="col-span-2 border-t py-2 grid grid-cols-4 gap-4">
@@ -113,7 +115,7 @@ watch(
         name="marriage_file"
         :attributes="{
           placeholder: 'Marriage file',
-          disabled
+          ...dis
         }"
         validation="required"
       />
@@ -123,7 +125,7 @@ watch(
         name="identity_file"
         :attributes="{
           placeholder: 'Identity File',
-          disabled
+          ...dis
         }"
         validation="required"
       />
@@ -133,7 +135,7 @@ watch(
         name="agent_file"
         :attributes="{
           placeholder: 'Agent File',
-          disabled
+          ...dis
         }"
         validation="required"
       />

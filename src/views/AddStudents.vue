@@ -23,6 +23,7 @@ req.send(
 			res => {
 				toasted(res.success, 'Student Successfully Created', res.error)
 			}
+
 		)
 	}
 </script>

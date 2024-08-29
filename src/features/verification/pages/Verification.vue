@@ -20,7 +20,7 @@ function verifyEmail(values) {
       toasted(res.success, 'Confirmation code sent to your email', res.error)
     }
     else{
-      toasted(false, '','your email is not verified please enter the valid email')
+      toasted(false, '',res.error)
     }
   })
 

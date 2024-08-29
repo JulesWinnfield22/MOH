@@ -58,8 +58,8 @@ const users = ref<User[]>([...Array(10).keys()].map(() => testUser))
           <span class="text-xs  font-dm-sans whitespace-nowrap">MINISTRY OF HEALTH ETHIOPIA</span>
         </div>
         <div class="ml-4 flex flex-col gap-1 font-dm-sans" style="margin-top: 30px;">
-          <span class="text-left whitespace-nowrap leading-[21px] text-[14px] font-normal text-[#FFFFFF]">Lorem ipsum dolor sit amet consectetur. Tincidunt consectetur ultrices ipsum felis</span>
-          <span class="text-left text-[#FFFFFF] leading-[21px] text-[14px] font-normal whitespace-nowrap">in eu neque. Sit consectetur senectus amet duis.</span>
+          <span class="text-left whitespace-nowrap leading-[21px] text-[14px] font-normal text-[#FFFFFF]">Promote the health and well-being of the society through  providing and regulating a </span>
+          <span class="text-left text-[#FFFFFF] leading-[21px] text-[14px] font-normal whitespace-nowrap">comprehensive package of health services of  the highest possible quality in an equitable manner.</span>
         </div>
       </div>
       <div class="bg-[#FBFBFB] p-4 rounded-md mb-4">

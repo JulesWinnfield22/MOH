@@ -109,7 +109,7 @@ const isRoleHrdi = computed(() => auth.auth?.user?.privileges?.[0] == 'ROLE_Univ
     :Fallback="TableRowSkeleton"
     :firstCol="isRoleHrdi"
     :headers="{
-  head: ['Ernp ID', 'Full Name', 'program', 'university', 'Duration', 'Salary', 'Total Salary', 'region','city','subCity','woreda','houseNumber','status','reason'],
+  head: ['Ernp ID', 'Full Name', 'program', 'university', 'Duration', 'Salary', 'Contract Amount', 'region','city','subCity','woreda','houseNumber','status','reason'],
   row: ['id', 'fullName', 'program', 'university', 'duration', 'salary', 'totalSalary', 'totalTrainingCost','subCity','city','woreda','houseNumber','contractStatus']
 }"
     :cells="{

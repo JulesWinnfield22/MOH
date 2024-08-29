@@ -7,19 +7,21 @@
 	import {createUser} from '../api/usersAPi.js'
 
 	const req = useApiRequest()
+	const createReq = useApiRequest()
 
 	req.send(
 		() => getAllUniversities({})
 	)
 
 	function add(value) {
-		if(req.pending.value) return
+		if(createReq.pending.value || req.pending.value) return
 
-		req.send(
+		createReq.send(
 			() => createUser(value),
 			res => {
 				toasted(res.success, 'Successfully Created', res.error)
 			}
+
 		)
 	}
 </script>

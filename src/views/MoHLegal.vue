@@ -252,7 +252,7 @@ function isSelected(item) {
               Salary
             </th>
             <th class=" w-[84px] ">
-              Total Salary
+              Contract Amount
             </th>
             <!-- <th class=" w-[84px] ">
               Unversity Name
