@@ -4,15 +4,9 @@ import StudentDataProvider from '@/features/students/components/StudentDataProvi
 
 <template>
   <div class="container">
-<<<<<<< HEAD
-    <StudentDataProvider v-slot="{ student, pending, isRegistered }">
-      <div v-if="!pending" class="message text-center">
-        <h1 v-if="isRegistered">
-=======
     <StudentDataProvider v-slot="{ student, pending, status }">
       <div v-if="!pending" class="message text-center">
         <h1 v-if="status">
->>>>>>> 3b9df139057de608d4ff46fdded793cb226cbdc2
           Go to <RouterLink class="text-primary italic" to="/SigninDocuments"> Sign In Documents </RouterLink> For your contract
         </h1>
         <h1 v-if="student.student?.registrationStatus == 'rejected'">

@@ -87,14 +87,9 @@ function withdrawStudent(ernpId) {
 }
 
 function showModal() {
-<<<<<<< HEAD
   isModalVisible.value = true ;// Show the reject modal
   reason.value = '';
   selected.value != [];
-=======
-  if(selected.value?.length > 0)
-    isModalVisible.value = true; // Show the reject modal
->>>>>>> 3b9df139057de608d4ff46fdded793cb226cbdc2
 }
 function showEachModal(ernpId) {
   selectedErnpId.value = ernpId; // Store the specific `ernpId`
@@ -152,14 +147,8 @@ function rejectEachSelection(ernpId) {
     (res) => {
       
       if (res.success) {
-<<<<<<< HEAD
-        sudents.updateStatus(status, reason.value, [ernpId]); 
-        reason.value = '' // Update the status of the specific row
-        resetModalValues(); 
-=======
         sudents.updateStatus(status, reason.value, [ernpId]); // Update the status of the specific row
         reason = ''
->>>>>>> 3b9df139057de608d4ff46fdded793cb226cbdc2
       }
       isEachModalVisible.value = !isEachModalVisible.value;
       //status.value = values.status;
@@ -180,11 +169,7 @@ function rejectSelection() {
       if (res.success) {
         sudents.updateStatus(status, reason.value, selected.value);
         selected.value = [];
-<<<<<<< HEAD
-        resetModalValues(); 
-=======
         reason = ''
->>>>>>> 3b9df139057de608d4ff46fdded793cb226cbdc2
       }
       toasted(res.success, 'Rejected', res.error);
     }
