@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import StudentDataProvider from '@/features/students/components/StudentDataProvider.vue';
+import StudentDataProvider from './features/students/components/StudentDataProvider.vue';
+
 </script>
 
 <template>
   <div class="container">
     <StudentDataProvider v-slot="{ student, pending, status }">
       <div v-if="!pending" class="message text-center">
+        <h1 v-if="status">
+          Go to <RouterLink class="text-primary italic" to="/SigninDocuments"> Sign In Documents </RouterLink> For your contract
+        </h1>
         <h1 v-if="status">
           Go to <RouterLink class="text-primary italic" to="/SigninDocuments"> Sign In Documents </RouterLink> For your contract
         </h1>
@@ -83,6 +87,7 @@ import StudentDataProvider from '@/features/students/components/StudentDataProvi
       <p v-else>Loading...</p>
     </StudentDataProvider>
   </div>
+
 </template>
 
 <style scoped>
