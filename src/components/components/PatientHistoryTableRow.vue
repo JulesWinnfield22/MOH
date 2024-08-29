@@ -1,5 +1,5 @@
 <script setup>
-import { openModal } from "@customizer/modal-x";
+import { openModal } from "@/modal";
 import { getColumnValue } from "@/utils/utils";
 
 const props = defineProps({

@@ -1,13 +1,23 @@
 <script setup lang="ts">
 import StudentDataProvider from '@/features/students/components/StudentDataProvider.vue';
+import { useAuth } from '@/store/auth';
+const auth = useAuth()
 </script>
 
 <template>
   <div class="container">
-    <StudentDataProvider v-slot="{ student, pending, status }">
+    <StudentDataProvider v-slot="{ student, contract, pending, isRegistered }">
       <div v-if="!pending" class="message text-center">
-        <h1 v-if="status">
+        <h1 v-if="isRegistered && ['Waiting', 'Rejcted'].includes(contract.contractStatus)">
           Go to <RouterLink class="text-primary italic" to="/SigninDocuments"> Sign In Documents </RouterLink> For your contract
+          <p>
+            {{
+              contract?.rejectionReason
+            }}
+          </p>
+        </h1>
+        <h1 v-else-if="isRegistered && contract.contractStatus == 'Approved'">
+          Go to <RouterLink class="text-primary italic" :to='`/Sponsorship?name=${auth.auth?.user?.name}`'> Download Your sponsership letter </RouterLink>
         </h1>
         <h1 v-if="student.student?.registrationStatus == 'rejected'">
           <p>You have been Rejected</p>

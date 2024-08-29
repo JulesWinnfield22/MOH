@@ -1,5 +1,5 @@
 <script setup>
-import { closeModal } from '@customizer/modal-x'
+import { closeModal } from '@/modal'
 import Button from './Button.vue';
 import ResponseError from './ResponseError.vue';
 const props = defineProps({

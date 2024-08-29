@@ -16,6 +16,7 @@ const props = defineProps({
     type: Function
   }
 });
+
 const type = ref('');
 const selectedOption = ref([]);
 const isOtherSelected = ref(false);
@@ -43,6 +44,12 @@ function submitForm({ values, reset }) {
   reset();
 }
 
+const uniId = ref()
+const program = computed(() => {
+  console.log(uniId.value)
+  console.log(props.universities.find(el => el.universityUuid == uniId.value))
+  return props.universities.find(el => el.universityUuid == uniId.value)?.programs || []
+})
 </script>
 
 <template>
@@ -56,7 +63,6 @@ function submitForm({ values, reset }) {
       validation="required"
       :attributes="{ type: 'text', disabled: true, placeholder: 'Batch Number' }"
       
-<<<<<<< HEAD
     />
     
     <!-- ERNP ID Input -->
@@ -78,19 +84,6 @@ function submitForm({ values, reset }) {
      
     />
 
-=======
-        label="ernpId"
-        name="ernpId"
-        validation="required"
-        :attributes="{ type: 'text', placeholder: 'ERNP ID' }"
-      />
-      <Input
-        label="Full Name"
-        name="fullName"
-        validation="required"
-        :attributes="{ type: 'text', placeholder: 'Enter Your Full Name' }"
-      />
->>>>>>> 3b9df139057de608d4ff46fdded793cb226cbdc2
     </div>
   </div>
     <div class="grid grid-cols-3 gap-4">
@@ -132,13 +125,17 @@ function submitForm({ values, reset }) {
         :attributes="{ type: 'text', placeholder: 'Enter Duration' }"
       />
       <Select
+        v-model="uniId"
+        :obj='true'
         label="University"
         name="universityName"
-        :options="universities.map(el => el.universityName)"
+        :options="universities.map(el => ({label: el.universityName, value: el.universityUuid}))"
         validation="required"
         :attributes="{ type: 'text', placeholder: 'Select University' }"
       />
-      <Input
+      <Select
+        :obj='true'
+        :options="program.map(el => ({label: el?.programName, value: el?.programUuid}))"
         label="Program"
         name="programName"
         validation="required"

@@ -53,7 +53,7 @@ const fileInput = ref(null)
       head: ['Full Name', 'User type','Gender','memo', 'actions',],
       row: ['fullName','usertype','Gender',]
     }"
-    :rows="paginations.data.value || []"
+    :rows="(paginations.data.value || {})?._embedded?.userResponseList"
   > 
     <template #actions="{row}">
       <button class="text-[#21618C] text-sm hover:italic hover:underline" @click="$router.push(`/student-batch/${row?.batchNumber}`)">

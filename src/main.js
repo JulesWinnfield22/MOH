@@ -8,6 +8,7 @@ import vPrivilage from './directives/vPrivilage'
 import vFocus from './directives/vFocus'
 import './assets/main.css'
 import toast from "@/toast";
+import modal from '@/modals'
 
 import DashboardLayout from './components/DashboardLayout.vue'
 import EmptyLayout from './components/EmptyLayout.vue'
@@ -21,6 +22,7 @@ pinia.use(piniaPersist)
 app.use(pinia)
 app.use(router)
 app.use(toast);
+app.use(modal)
 app.directive('privilage', vPrivilage)
 app.directive('focus', vFocus)
 app.mount('#app')
