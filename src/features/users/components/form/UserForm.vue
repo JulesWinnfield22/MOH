@@ -23,7 +23,7 @@ const isOtherSelected = ref(false);
 const InputNewUniversity = ref('');
 
 const combinedOptions = computed(() => {
-  const otherOption = [{ label: 'Other', value: 'other' }];
+  // const otherOption = [];
 
   const universityOptions = props.universities.map((el) => ({
     label: el.universityName,
@@ -126,13 +126,13 @@ function submitForm({ values, reset }) {
         />
 
         <!-- Show input if "Other" is selected -->
-        <Input
+        <!-- <Input
           v-if="isOtherSelected"
           type="text"
           v-model="InputNewUniversity"
-          name="universityUuid"
+          name="universityName"
           :attributes="{ type: 'text', placeholder: 'Input University' }"
-        />
+        /> -->
       </div>
     </div>
     <!-- <div class="grid grid-cols-2 gap-4">

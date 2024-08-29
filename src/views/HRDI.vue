@@ -1,9 +1,7 @@
 <script setup lang="ts">
   import {getAllUniversities ,getAllStudents} from '@/features/university/api/uniApI'
   import TableRowSkeleton from '@skl/TableRowSkeleton.vue'
-  
-  import { usePagination } from '@/composables/usePagination'
-
+ import { usePagination } from '@/composables/usePagination'
 import { ref, watch } from 'vue'
 import { usePaginationTemp} from '../composables/usePaginaionTemp'
 import { useApiRequest } from '../composables/useApiRequest'
@@ -64,7 +62,6 @@ function closeModal() {
 }
 const student = useApiRequest()
 function saveStudent() {
-  console.log('hfhgfh')
   student.send(() => addStudent(studentDetail.value))
 }
 

@@ -64,7 +64,7 @@ const toggleVisibility = () => {
         <input
           class="w-32 pl-10 pr-4 text-[#4E585F] border-gray-200 rounded-md sm:w-96 focus:border-[#4E585F] focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
           type="text"
-          placeholder="Search for application here"
+          placeholder="Search for Student here"
         />
       </div>
     </div>

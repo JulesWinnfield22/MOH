@@ -2,7 +2,7 @@
 import { Form, Input, Select, InputPassword } from '@com/new_form_elements';
 import Button from '@com/Button.vue';
 import { ref, computed, watch } from 'vue';
-
+const selectedRow = ref({});
 const props = defineProps({
   pending: {
     type: Boolean,
@@ -47,29 +47,38 @@ function submitForm({ values, reset }) {
 
 <template>
   <Form v-slot="{ submit }" id="userForm" class="flex flex-col gap-4">
-    <div class="grid user-form-grid gap-4">
-      <Input
-      
-      label="batchNumber"
+    <div class="grid grid-cols-4 gap-4">
+    <!-- Batch Number Input -->
+    <Input
+      :value="$route.params.batchId"
+      label="Batch Number"
       name="batchNumber"
       validation="required"
-      :attributes="{ type: 'text', placeholder: 'Batch Number' }"
+      :attributes="{ type: 'text', disabled: true, placeholder: 'Batch Number' }"
+      
     />
-      <Input
+    
+    <!-- ERNP ID Input -->
+    <Input
+      label="ERNp ID"
+      name="ernpId"
+      validation="required"
+      :attributes="{ type: 'text', placeholder: 'ERNp ID' }"
       
-        label="ernpId"
-        name="ernpId"
-        validation="required"
-        :attributes="{ type: 'text', placeholder: 'ERNP ID' }"
-      />
-      <Input
-      
-        label="Full Name"
-        name="fullName"
-        validation="required"
-        :attributes="{ type: 'text', placeholder: 'Enter Your Full Name' }"
-      />
+    />
+    
+    <!-- Full Name Input -->
+    <div class="col-span-2">
+    <Input
+      label="Full Name"
+      name="fullName"
+      validation="required"
+      :attributes="{ type: 'text', placeholder: 'Enter Your Full Name' }"
+     
+    />
+
     </div>
+  </div>
     <div class="grid grid-cols-3 gap-4">
       <Input
         label="Phone"
@@ -128,10 +137,10 @@ function submitForm({ values, reset }) {
         :attributes="{ type: 'text', placeholder: 'salary' }"
       />
       <Input
-        label="totalSalary"
-        name="totalSalary"
+        label="Contract Amount"
+        name="totalTrainingCost"
        
-        :attributes="{ type: 'text', placeholder: 'COntract Amount' }"
+        :attributes="{ type: 'text', placeholder: 'Contract Amount' }"
       />
     </div>
 

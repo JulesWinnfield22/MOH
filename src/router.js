@@ -2,13 +2,17 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useAuth } from './store/auth.js'
 import Dashboard from './views/Dashboard.vue'
 import University from './views/University.vue'
+import Contract from './views/Contract.vue'
 import Login from './views/Login.vue'
 import MoHLegal from './views/MoHLegal.vue'
 import HRDI from './views/HRDI.vue'
 import SigninDocuments from './views/SigninDocuments.vue'
 import Requirements from './views/Requirements.vue'
+import Requirement from './views/Requirement.vue'
+import Sponsorship from './views/Sponsorship.vue'
 import Status from './views/Status.vue'
 import Students from '@/features/students/pages/Students.vue'
+import StudentActions from '@/features/students/pages/StudentActions.vue'
 import Contracts from '@/features/students/pages/Contracts.vue'
 import Batches from '@/features/students/pages/batchTable.vue'
 import ContractsApproved from '@/features/students/pages/contractsApp.vue'
@@ -63,6 +67,24 @@ const routes = [
     }
   },
   {
+    path: '/Contract',
+    name: 'Contract',
+    component: Contract,
+    meta: {
+      requiresAuth: true,
+      privileges: ['HRDI',]
+    }
+  },
+  {
+    path: '/StudentActions',
+    name: 'studentActions',
+    component: StudentActions,
+    meta: {
+      requiresAuth: true,
+      privileges: ['University',]
+    }
+  },
+  {
     path: '/students',
     name: 'students',
     component: Students,
@@ -89,6 +111,7 @@ const routes = [
       privileges: ['HRDI',]
     }
   },
+  
   {
     path: '/contractsApp',
     name: 'contractsApproved',
@@ -166,7 +189,7 @@ const routes = [
     ]
   },
   {
-    path: '/AddStudents',
+    path: '/AddStudents/:batchId',
     name: 'Add Student',
     component: AddStudents
   },
@@ -188,6 +211,24 @@ const routes = [
       privileges: ['Student']
     }
   },
+  {
+  path: '/Requirement',
+  name: 'Requirement',
+  component: Requirement,
+  meta: {
+    requiresAuth: true,
+    privileges: ['Student']
+  }
+},
+{
+  path: '/Sponsorship',
+  name: 'Sponsorship',
+  component: Sponsorship,
+  meta: {
+    requiresAuth: true,
+    privileges: ['Student','HRDI']
+  }
+},
   {
     path: '/SigninDocuments',
     name: 'SigninDocuments',

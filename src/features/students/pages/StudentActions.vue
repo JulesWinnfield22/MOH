@@ -48,12 +48,16 @@ function handleButtonClick() {
 }
 // Computed property to filter students based on the selected status
 const filteredStudents = computed(() => {
+  return (sudents.students || []).filter(
+    (student) => student.registrationStatus === 'registered'
+  );
+});
+const filteredstatStudents = computed(() => {
   if (!selectedStatus.value) return sudents.students || [];
   return (sudents.students || []).filter(
     (student) => student.registrationStatus === selectedStatus.value
   );
 });
-
 const pagination = usePaginationTemp({
   store: sudents,
   cb: (data, config) => getUniStudents(uniId || auth.auth?.user?.universityProviderUuid),
@@ -489,7 +493,7 @@ const isRoleHrdi = computed(
           'duration',
           'salary',
           'totalSalary',
-          'registrationStatus'
+          'campusStatus'
         ]
       }"
       :rows="filteredStudents"
@@ -591,7 +595,6 @@ const isRoleHrdi = computed(
             'Salary',
             'Contract Amount',
             'Status',
-            'campusStatus'
           ],
           row: [
             'ernpId',
@@ -602,7 +605,6 @@ const isRoleHrdi = computed(
             'salary',
             'totalSalary',
             'registrationStatus',
-            'campusStatus'
           ],
         }"
         :rows="sudents.students || []"

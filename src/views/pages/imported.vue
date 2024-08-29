@@ -46,7 +46,7 @@
               Monthly salary
             </th>
             <th class="text-left leading-[21px] text-[14] font-bold text-[#4E585F]">
-             Cintract Amount
+             Contract Amount
             </th>
             <th class="text-left leading-[21px] text-[14] font-bold text-[#4E585F]">
               Total Training Cost

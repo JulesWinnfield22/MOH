@@ -23,6 +23,9 @@ export function getAllStudents(data) {
 export function rejectStudent(status, rejectionReason, data) {
 	return api.addAuthenticationHeader().put(`${path}/updateStudentStatus?status=${status}&rejectionReason=${rejectionReason}`, data);
 }
+export function withdrawStud(camStatus, justificationStatus, data) {
+	return api.addAuthenticationHeader().put(`${path}/updateCampusStatus?status=${camStatus}&jestificationForCampusStatus=${justificationStatus}`, data);
+}
 	export function confirmStudent(data) {
 	return api.addAuthenticationHeader().put(`${path}/updateStudentStatus?status=registered`, data)
 }

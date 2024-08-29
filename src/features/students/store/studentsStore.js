@@ -51,6 +51,22 @@ export const useStudents = defineStore('studenttsStore', () => {
       status: 'success' // or any other data you want to return
     };
   }
+  function updateCampusStatus(camStatus, justificationStatus, ids) {
+    console.log(ids)
+    // Update registration status
+    students.value.forEach(el => {
+      if (ids.includes(el.ernpId)) {
+        el.campusStatus = camStatus;
+        el.justificationForCampusStatus = justificationStatus;
+      }
+    });
+  
+    // Return the updated students array and other relevant data
+    return {
+      updateCampusStatus: students.value,
+      status: 'success' // or any other data you want to return
+    };
+  }
 
   function changeAmount(id, amount) {
     const idx = students.value.findIndex(el => el.ernpId == id)
@@ -68,5 +84,5 @@ export const useStudents = defineStore('studenttsStore', () => {
     } 
   }
 
-  return { updateStatus, students, set, remove, getAll, done, setDone, reset, add, update }
+  return { updateStatus,updateCampusStatus, students, set, remove, getAll, done, setDone, reset, add, update }
 })

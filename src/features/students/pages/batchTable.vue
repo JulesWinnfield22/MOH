@@ -94,7 +94,7 @@ const combinedOptions = computed(() => {
       {{  }}
   <button 
     class="bg-[#21618C] text-white flex gap-2 font-dm-sans p-2 rounded-md"
-    @click="$router.push('/AddStudents')" 
+  @click="$router.push(`/AddStudents/${route.params.batchId}`)"
     type="primary"
   >
     Add Student
@@ -109,9 +109,9 @@ const combinedOptions = computed(() => {
     }"
     :rows="batchs.batches || []"
   > 
-    <template #actions="{row}">
+    <template #actions="{row}" class="items-end">
       <button 
-    class="bg-[#092537] text-white items-center flex gap-2 font-dm-sans p-2 rounded-md"
+    class="items-end bg-[#092537] text-white flex gap-2 font-dm-sans p-2 rounded-md"
     @click="openEditModal(row)"
   >
   <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -218,7 +218,6 @@ const combinedOptions = computed(() => {
             class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" 
           />
         </div>
-
         <div class="col-span-1">
           <label for="salary" class="block text-sm font-medium text-gray-700">Salary</label>
           <input 
@@ -226,15 +225,38 @@ const combinedOptions = computed(() => {
             id="salary" 
             class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" 
           />
+          
+        </div>
+        <div class="col-span-1">
+          <label for="salary" class="block text-sm font-medium text-gray-700">Contract Amount</label>
+          <input 
+            v-model="selectedRow.totalTrainingCost" 
+            id="salary" 
+            class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" 
+          />
+          
         </div>
 
         <div class="col-span-1">
-          <label for="universityName" class="block text-sm font-medium text-gray-700">University Name</label>
-          <input 
+          <!-- <label for="universityName" class="block text-sm font-medium text-gray-700">University Name</label> -->
+          <select 
             v-model="selectedRow.universityName" 
+            :value="selectedRow.universityName"
             id="universityName" 
             class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" 
+            name="universityName"
+        :options="universities.map(el => ({lalel: el.universityName, value: ''}))"
+        validation="required"
           />
+        </div>
+        <div class="col-span-1">
+          <label for="salary" class="block text-sm font-medium text-gray-700">Program</label>
+          <input 
+            v-model="selectedRow.programName" 
+            id="salary" 
+            class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" 
+          />
+          
         </div>
         <!-- Action Buttons -->
         <div class="flex justify-end gap-3 pt-4 col-span-3">
