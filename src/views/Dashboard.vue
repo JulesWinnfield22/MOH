@@ -35,7 +35,7 @@ const users = ref<User[]>([...Array(10).keys()].map(() => testUser))
         </p>
       </div> -->
       <div
-        class="bg-[#092537] p-4 leading-8 h-[210px] w-[704.7px] rounded-2xl relative overflow-hidden"
+        class="bg-[#092537] p-4 leading-8 h-[210px] max-w-full rounded-2xl relative overflow-hidden"
       >
         <!-- Parent Background -->
 

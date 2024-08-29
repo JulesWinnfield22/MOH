@@ -7,7 +7,10 @@ import { computed, ref, watch } from 'vue'
 
 import StudentDataProvider from '@/features/students/components/StudentDataProvider.vue';
 import { useAuth } from '@/store/auth';
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3b9df139057de608d4ff46fdded793cb226cbdc2
 
 const auth = useAuth();
 

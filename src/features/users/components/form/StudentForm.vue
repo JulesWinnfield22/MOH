@@ -56,6 +56,7 @@ function submitForm({ values, reset }) {
       validation="required"
       :attributes="{ type: 'text', disabled: true, placeholder: 'Batch Number' }"
       
+<<<<<<< HEAD
     />
     
     <!-- ERNP ID Input -->
@@ -77,6 +78,19 @@ function submitForm({ values, reset }) {
      
     />
 
+=======
+        label="ernpId"
+        name="ernpId"
+        validation="required"
+        :attributes="{ type: 'text', placeholder: 'ERNP ID' }"
+      />
+      <Input
+        label="Full Name"
+        name="fullName"
+        validation="required"
+        :attributes="{ type: 'text', placeholder: 'Enter Your Full Name' }"
+      />
+>>>>>>> 3b9df139057de608d4ff46fdded793cb226cbdc2
     </div>
   </div>
     <div class="grid grid-cols-3 gap-4">
