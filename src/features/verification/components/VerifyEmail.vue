@@ -3,6 +3,10 @@ import Button from '@/components/Button.vue';
 import { Form, Input } from '@/components/new_form_elements';
 
 const props = defineProps({
+  pending: {
+    type: Boolean,
+    default: true
+  },
   verifyEmail: {
     type: Function,
   },
@@ -31,7 +35,7 @@ function submitForm({ values }) {
         validation="required|email"
       />
       <div class="flex justify-end">
-        <Button @click.prevent="submit(submitForm)" type="primary">
+        <Button :pending="pending" @click.prevent="submit(submitForm)" type="primary">
           Send Verification
         </Button>
       </div>

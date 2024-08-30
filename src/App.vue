@@ -1,14 +1,34 @@
-<script setup lang="ts">
-import { computed } from 'vue'
-import { useRouter } from 'vue-router'
+<script setup>
+import { computed, onMounted, watchEffect } from 'vue';
+import { useRouter } from 'vue-router';
+import {} from 'stompjs';
+import { useSocket } from './composables/useSocket';
+const defaultLayout = 'default';
 
-const defaultLayout = 'default'
-
-const { currentRoute } = useRouter()
+const { currentRoute } = useRouter();
 
 const layout = computed(
-  () => `${currentRoute.value.meta.layout || defaultLayout}-layout`,
-)
+  () => `${currentRoute.value.meta.layout || defaultLayout}-layout`
+);
+
+const socket = useSocket()
+watchEffect(async (cleanUp) => {
+  try {
+    let sock = await socket.connect()
+    socket.subscribe('/topic/notification', (messgae) => {
+      console.log(messgae)
+    })
+    socket.subscribe('/topic/notification', (messgae) => {
+      console.log(messgae)
+    })
+  } catch(err) {
+    console.log(err.messgae)
+  }
+
+  return cleanUp(async () => {
+    await socket.unSub()
+  })
+}); 
 </script>
 
 <template>

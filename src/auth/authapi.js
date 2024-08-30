@@ -26,7 +26,8 @@ export function login(data, config = {}) {
 
 export async function refreshToken(token) {
   try {
-    const res = refreshAPi.post(`${backendApiUrl}/users/refresh-token`, token)
+    const res = await refreshAPi.post(`${backendApiUrl}/users/refresh-token`, token)
+    console.log(res)
     return {
       success: true,
       data: res.data

@@ -3,26 +3,27 @@
   import { usePagination } from '@/composables/usePagination'
   import {getAllUniversities} from '@/features/university/api/uniApI'
   import TableRowSkeleton from '@skl/TableRowSkeleton.vue'
+import UniversitiesDataProvider from '@/features/university/components/UniversitiesDataProvider.vue';
   
-  const pagination = usePagination({
-    cb: getAllUniversities
-  })
 
 </script>
 <template>
-  <Table
-    :pending="pagination.pending.value"
-    :Fallback="TableRowSkeleton"
-    :headers="{
-      head: ['University Name','no' ,'actions'],
-      row: ['universityName','studentsLength']
-    }"
-    :rows="pagination.data.value || []"
-  > 
-    <template #actions="{row}">
-      <button class="text-[#21618C] text-sm hover:italic hover:underline" @click="$router.push(`/students/${row?.universityUuid}`)">
-         Open
-      </button>
-    </template>
-  </Table>
+  <UniversitiesDataProvider v-slot="{ universities, pending }">
+    {{ console.log(universities) }}
+    <Table
+      :pending="pending"
+      :Fallback="TableRowSkeleton"
+      :headers="{
+        head: ['University Name','no' ,'actions'],
+        row: ['universityName','studentsLength']
+      }"
+      :rows="universities"
+    > 
+      <template #actions="{row}">
+        <button class="text-[#21618C] text-sm hover:italic hover:underline" @click="$router.push(`/students/${row?.universityUuid}`)">
+           Open
+        </button>
+      </template>
+    </Table>
+  </UniversitiesDataProvider>
 </template>

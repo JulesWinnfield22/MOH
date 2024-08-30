@@ -8,6 +8,7 @@ import { useApiRequest } from '@/composables/useApiRequest'
 import Table from '@com/Table.vue'
 	import Button from '@com/Button.vue'
 import { toasted } from '@/utils/utils'
+import { openModal } from '@/modals'
 const showModalAdd = ref(false)
 const currentPage = ref(2)
 const totalPages = ref(5)
@@ -50,15 +51,13 @@ const fileInput = ref(null)
     :Fallback="TableRowSkeleton"
    
     :headers="{
-      head: ['Full Name', 'User type','Gender','memo', 'actions',],
-      row: ['fullName','usertype','Gender',]
+      head: ['Full Name', 'User type','Gender','phone', 'actions',],
+      row: ['fullName','usertype','gender', 'phone']
     }"
-    :rows="(paginations.data.value || {})?._embedded?.userResponseList"
+    :rows="(paginations.data.value || [])"
   > 
-    <template #actions="{row}">
-      <button class="text-[#21618C] text-sm hover:italic hover:underline" @click="$router.push(`/student-batch/${row?.batchNumber}`)">
-         Open
-      </button>
+    <template #actions>
+      <button @click="openModal('EditUserForm')" class="italice text-primary hover:underline">Edit</button>
     </template>
   </Table>
 </template>

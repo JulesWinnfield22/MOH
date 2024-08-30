@@ -8,6 +8,7 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  user: Object,
   universities: {
     type: Array,
     default: [],
