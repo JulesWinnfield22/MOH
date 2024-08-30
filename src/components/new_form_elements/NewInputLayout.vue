@@ -41,4 +41,8 @@ textarea.custom-input {
   color: theme("colors.dark");
   opacity: 0.6;
 }
+
+select.custom-input {
+  height: 2.75rem;
+}
 </style>

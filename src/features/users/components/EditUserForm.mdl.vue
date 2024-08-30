@@ -1,4 +1,5 @@
 <script setup>
+import FormParent from '@/components/FormParent.vue';
 import EditUserForm from './form/EditUserForm.vue';
 import UserForm from './form/UserForm.vue';
 
@@ -6,12 +7,12 @@ const props = defineProps({
 	data: Object
 })
 
-
+console.log(props.data)
 </script>
 <template>
-	<div class="p-4 bg-black/50">
+	<FormParent title="Edit User Form">
 		<EditUserForm
 			v-bind="data"
 		/>
-	</div>
+	</FormParent>
 </template>

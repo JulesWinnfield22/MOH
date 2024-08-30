@@ -56,8 +56,8 @@ const fileInput = ref(null)
     }"
     :rows="(paginations.data.value || [])"
   > 
-    <template #actions>
-      <button @click="openModal('EditUserForm')" class="italice text-primary hover:underline">Edit</button>
+    <template #actions="{row}">
+      <button @click="openModal('EditUserForm', {user: row})" class="italice text-primary hover:underline">Edit</button>
     </template>
   </Table>
 </template>

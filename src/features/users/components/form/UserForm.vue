@@ -18,13 +18,24 @@ const props = defineProps({
   },
 });
 
-const type = ref('');
+const user = ref({})
+if(Object.keys(props.user).length > 0) {
+  const [title, firstName, fathersName, grandFathersName] = props.user.fullName.split(" ")
+  user.value = {
+    ...props.user,
+    title,
+    firstName,
+    fathersName,
+    grandFathersName
+  }
+}
+const type = ref(props.user?.userType || '');
 const selectedOption = ref([]);
 const isOtherSelected = ref(false);
 const InputNewUniversity = ref('');
 
 const combinedOptions = computed(() => {
-  // const otherOption = [];
+   const otherOption = [];
 
   const universityOptions = props.universities.map((el) => ({
     label: el.universityName,
@@ -47,6 +58,8 @@ function submitForm({ values, reset }) {
   console.log('sdf');
   reset();
 }
+
+console.log(props.universities)
 </script>
 <template>
   <Form v-slot="{ submit }" id="userForm" class="flex flex-col gap-4">
@@ -54,19 +67,21 @@ function submitForm({ values, reset }) {
       <Select
         label="Title"
         name="title"
-        :options="['Mrs.', 'Mr.', 'Dr.']"
-        :value="'Mrs.'"
+        :options="['Mrs.', 'Mr.', 'Dr']"
+        :value="user?.title || 'Mrs.'"
         :attributes="{ type: 'text', placeholder: 'Select Title' }"
       />
       <Input
         label="First Name"
         name="firstName"
+        :value="user?.firstName"
         validation="required"
         :attributes="{ type: 'text', placeholder: 'Enter Your First Name' }"
       />
       <Input
         label="Fathers Name"
         name="fathersName"
+        :value="user?.fathersName"
         validation="required"
         :attributes="{ type: 'text', placeholder: 'Enter Your Fathers Name' }"
       />
@@ -74,6 +89,7 @@ function submitForm({ values, reset }) {
         label="Grand Fathers Name"
         name="grandFathersName"
         validation="required"
+        :value="user?.grandFathersName"
         :attributes="{
           type: 'text',
           placeholder: 'Enter Your Grandfathers Name',
@@ -84,12 +100,14 @@ function submitForm({ values, reset }) {
       <Input
         label="phone"
         name="phone"
+        :value="user?.phone"
         validation="required|phone"
         :attributes="{ placeholder: 'Enter your phone number' }"
       />
       <Input
         label="Email"
         name="email"
+        :value="user?.email"
         validation="required|email"
         :attributes="{ type: 'text', placeholder: 'Enter Your Email' }"
       />
@@ -98,18 +116,21 @@ function submitForm({ values, reset }) {
         :attributes="{ type: 'date', placeholder: 'Enter Your Birth Date' }"
         validation="required"
         name="birthDate"
+        :value="user?.birthDate"
       />
       <Select
         label="Gender"
         name="gender"
+        :value="user?.gender"
         :options="['Male', 'Female']"
         validation="required"
         :attributes="{ type: 'text', placeholder: 'Select Gender' }"
       />
+      {{console.log(type)}}
       <Select
         v-model="type"
         label="User Type"
-        name="usertype"
+        name="userType"
         :options="['HRDI', 'University', 'LegalOffice']"
         validation="required"
         :attributes="{ type: 'text', placeholder: 'Select User Type' }"

@@ -7,10 +7,6 @@ const props = defineProps({
     type: Object,
     required: true,
   },
-  universities: {
-    type: Array,
-    required: true,
-  },
 });
 
 function edit(values) {}
@@ -18,9 +14,10 @@ function edit(values) {}
 
 <template>
 	<UniversitiesDataProvider v-slot="{pending, universities}">
+		{{console.log(pending)}}
 		<UserForm
-			:universities="universities"
 			v-if="!pending"
+			:universities="universities"
 			v-bind="props"
 			:onSubmit="edit"
 		/>
