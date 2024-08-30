@@ -398,7 +398,7 @@ const isRoleHrdi = computed(
 
        <Table
       :Fallback="TableRowSkeleton"
-    class="text-center"
+    
       :headers="{
         head: [
           'Ernp ID',
