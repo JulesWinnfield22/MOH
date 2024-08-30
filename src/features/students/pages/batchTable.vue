@@ -109,7 +109,7 @@ const combinedOptions = computed(() => {
     }"
     :rows="batchs.batches || []"
   > 
-    <template #actions="{row}" class="items-end">
+    <template #actions="{row}" >
       <button 
     class="items-end bg-[#092537] text-white flex gap-2 font-dm-sans p-2 rounded-md"
     @click="openEditModal(row)"

@@ -441,7 +441,7 @@ const isRoleHrdi = computed(
        
     />
               <div class="flex justify-end">
-                <button class="bg-[#FF4040] h-[40px] w-[82px] text-white px-4 py-2 rounded mr-2" @click="rejectSelection">
+                <button class="bg-[#FF4040] h-[40px] w-[82px] text-white px-4 py-2 rounded mr-2" @click="rejectSelection()">
                   Reject
                 </button>
                 <button class="bg-gray-300 text-gray-700 px-4 py-2 rounded" @click="closeModal">
@@ -450,20 +450,18 @@ const isRoleHrdi = computed(
               </div>
             </div>
           </div>
-          
           <div class="flex justify-end mb-4">
-            <select
-  v-model="selectedStatus"
-  @change="applyFilter"
-  class="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
->
-  <option value="">All</option>
-  <option value="waiting">Waiting</option>
-  <option value="registered">Registered</option>
-  <option value="rejected">Rejected</option>
-</select>
-    </div>
-
+  <select
+    v-model="selectedStatus"
+    @change="applyFilter"
+    class="block w-48 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
+  >
+    <option value="">All</option>
+    <option value="waiting">Waiting</option>
+    <option value="registered">Registered</option>
+    <option value="rejected">Rejected</option>
+  </select>
+</div>
        <Table
       :Fallback="TableRowSkeleton"
       :firstCol="isRoleHrdi"

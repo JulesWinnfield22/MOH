@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup >
 import StudentDataProvider from './features/students/components/StudentDataProvider.vue';
 
 </script>
@@ -83,7 +83,8 @@ import StudentDataProvider from './features/students/components/StudentDataProvi
             </g>
           </svg>
         </div>
-      </div>
+        </div>
+      
       <p v-else>Loading...</p>
     </StudentDataProvider>
   </div>
