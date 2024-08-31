@@ -19,9 +19,11 @@ export async function responseHandler(request, config) {
       // this is true when the request gets to the server
       // and there is some error on the server
       if(error.response && error.response.status == 401 && location.pathname != '/login') {
+        
         const auth = useAuth()
-
+        
         try {
+          console.log(error)
           const res = await refreshToken({token: auth.auth?.user?.refreshToken})
           
           console.log(res)

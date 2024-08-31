@@ -1,5 +1,5 @@
 <script setup>
-import { ModalParent, closeModal, useModal } from "@customizer/modal-x";
+import { ModalParent, closeModal, useModal } from "@/modal";
 import Table from "@/components/Table.vue";
 import { useApiRequest } from "@/composables/useApiRequest";
 

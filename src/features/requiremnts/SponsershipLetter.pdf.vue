@@ -3,7 +3,9 @@ import PdfMaker from '@/components/PdfMaker.vue';
 import { useApiRequest } from '@/composables/useApiRequest';
 import Requirements from '@/views/Requirements.vue';
 import { ref } from 'vue';
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
 const content = ref();
 
 function getPdf() {
@@ -65,46 +67,60 @@ function getPdf() {
       {
         marginTop: 25,
         columns: [
-          {
-            width: 'auto',
-            text: 'Sponsor Representative',
-          },
-          {
-            marginLeft: 5,
-            marginTop: 9,
-            alignment: 'bottom',
-            width: 'auto',
-            canvas: [
-              {
-                type: 'line',
-                x1: 0,
-                y1: 3,
-                x2: 150,
-                y2: 3,
-                lineWidth: 0.1,
-              },
-            ],
-          },
+          //{
+          //  width: 'auto',
+          //  text: 'Sponsor Representative',
+          //},
+          //{
+          //  stack: [
+          //    {
+          //      marginLeft: 5,
+          //      text: route.query?.rep,
+          //    },
+          //    {
+          //      marginLeft: 5,
+          //      alignment: 'bottom',
+          //      width: 'auto',
+          //      canvas: [
+          //        {
+          //          type: 'line',
+          //          x1: 0,
+          //          y1: 3,
+          //          x2: 150,
+          //          y2: 3,
+          //          lineWidth: 0.1,
+          //        },
+          //      ],
+          //    },
+          //  ],
+          //},
           {
             width: 'auto',
             marginLeft: 5,
             text: 'Sponsored Student',
           },
           {
-            marginLeft: 5,
-            marginTop: 9,
-            alignment: 'bottom',
-            width: 'auto',
-            canvas: [
+            stack: [
               {
-                type: 'line',
-                x1: 0,
-                y1: 3,
-                x2: 150,
-                y2: 3,
-                lineWidth: 0.1,
+                marginLeft: 5,
+                text: route.query?.name
               },
-            ],
+              {
+                marginLeft: 5,
+                alignment: 'bottom',
+                width: 'auto',
+                canvas: [
+                  {
+                    type: 'line',
+                    x1: 0,
+                    y1: 3,
+                    x2: 200,
+                    y2: 3,
+                    lineWidth: 0.1,
+                  },
+                ],
+              },
+            ]
           },
         ],
       },

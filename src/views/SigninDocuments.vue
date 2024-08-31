@@ -3,13 +3,15 @@ import { useApiRequest } from '@/composables/useApiRequest';
 import { createContract } from '@/features/resident/components/form/api/contractApi';
 import ResidentForm from '@/features/resident/components/form/ResidentForm.vue';
 import { getFormData, toasted } from '@/utils/utils';
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue';
 
 import StudentDataProvider from '@/features/students/components/StudentDataProvider.vue';
 import { useAuth } from '@/store/auth';
-
+import { openModal } from '@/modals';
+import { useStudent } from '@/features/students/store/studentStore';
 
 const auth = useAuth();
+const student = useStudent();
 
 const married = ref('Single');
 const req = useApiRequest();
@@ -31,39 +33,39 @@ watch(isSingle, () => {
 function submit(values) {
   if (req.pending.value) return;
 
-  const agent_file = !isSingle.value
-    ? { agent_file: values['agent_file'] }
-    : {};
+  openModal(
+    'SpecialistAggrementForm',
+    {
+      data: values,
+      student: student.student,
+      contract: student.contract,
+      maritalStatus: married.value,
+    },
+    (res) => {
+      if (!res) return;
+      const agent_file = !isSingle.value
+        ? { agent_file: values['agent_file'] }
+        : {};
 
-  const fd = getFormData({
-    identity_file: values.identity_file,
-    marriage_file: values.marriage_file,
-    ...agent_file,
-  });
+      const fd = getFormData({
+        identity_file: values.identity_file,
+        marriage_file: values.marriage_file,
+        ...agent_file,
+      });
 
-  delete values.identity_file,
-  delete values.marriage_file,
-  delete values.agent_file,
-
-  req.send(
-    () => createContract({...values, martialStatus: married.value}, fd),
-    res => {
-      console.log(res)
-      toasted(res.success, 'Created', res.error)
+      delete values.identity_file,
+        delete values.marriage_file,
+        delete values.agent_file,
+        req.send(
+          () => createContract({ ...values, martialStatus: married.value }, fd),
+          (res) => {
+            console.log(res);
+            toasted(res.success, 'Created', res.error);
+          }
+        );
     }
-  )
-    delete values.marriage_file,
-    delete values.agent_file,
-    req.send(
-      () => createContract({ ...values, martialStatus: married.value }, fd),
-      (res) => {
-        if (res.success) {
-        }
-        toasted(res.success, 'Succefully Uploaded', res.error);
-      }
-    );
+  );
 }
-
 </script>
 <template>
   <div class="flex flex-col gap-2">
@@ -131,7 +133,11 @@ function submit(values) {
           </div>
         </div>
       </div>
-      <ResidentForm v-bind="isRegistered ? {} : {disabled: true}" :filter="filter" :on-submit="submit" />
+      <ResidentForm
+        :disabled="!isRegistered"
+        :filter="filter"
+        :on-submit="submit"
+      />
     </StudentDataProvider>
   </div>
 </template>

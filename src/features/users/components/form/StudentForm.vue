@@ -16,6 +16,7 @@ const props = defineProps({
     type: Function
   }
 });
+
 const type = ref('');
 const selectedOption = ref([]);
 const isOtherSelected = ref(false);
@@ -43,6 +44,12 @@ function submitForm({ values, reset }) {
   reset();
 }
 
+const uniId = ref()
+const program = computed(() => {
+  console.log(uniId.value)
+  console.log(props.universities.find(el => el.universityUuid == uniId.value))
+  return props.universities.find(el => el.universityUuid == uniId.value)?.programs || []
+})
 </script>
 
 <template>
@@ -118,13 +125,17 @@ function submitForm({ values, reset }) {
         :attributes="{ type: 'text', placeholder: 'Enter Duration' }"
       />
       <Select
+        v-model="uniId"
+        :obj='true'
         label="University"
         name="universityName"
-        :options="universities.map(el => el.universityName)"
+        :options="universities.map(el => ({label: el.universityName, value: el.universityUuid}))"
         validation="required"
         :attributes="{ type: 'text', placeholder: 'Select University' }"
       />
-      <Input
+      <Select
+        :obj='true'
+        :options="program.map(el => ({label: el?.programName, value: el?.programUuid}))"
         label="Program"
         name="programName"
         validation="required"

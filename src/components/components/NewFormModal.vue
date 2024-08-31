@@ -1,5 +1,5 @@
 <script setup>
-import { ModalParent, closeModal } from "@customizer/modal-x";
+import { ModalParent, closeModal } from "@/modal";
 
 const props = defineProps({
   name: {

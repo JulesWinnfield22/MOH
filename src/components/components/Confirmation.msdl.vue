@@ -1,6 +1,6 @@
 <script setup>
-import {ModalParent} from '@customizer/modal-x'
-import { closeModal, getModal, openModal } from '@customizer/modal-x'
+import {ModalParent} from '@/modal'
+import { closeModal, getModal, openModal } from '@/modal'
 
 const modalName = 'Confirmation'
 

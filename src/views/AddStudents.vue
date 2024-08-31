@@ -11,7 +11,10 @@
 	
 
 req.send(
-	() => getAllUniversities({})
+	() => getAllUniversities({}),
+	res => {
+		console.log(res)
+	}
 )
 
 

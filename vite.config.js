@@ -8,6 +8,10 @@ export default defineConfig({
   envPrefix: 'v_',
   resolve: {
     alias: {
+      alias: {
+        'sockjs-client': 'sockjs-client/dist/sockjs.min.js',
+          'stompjs': 'stompjs/lib/stomp.js'
+      },
       '@': fileURLToPath(new URL('./src', import.meta.url)),
       '@com': fileURLToPath(new URL('./src/components', import.meta.url)),
       '@agencies': fileURLToPath(new URL('./src/features/agencies', import.meta.url)),

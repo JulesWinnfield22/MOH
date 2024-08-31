@@ -70,5 +70,5 @@ export const useStudent = defineStore('studentStore', () => {
     } 
   }
 
-  return { setContract, updateStatus, student, set, remove, getAll, setDone, reset, add, update }
+  return { setContract, contract, updateStatus, student, set, remove, getAll, setDone, reset, add, update }
 })

@@ -333,7 +333,7 @@ const isRoleHrdi = computed(() => auth.auth?.user?.privileges?.[0] == 'ROLE_Univ
   <div class="flex justify-end gap-3 pt-4 col-span-3">
     <button 
       type="button" 
-      @click="$router.push('/Sponsorship')"
+      @click="$router.push(`/Sponsorship?rep=${auth.auth?.user?.name}&name=${currentRow?.fullName}`)"
       class="bg-[#7c18da] text-white px-4 py-2 rounded-md hover:bg-[#6113aa] transition"
     >
       Generate sponsorship Letter

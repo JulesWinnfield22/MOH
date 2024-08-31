@@ -87,8 +87,9 @@ function withdrawStudent(ernpId) {
 }
 
 function showModal() {
-  if(selected.value?.length > 0)
-    isModalVisible.value = true; // Show the reject modal
+  isModalVisible.value = true ;// Show the reject modal
+  reason.value = '';
+  selected.value != [];
 }
 function showEachModal(ernpId) {
   selectedErnpId.value = ernpId; // Store the specific `ernpId`

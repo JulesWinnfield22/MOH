@@ -78,7 +78,6 @@ function getUrl(blob) {
 }
 
 watch(props, () => {
-  console.log(props.rows)
   format();
 });
 

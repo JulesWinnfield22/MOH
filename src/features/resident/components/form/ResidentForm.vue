@@ -43,6 +43,11 @@ watch(
 );
 
 const dis = ref(props.disabled ? {disabled: true} : {})
+watch(() => props.disabled, () => {
+  console.log(props.disabled)
+  dis.value = props.disabled ? {disabled: true} : {}
+})
+
 </script>
 <template>
   <Form v-slot="{ submit }" id="contract" class="grid grid-cols-3 gap-4">
