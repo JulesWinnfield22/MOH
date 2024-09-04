@@ -154,11 +154,20 @@ watch(reasons, (newVal) => {
 					</p>
 					<p v-else class="h-4 w-full rounded-full bg-gray-300"></p>
 				</div>
+        
 				<div v-if="req.response.value?.martialCertName" class="border-b border-2 pb-2">
 					<p class="text-gray-500 capitalize">martial Name</p>
 					<p class="flex items-center gap-2">
 						<p>{{ req.response.value?.martialCertName }}</p>
 						<button @click="getFile(req.response.value?.martialCertName)" class="px-4 py-1 rounded text-white bg-secondary">Open</button>
+					</p>
+          
+				</div>
+        <div v-if="req.response.value?.spouseIdentityName" class="border-b border-2 pb-2">
+					<p class="text-gray-500 capitalize">Spouse Name</p>
+					<p class="flex items-center gap-2">
+						<p>{{ req.response.value?.spouseIdentityName }}</p>
+						<button @click="getFile(req.response.value?.spouseIdentityName)" class="px-4 py-1 rounded text-white bg-secondary">Open</button>
 					</p>
 				</div>
 			</div>
@@ -183,6 +192,7 @@ watch(reasons, (newVal) => {
 						<button @click="getFile(req.response.value?.agentCertName)" class="px-4 py-1 rounded text-white bg-secondary">Open</button>
 					</p>
 				</div>
+        
 			</div>
 		</div>
 		<div class="flex   justify-end items-center p-4  text-[#4E585F] font-dm-sans text-[16px] font-bold leading-[24px] text-left">

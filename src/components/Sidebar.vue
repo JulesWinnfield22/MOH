@@ -90,7 +90,7 @@ const inactiveClass = ref(
             />
           </svg>
 
-          <span class="mx-4">HRDI</span>
+          <span class="mx-4">Batch Of Students</span>
         </router-link>
 
         <router-link
