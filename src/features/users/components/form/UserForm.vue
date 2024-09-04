@@ -19,7 +19,7 @@ const props = defineProps({
 });
 
 const user = ref({})
-if(Object.keys(props.user).length > 0) {
+if(Object.keys((props.user || {})).length > 0) {
   const [title, firstName, fathersName, grandFathersName] = props.user.fullName.split(" ")
   user.value = {
     ...props.user,

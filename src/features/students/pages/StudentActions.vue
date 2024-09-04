@@ -7,13 +7,19 @@ import { useAuth } from '@/store/auth.js';
 import Table from '@com/Table.vue';
 import { useStudents } from '../store/studentsStore';
 import TableRowSkeleton from '@/skeletons/TableRowSkeleton.vue';
-import { confirmStudent, rejectStudent ,withdrawStud } from '@/features/students/api/studentApi.js';
+import {
+  confirmStudent,
+  rejectStudent,
+  withdrawStud,
+} from '@/features/students/api/studentApi.js';
 import { useApiRequest } from '@/composables/useApiRequest';
 import { toasted } from '@/utils/utils';
 
 const sudents = useStudents();
 const auth = useAuth();
-const isRoleUniversity = computed(() => auth.auth?.user?.privileges?.includes('ROLE_University'));
+const isRoleUniversity = computed(() =>
+  auth.auth?.user?.privileges?.includes('ROLE_University')
+);
 const currentRow = ref(null);
 const selected = ref([]);
 const reason = ref('');
@@ -60,7 +66,8 @@ const filteredstatStudents = computed(() => {
 });
 const pagination = usePaginationTemp({
   store: sudents,
-  cb: (data, config) => getUniStudents(uniId || auth.auth?.user?.universityProviderUuid),
+  cb: (data, config) =>
+    getUniStudents(uniId || auth.auth?.user?.universityProviderUuid),
 });
 const showRejectionReasonModal = ref(false);
 const showStudent = ref(false);
@@ -86,12 +93,12 @@ function openStudent(row) {
 function withdrawStudent(ernpId) {
   selectedErnpId.value = ernpId; // Store the specific `ernpId`
   isWithdrawStudent.value = true;
-  showStudent.value = false;// Show the reject modal
+  showStudent.value = false; // Show the reject modal
   reasons.value = '';
 }
 
 function showModal() {
-  isModalVisible.value = true ;// Show the reject modal
+  isModalVisible.value = true; // Show the reject modal
   reason.value = '';
   selected.value != [];
 }
@@ -102,9 +109,9 @@ function showEachModal(ernpId) {
 }
 function closeModal() {
   isModalVisible.value = false;
-  isEachModalVisible.value = false ;
+  isEachModalVisible.value = false;
   isWithdrawStudent.value = false;
-  resetModalValues(); 
+  resetModalValues();
 }
 function confirmSelection() {
   if (!selected.value?.length || request.pending.value) return;
@@ -115,7 +122,7 @@ function confirmSelection() {
       if (res.success) {
         sudents.updateStatus('registered', '', selected.value);
         selected.value = [];
-        resetModalValues(); 
+        resetModalValues();
       }
       toasted(res.success, 'Registered', res.error);
     }
@@ -132,7 +139,7 @@ function confirmeachSelection(ernpId) {
         // Update only the status of this specific row
         sudents.updateStatus('registered', '', [ernpId]);
         selected.value = [];
-        resetModalValues(); 
+        resetModalValues();
       }
       toasted(res.success, 'Registered', res.error);
     }
@@ -145,15 +152,19 @@ function rejectEachSelection(ernpId) {
   const status = 'rejected'; // Define the status for rejection
 
   console.log(reason.value);
-  
+
   request.send(
-    () => rejectStudent(status, reason.value != 'Other' ? reason.value : discription.value, [ernpId]), // Pass the ernpId in an array to keep the structure consistent
+    () =>
+      rejectStudent(
+        status,
+        reason.value != 'Other' ? reason.value : discription.value,
+        [ernpId]
+      ), // Pass the ernpId in an array to keep the structure consistent
     (res) => {
-      
       if (res.success) {
-        sudents.updateStatus(status, reason.value, [ernpId]); 
-        reason.value = '' // Update the status of the specific row
-        resetModalValues(); 
+        sudents.updateStatus(status, reason.value, [ernpId]);
+        reason.value = ''; // Update the status of the specific row
+        resetModalValues();
       }
       isEachModalVisible.value = !isEachModalVisible.value;
       //status.value = values.status;
@@ -167,14 +178,18 @@ function rejectSelection() {
 
   const status = 'rejected'; // or any other status you need
 
-  
   request.send(
-    () => rejectStudent(status, reason.value != 'Other' ? reason.value : discription.value,[ernpId]),
+    () =>
+      rejectStudent(
+        status,
+        reason.value != 'Other' ? reason.value : discription.value,
+        [ernpId]
+      ),
     (res) => {
       if (res.success) {
         sudents.updateStatus(status, reason.value, selected.value);
         selected.value = [];
-        resetModalValues(); 
+        resetModalValues();
       }
       toasted(res.success, 'Rejected', res.error);
     }
@@ -187,17 +202,21 @@ function withdrawSelectedStudent(ernpId) {
   // const camStatus = 'Withdrawn'; // Define the status for rejection
 
   console.log(reasons.value);
-  
+
   request.send(
-    () => withdrawStud(camStatus.value, reasons.value != 'Other' ? reasons.value : discription.value, [ernpId]), // Pass the ernpId in an array to keep the structure consistent
-  
+    () =>
+      withdrawStud(
+        camStatus.value,
+        reasons.value != 'Other' ? reasons.value : discription.value,
+        [ernpId]
+      ), // Pass the ernpId in an array to keep the structure consistent
+
     (res) => {
-      
       if (res.success) {
-        sudents.updateCampusStatus(camStatus.value, reasons.value, [ernpId]); 
+        sudents.updateCampusStatus(camStatus.value, reasons.value, [ernpId]);
         console.log([ernpId]);
-        reasons.value = '' // Update the status of the specific row
-        resetModalValues(); 
+        reasons.value = ''; // Update the status of the specific row
+        resetModalValues();
       }
       isWithdrawStudent.value = !isWithdrawStudent.value;
       //status.value = values.status;
@@ -240,12 +259,11 @@ const allSelected = computed(() => {
 const isRoleHrdi = computed(
   () => auth.auth?.user?.privileges?.[0] == 'ROLE_University'
 );
-
 </script>
 
 <template>
   <div class="bg-[#FBFBFB]">
-    <div v-if="isRoleHrdi" class="flex justify-between items-center">
+    <!-- <div v-if="isRoleHrdi" class="flex justify-between items-center">
       <div
         class="p-4 text-[#4E585F] font-dm-sans text-[16px] font-bold leading-[24px] text-left"
       >
@@ -314,193 +332,279 @@ const isRoleHrdi = computed(
     <p class="font-bold pb-8" v-if="!pagination.pending.value">
       {{ sudents.students.universityName }}
     </p>
-
+    -->
     <div v-if="isRoleHrdi">
-      
-      <div v-if="isWithdrawStudent" class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50">
-            <div class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]">
-              <div class=" flex justify-between">
-                <h2 class="text-left flex font-dm-sans leading-[24px] text-[14px] font-bold text-[#4E585F]">
-                  Take Action
-                </h2>
-                <button class="h-[13px] w-[13px] px-4 py-2 rounded" @click="closeModal">
-                  <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M15 2L2.00005 14.9999M2 1.99995L14.9999 14.9999" stroke="#FF4040" stroke-width="3.5" stroke-linecap="round" />
-                  </svg>
-                </button>
-              </div>
-              <select
-       v-model="camStatus"
-      class="border w-[829px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4"
-    >
-      <option value="" disabled>Choose Actions</option>
-      <option value="Withdrawn">Withdrawn</option>
-      <option value="Suspended">Suspended</option>
-      <option value="Dismissed">Dismissed</option>
-      <option value="Graduated">Graduated</option>
-      
-    </select>
-              <select
-       v-model="reasons"
-      class="border w-[829px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4"
-    >
-      <option value="" disabled>Select a reason for Withdrawal</option>
-      <option value="University is currently full">University is currently full</option>
-      <option value="Program is currently Unavailable ">Program is currently Unavailable</option>
-      <option value="Incomplete Documents">Incomplete Documents</option>
-      <option value="Invalid Information">Invalid Information</option>
-      <option value="">Other</option>
-    </select>
-
-    <!-- Textarea displayed only when "Other" is selected -->
-    <textarea
-      v-if="reasons === 'Other'"
-      v-model="discription"
-      placeholder="State the reason for rejection"
-      class="border w-[829px] h-[158px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4"
-       
-    />
-              <div class="flex justify-end">
-                <button
-      :class="buttonClass"
-      class="h-[40px] w-[100px] text-center text-white px-4 py-2 rounded mr-2"
-      @click="handleButtonClick"
-    >
-      {{ camStatus || 'Select Action' }}
-    </button>
-  </div>
-            </div>
+      <div
+        v-if="isWithdrawStudent"
+        class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50"
+      >
+        <div
+          class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]"
+        >
+          <div class="flex justify-between">
+            <h2
+              class="text-left flex font-dm-sans leading-[24px] text-[14px] font-bold text-[#4E585F]"
+            >
+              Take Action
+            </h2>
+            <button
+              class="h-[13px] w-[13px] px-4 py-2 rounded"
+              @click="closeModal"
+            >
+              <svg
+                width="17"
+                height="17"
+                viewBox="0 0 17 17"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M15 2L2.00005 14.9999M2 1.99995L14.9999 14.9999"
+                  stroke="#FF4040"
+                  stroke-width="3.5"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </button>
           </div>
-          <div v-if="isEachModalVisible " class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50">
-            <div class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]">
-              <div class=" flex justify-between">
-                <h2 class="text-left flex font-dm-sans leading-[24px] text-[14px] font-bold text-[#4E585F]">
-                  Reject?
-                </h2>
-                <button class="h-[13px] w-[13px] px-4 py-2 rounded" @click="closeModal">
-                  <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M15 2L2.00005 14.9999M2 1.99995L14.9999 14.9999" stroke="#FF4040" stroke-width="3.5" stroke-linecap="round" />
-                  </svg>
-                </button>
-              </div>
-              <select
-       v-model="reason"
-      class="border w-[829px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4"
-    >
-      <option value="" disabled>Select a reason for rejection</option>
-      <option value="University is currently full">University is currently full</option>
-      <option value="Program is currently Unavailable ">Program is currently Unavailable</option>
-      <option value="Incomplete Documents">Incomplete Documents</option>
-      <option value="Invalid Information">Invalid Information</option>
-      <option value="">Other</option>
-    </select>
+          <select
+            v-model="camStatus"
+            class="border w-[829px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4"
+          >
+            <option value="" disabled>Choose Actions</option>
+            <option value="Withdrawn">Withdrawn</option>
+            <option value="Suspended">Suspended</option>
+            <option value="Dismissed">Dismissed</option>
+            <option value="Graduated">Graduated</option>
+          </select>
+          <select
+            v-model="reasons"
+            class="border w-[829px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4"
+          >
+            <option value="" disabled>Select a reason for Withdrawal</option>
+            <option value="University is currently full">
+              University is currently full
+            </option>
+            <option value="Program is currently Unavailable ">
+              Program is currently Unavailable
+            </option>
+            <option value="Incomplete Documents">Incomplete Documents</option>
+            <option value="Invalid Information">Invalid Information</option>
+            <option value="">Other</option>
+          </select>
 
-    <!-- Textarea displayed only when "Other" is selected -->
-    <textarea
-      v-if="reason === 'Other'"
-      v-model="discription"
-      placeholder="State the reason for rejection"
-      class="border w-[829px] h-[158px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4"
-       
-    />
-              <div class="flex justify-end">
-                <button class="bg-[#FF4040] h-[40px] w-[82px] text-white px-4 py-2 rounded mr-2" @click="rejectEachSelection(selectedErnpId)">
-                  Reject
-                </button>
-                <button class="bg-gray-300 text-gray-700 px-4 py-2 rounded" @click="closeModal">
-                  Cancel
-                </button>
-              </div>
-            </div>
+          <!-- Textarea displayed only when "Other" is selected -->
+          <textarea
+            v-if="reasons === 'Other'"
+            v-model="discription"
+            placeholder="State the reason for rejection"
+            class="border w-[829px] h-[158px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4"
+          />
+          <div class="flex justify-end">
+            <button
+              :class="buttonClass"
+              class="h-[40px] w-[100px] text-center text-white px-4 py-2 rounded mr-2"
+              @click="handleButtonClick"
+            >
+              {{ camStatus || 'Select Action' }}
+            </button>
           </div>
-      <div v-if="isModalVisible && selected?.length > 0" class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50">
-            <div class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]">
-              <div class=" flex justify-between">
-                <h2 class="text-left flex font-dm-sans leading-[24px] text-[14px] font-bold text-[#4E585F]">
-                  Reject?
-                </h2>
-                <button class="h-[13px] w-[13px] px-4 py-2 rounded" @click="closeModal">
-                  <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M15 2L2.00005 14.9999M2 1.99995L14.9999 14.9999" stroke="#FF4040" stroke-width="3.5" stroke-linecap="round" />
-                  </svg>
-                </button>
-              </div>
-              <select
-       v-model="reason"
-      class="border w-[829px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4"
-    >
-      <option value="" disabled selected>State the reason for rejection</option>
-      <option value="" >Select a reason for rejection</option>
-      <option value="Incomplete Documents">University is currently full</option>
-      <option value="Incomplete Documents">Program is currently Unuvailable</option>
-      <option value="Incomplete Documents">Incomplete Documents</option>
-      <option value="Invalid Information">Invalid Information</option>
-      <option value="Other">Other</option>
-    </select>
-
-    <!-- Textarea displayed only when "Other" is selected -->
-    <textarea
-      v-if="reason === 'Other'"
-      v-model="discription"
-      placeholder="State the reason for rejection"
-      class="border w-[829px] h-[158px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4"
-       
-    />
-              <div class="flex justify-end">
-                <button class="bg-[#FF4040] h-[40px] w-[82px] text-white px-4 py-2 rounded mr-2" @click="rejectSelection">
-                  Reject
-                </button>
-                <button class="bg-gray-300 text-gray-700 px-4 py-2 rounded" @click="closeModal">
-                  Cancel
-                </button>
-              </div>
-            </div>
+        </div>
+      </div>
+      <div
+        v-if="isEachModalVisible"
+        class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50"
+      >
+        <div
+          class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]"
+        >
+          <div class="flex justify-between">
+            <h2
+              class="text-left flex font-dm-sans leading-[24px] text-[14px] font-bold text-[#4E585F]"
+            >
+              Reject?
+            </h2>
+            <button
+              class="h-[13px] w-[13px] px-4 py-2 rounded"
+              @click="closeModal"
+            >
+              <svg
+                width="17"
+                height="17"
+                viewBox="0 0 17 17"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M15 2L2.00005 14.9999M2 1.99995L14.9999 14.9999"
+                  stroke="#FF4040"
+                  stroke-width="3.5"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </button>
           </div>
-          
-          <div class="flex justify-end mb-4">
-            <select
-  v-model="selectedStatus"
-  @change="applyFilter"
-  class="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
->
-  <option value="">All</option>
-  <option value="waiting">Waiting</option>
-  <option value="registered">Registered</option>
-  <option value="rejected">Rejected</option>
-</select>
-    </div>
+          <select
+            v-model="reason"
+            class="border w-[829px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4"
+          >
+            <option value="" disabled>Select a reason for rejection</option>
+            <option value="University is currently full">
+              University is currently full
+            </option>
+            <option value="Program is currently Unavailable ">
+              Program is currently Unavailable
+            </option>
+            <option value="Incomplete Documents">Incomplete Documents</option>
+            <option value="Invalid Information">Invalid Information</option>
+            <option value="">Other</option>
+          </select>
 
-       <Table
-      :Fallback="TableRowSkeleton"
-      :firstCol="isRoleHrdi"
-      :headers="{
-        head: [
-          'Ernp ID',
-          'Full Name',
-          'Gender',
-          'Program',
-          'Duration',
-          'Salary',
-          'Contract Amount',
-          'Status',
-          'Actions'
-        ],
-        row: [
-          'ernpId',
-          'fullName',
-          'gender',
-          'programName',
-          'duration',
-          'salary',
-          'totalSalary',
-          'campusStatus'
-        ]
-      }"
-      :rows="filteredStudents"
-    >
+          <!-- Textarea displayed only when "Other" is selected -->
+          <textarea
+            v-if="reason === 'Other'"
+            v-model="discription"
+            placeholder="State the reason for rejection"
+            class="border w-[829px] h-[158px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4"
+          />
+          <div class="flex justify-end">
+            <button
+              class="bg-[#FF4040] h-[40px] w-[82px] text-white px-4 py-2 rounded mr-2"
+              @click="rejectEachSelection(selectedErnpId)"
+            >
+              Reject
+            </button>
+            <button
+              class="bg-gray-300 text-gray-700 px-4 py-2 rounded"
+              @click="closeModal"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        v-if="isModalVisible && selected?.length > 0"
+        class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50"
+      >
+        <div
+          class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]"
+        >
+          <div class="flex justify-between">
+            <h2
+              class="text-left flex font-dm-sans leading-[24px] text-[14px] font-bold text-[#4E585F]"
+            >
+              Reject?
+            </h2>
+            <button
+              class="h-[13px] w-[13px] px-4 py-2 rounded"
+              @click="closeModal"
+            >
+              <svg
+                width="17"
+                height="17"
+                viewBox="0 0 17 17"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M15 2L2.00005 14.9999M2 1.99995L14.9999 14.9999"
+                  stroke="#FF4040"
+                  stroke-width="3.5"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </button>
+          </div>
+          <select
+            v-model="reason"
+            class="border w-[829px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4"
+          >
+            <option value="" disabled selected>
+              State the reason for rejection
+            </option>
+            <option value="">Select a reason for rejection</option>
+            <option value="Incomplete Documents">
+              University is currently full
+            </option>
+            <option value="Incomplete Documents">
+              Program is currently Unuvailable
+            </option>
+            <option value="Incomplete Documents">Incomplete Documents</option>
+            <option value="Invalid Information">Invalid Information</option>
+            <option value="Other">Other</option>
+          </select>
+
+          <!-- Textarea displayed only when "Other" is selected -->
+          <textarea
+            v-if="reason === 'Other'"
+            v-model="discription"
+            placeholder="State the reason for rejection"
+            class="border w-[829px] h-[158px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4"
+          />
+          <div class="flex justify-end">
+            <button
+              class="bg-[#FF4040] h-[40px] w-[82px] text-white px-4 py-2 rounded mr-2"
+              @click="rejectSelection"
+            >
+              Reject
+            </button>
+            <button
+              class="bg-gray-300 text-gray-700 px-4 py-2 rounded"
+              @click="closeModal"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!--<div class="flex justify-end mb-4">
+        <select
+          v-model="selectedStatus"
+          @change="applyFilter"
+          class="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
+        >
+          <option value="">All</option>
+          <option value="waiting">Waiting</option>
+          <option value="registered">Registered</option>
+          <option value="rejected">Rejected</option>
+        </select>
+      </div>-->
+
+      <Table
+        :Fallback="TableRowSkeleton"
+        :headers="{
+          head: [
+            'Ernp ID',
+            'Full Name',
+            'Gender',
+            'Program',
+            'Duration',
+            'Salary',
+            'Contract Amount',
+            'Status',
+            'Actions',
+          ],
+          row: [
+            'ernpId',
+            'fullName',
+            'gender',
+            'programName',
+            'duration',
+            'salary',
+            'totalSalary',
+            'campusStatus',
+          ],
+        }"
+        :rows="filteredStudents"
+      >
         <template #actions="{ row }">
-          <div v-if="isRoleHrdi && row?.registrationStatus == 'waiting'" class="flex gap-2">
-            <button  @click="showEachModal(row.ernpId)">
+          <div
+            v-if="isRoleHrdi && row?.registrationStatus == 'waiting'"
+            class="flex gap-2"
+          >
+            <button @click="showEachModal(row.ernpId)">
               <svg
                 width="18"
                 height="21"
@@ -520,9 +624,7 @@ const isRoleHrdi = computed(
                 />
               </svg>
             </button>
-            <button
-              @click="confirmeachSelection(row.ernpId)"
-        >
+            <button @click="confirmeachSelection(row.ernpId)">
               <svg
                 width="24"
                 height="25"
@@ -542,21 +644,25 @@ const isRoleHrdi = computed(
                 />
               </svg>
             </button>
-           
           </div>
           <div v-else-if="row?.registrationStatus == 'rejected'">
-            <button @click="openRejectionReasonModal(row)" class="text-[#21618C] text-sm hover:italic hover:underline" >
-               open
-          </button>
-
+            <button
+              @click="openRejectionReasonModal(row)"
+              class="text-[#21618C] text-sm hover:italic hover:underline"
+            >
+              open
+            </button>
           </div>
           <div v-else-if="row?.registrationStatus == 'registered'">
-            <button @click="openStudent(row)" class="text-[#21618C] text-sm hover:italic hover:underline" >
+            <button
+              @click="openStudent(row)"
+              class="text-[#21618C] text-sm hover:italic hover:underline"
+            >
               Take Action
-          </button>
+            </button>
           </div>
         </template>
-        
+
         <template #headerFirst>
           <div class="px-1">
             <input
@@ -577,11 +683,11 @@ const isRoleHrdi = computed(
     </div>
     <div v-else>
       <button
-  class="text-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 px-4 py-2 rounded-md shadow-sm transition-transform transform hover:scale-105"
-  @click="$router.push('/university')"
->
-  Back
-</button>
+        class="text-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 px-4 py-2 rounded-md shadow-sm transition-transform transform hover:scale-105"
+        @click="$router.push('/university')"
+      >
+        Back
+      </button>
 
       <Table
         :Fallback="TableRowSkeleton"
@@ -611,190 +717,272 @@ const isRoleHrdi = computed(
       >
       </Table>
     </div>
-    <div v-if="showRejectionReasonModal " class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50">
-            <div class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]">
-              <div class=" flex justify-between">
-                <h2 class="text-left flex font-dm-sans leading-[24px] text-[14px] font-bold text-[#4E585F]">
-                  Reject Reason
-                </h2>
-                <button class="h-[13px] w-[13px] px-4 py-2 rounded" @click="closeRejectionReasonModal">
-                  <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M15 2L2.00005 14.9999M2 1.99995L14.9999 14.9999" stroke="#FF4040" stroke-width="3.5" stroke-linecap="round" />
-                  </svg>
-                </button>
-              </div>
-            
-              <p class="border w-[829px] h-[158px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4 overflow-auto">
-  {{ currentRow?.rejectionReason }}
-</p>
-              <div class="flex justify-end">
-                <button class="bg-[#FF4040] h-[40px] w-[82px] text-white px-4 py-2 rounded mr-2" @click="closeRejectionReasonModal">
-                  Close
-                </button>
-                
-              </div>
-            </div>
-          </div>
-          <div v-if="showStudent " class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50">
-            <div class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px]">
-              <div class=" flex justify-between">
-                <h2 class="text-left flex font-dm-sans leading-[24px] text-[14px] font-bold text-[#4E585F]">
-                  Student Informations
-                </h2>
-                <button class="h-[13px] w-[13px] px-4 py-2 rounded" @click="closeStudent">
-                  <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M15 2L2.00005 14.9999M2 1.99995L14.9999 14.9999" stroke="#FF4040" stroke-width="3.5" stroke-linecap="round" />
-                  </svg>
-                </button>
-              </div>
-              <form @submit.prevent="saveChanges" class="grid grid-cols-1 gap-y-4 gap-x-6 md:grid-cols-3 md:gap-x-8">
-  <!-- ERNP ID -->
-  <div class="col-span-1">
-    <label for="ernpId" class="block text-sm font-medium text-gray-700">ERNP ID</label>
-    <input 
-      v-model="currentRow.ernpId" 
-      id="ernpId" 
-      readonly
-      class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" 
-    />
-  </div>
-
-  <!-- Full Name -->
-  <div class="col-span-1">
-    <label for="fullName" class="block text-sm font-medium text-gray-700">Full Name</label>
-    <input 
-      v-model="currentRow.fullName" 
-      id="fullName" 
-      readonly
-      class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" 
-    />
-  </div>
-
-  <!-- Email -->
-  <div class="col-span-1">
-    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-    <input 
-      v-model="currentRow.email" 
-      id="email" 
-      readonly
-      class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" 
-    />
-  </div>
-
-  <!-- Phone -->
-  <div class="col-span-1">
-    <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
-    <input 
-      v-model="currentRow.phone" 
-      id="phone" 
-      readonly
-      class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" 
-    />
-  </div>
-
-  <!-- Gender -->
-  <div class="col-span-1">
-    <label for="gender" class="block text-sm font-medium text-gray-700">Gender</label>
-    <input 
-      v-model="currentRow.gender" 
-      id="gender" 
-      readonly
-      class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" 
-    />
-  </div>
-
-  <!-- Date of Birth -->
-  <div class="col-span-1">
-    <label for="dateOfBirth" class="block text-sm font-medium text-gray-700">Date of Birth</label>
-    <input 
-      v-model="currentRow.dateOfBirth" 
-      id="dateOfBirth" 
-      readonly
-      class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" 
-    />
-  </div>
-
-  <!-- Address -->
-  <div class="col-span-1">
-    <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
-    <input 
-      v-model="currentRow.address" 
-      id="address" 
-      readonly
-      class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" 
-    />
-  </div>
-
-  <!-- Duration -->
-  <div class="col-span-1">
-    <label for="duration" class="block text-sm font-medium text-gray-700">Duration</label>
-    <input 
-      v-model="currentRow.duration" 
-      id="duration" 
-      readonly
-      class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" 
-    />
-  </div>
-
-  <!-- Salary -->
-  <div class="col-span-1">
-    <label for="salary" class="block text-sm font-medium text-gray-700">Salary</label>
-    <input 
-      v-model="currentRow.salary" 
-      id="salary" 
-      readonly
-      class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" 
-    />
-  </div>
-
-  <!-- Contract Amount -->
-  <div class="col-span-1">
-    <label for="totalSalary" class="block text-sm font-medium text-gray-700">Contract Amount</label>
-    <input 
-      v-model="currentRow.totalSalary" 
-      id="totalSalary" 
-      readonly
-      class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" 
-    />
-  </div>
-
-  <!-- University Name -->
-
-
-  <!-- Program Name -->
-  <div class="col-span-1">
-    <label for="programName" class="block text-sm font-medium text-gray-700">Program</label>
-    <input 
-      v-model="currentRow.programName" 
-      id="programName" 
-      readonly
-      class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" 
-    />
-  </div>
-  <div class="col-span-1">
-    <label for="programName" class="block text-sm font-medium text-gray-700">Program</label>
-    <input 
-      v-model="currentRow.campusStatus" 
-      id="campusStatus" 
-      readonly
-      class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" 
-    />
-  </div>
-  <!-- Action Buttons -->
-  <div class="flex justify-end gap-3 pt-4 col-span-3">
-    <button 
-      type="button" 
-      @click="withdrawStudent(currentRow.ernpId)" 
-      class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-[#ee1919] transition"
+    <div
+      v-if="showRejectionReasonModal"
+      class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50"
     >
-      Withdraw This Student
-    </button>
-    
-  </div>
-</form>
+      <div
+        class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]"
+      >
+        <div class="flex justify-between">
+          <h2
+            class="text-left flex font-dm-sans leading-[24px] text-[14px] font-bold text-[#4E585F]"
+          >
+            Reject Reason
+          </h2>
+          <button
+            class="h-[13px] w-[13px] px-4 py-2 rounded"
+            @click="closeRejectionReasonModal"
+          >
+            <svg
+              width="17"
+              height="17"
+              viewBox="0 0 17 17"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M15 2L2.00005 14.9999M2 1.99995L14.9999 14.9999"
+                stroke="#FF4040"
+                stroke-width="3.5"
+                stroke-linecap="round"
+              />
+            </svg>
+          </button>
+        </div>
 
-            </div>
+        <p
+          class="border w-[829px] h-[158px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4 overflow-auto"
+        >
+          {{ currentRow?.rejectionReason }}
+        </p>
+        <div class="flex justify-end">
+          <button
+            class="bg-[#FF4040] h-[40px] w-[82px] text-white px-4 py-2 rounded mr-2"
+            @click="closeRejectionReasonModal"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      v-if="showStudent"
+      class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50"
+    >
+      <div
+        class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px]"
+      >
+        <div class="flex justify-between">
+          <h2
+            class="text-left flex font-dm-sans leading-[24px] text-[14px] font-bold text-[#4E585F]"
+          >
+            Student Informations
+          </h2>
+          <button
+            class="h-[13px] w-[13px] px-4 py-2 rounded"
+            @click="closeStudent"
+          >
+            <svg
+              width="17"
+              height="17"
+              viewBox="0 0 17 17"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M15 2L2.00005 14.9999M2 1.99995L14.9999 14.9999"
+                stroke="#FF4040"
+                stroke-width="3.5"
+                stroke-linecap="round"
+              />
+            </svg>
+          </button>
+        </div>
+        <form
+          @submit.prevent="saveChanges"
+          class="grid grid-cols-1 gap-y-4 gap-x-6 md:grid-cols-3 md:gap-x-8"
+        >
+          <!-- ERNP ID -->
+          <div class="col-span-1">
+            <label for="ernpId" class="block text-sm font-medium text-gray-700"
+              >ERNP ID</label
+            >
+            <input
+              v-model="currentRow.ernpId"
+              id="ernpId"
+              readonly
+              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            />
           </div>
+
+          <!-- Full Name -->
+          <div class="col-span-1">
+            <label
+              for="fullName"
+              class="block text-sm font-medium text-gray-700"
+              >Full Name</label
+            >
+            <input
+              v-model="currentRow.fullName"
+              id="fullName"
+              readonly
+              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            />
+          </div>
+
+          <!-- Email -->
+          <div class="col-span-1">
+            <label for="email" class="block text-sm font-medium text-gray-700"
+              >Email</label
+            >
+            <input
+              v-model="currentRow.email"
+              id="email"
+              readonly
+              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            />
+          </div>
+
+          <!-- Phone -->
+          <div class="col-span-1">
+            <label for="phone" class="block text-sm font-medium text-gray-700"
+              >Phone</label
+            >
+            <input
+              v-model="currentRow.phone"
+              id="phone"
+              readonly
+              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            />
+          </div>
+
+          <!-- Gender -->
+          <div class="col-span-1">
+            <label for="gender" class="block text-sm font-medium text-gray-700"
+              >Gender</label
+            >
+            <input
+              v-model="currentRow.gender"
+              id="gender"
+              readonly
+              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            />
+          </div>
+
+          <!-- Date of Birth -->
+          <div class="col-span-1">
+            <label
+              for="dateOfBirth"
+              class="block text-sm font-medium text-gray-700"
+              >Date of Birth</label
+            >
+            <input
+              v-model="currentRow.dateOfBirth"
+              id="dateOfBirth"
+              readonly
+              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            />
+          </div>
+
+          <!-- Address -->
+          <div class="col-span-1">
+            <label for="address" class="block text-sm font-medium text-gray-700"
+              >Address</label
+            >
+            <input
+              v-model="currentRow.address"
+              id="address"
+              readonly
+              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            />
+          </div>
+
+          <!-- Duration -->
+          <div class="col-span-1">
+            <label
+              for="duration"
+              class="block text-sm font-medium text-gray-700"
+              >Duration</label
+            >
+            <input
+              v-model="currentRow.duration"
+              id="duration"
+              readonly
+              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            />
+          </div>
+
+          <!-- Salary -->
+          <div class="col-span-1">
+            <label for="salary" class="block text-sm font-medium text-gray-700"
+              >Salary</label
+            >
+            <input
+              v-model="currentRow.salary"
+              id="salary"
+              readonly
+              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            />
+          </div>
+
+          <!-- Contract Amount -->
+          <div class="col-span-1">
+            <label
+              for="totalSalary"
+              class="block text-sm font-medium text-gray-700"
+              >Contract Amount</label
+            >
+            <input
+              v-model="currentRow.totalSalary"
+              id="totalSalary"
+              readonly
+              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            />
+          </div>
+
+          <!-- University Name -->
+
+          <!-- Program Name -->
+          <div class="col-span-1">
+            <label
+              for="programName"
+              class="block text-sm font-medium text-gray-700"
+              >Program</label
+            >
+            <input
+              v-model="currentRow.programName"
+              id="programName"
+              readonly
+              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            />
+          </div>
+          <div class="col-span-1">
+            <label
+              for="programName"
+              class="block text-sm font-medium text-gray-700"
+              >Program</label
+            >
+            <input
+              v-model="currentRow.campusStatus"
+              id="campusStatus"
+              readonly
+              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            />
+          </div>
+          <!-- Action Buttons -->
+          <div class="flex justify-end gap-3 pt-4 col-span-3">
+            <button
+              type="button"
+              @click="withdrawStudent(currentRow.ernpId)"
+              class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-[#ee1919] transition"
+            >
+              Withdraw This Student
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </template>
 

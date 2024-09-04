@@ -12,6 +12,11 @@ export const useSocket = () => {
     client.subscribe(name, cb);
   }
 
+  function send(name, message) {
+    console.log("%cmessage", "color:green")
+    client.send(name, {}, message)
+  }
+
 	async function unSub() {
 		return new Promise((res) => {
 			Object.keys((client?.subscriptions || {})).forEach(el => {
@@ -45,6 +50,7 @@ export const useSocket = () => {
     connect,
     subscribe,
 		client,
-		unSub
+		unSub,
+    send
   };
 };
