@@ -4,6 +4,7 @@ import Button from '@/components/Button.vue';
 import { ref, watch } from 'vue';
 
 const _filter = ref({
+  nonmarriage_file: false,
   marriage_file: true,
   identity_file: true,
   agent_file: true,
@@ -116,10 +117,20 @@ watch(() => props.disabled, () => {
     <div class="col-span-2 border-t py-2 grid grid-cols-4 gap-4">
       <InputFile
         v-if="_filter.marriage_file"
-        label="Marriage File"
+        label="Marriage/UnMarriage File"
         name="marriage_file"
         :attributes="{
-          placeholder: 'Marriage file',
+          placeholder: 'Marriage/UnMarriage file',
+          ...dis
+        }"
+        validation="required"
+      />
+      <InputFile
+        v-if="_filter.unmarriage_file"
+        label="Non-Marriage File"
+        name="marriage_file"
+        :attributes="{
+          placeholder: 'Non-Marriage file',
           ...dis
         }"
         validation="required"
@@ -134,12 +145,23 @@ watch(() => props.disabled, () => {
         }"
         validation="required"
       />
+   
       <InputFile
         v-if="_filter.agent_file"
         label="Agent File"
         name="agent_file"
         :attributes="{
           placeholder: 'Agent File',
+          ...dis
+        }"
+        validation="required"
+      />
+      <InputFile
+        v-if="_filter.agent_file"
+        label="spouseIdentity_file"
+        name="spouseIdentity_file"
+        :attributes="{
+          placeholder: 'spouseIdentity_file',
           ...dis
         }"
         validation="required"

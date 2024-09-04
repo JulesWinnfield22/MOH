@@ -134,24 +134,30 @@ function confirmeachSelection(ernpId) {
     }
   );
 }
-
 function rejectEachSelection(ernpId) {
-  if (request.pending.value) return; // Prevent action if request is pending
+  if (request.pending.value) {
+    console.warn('Request is still pending.');
+    return; // Prevent action if request is pending
+  }
 
   const status = 'rejected'; // Define the status for rejection
 
-  console.log(reason.value);
-  
+  console.log('Rejection reason:', reason.value);
+
   request.send(
-    () => rejectStudent(status, reason.value != 'Other' ? reason.value : discription.value, [ernpId]), // Pass the ernpId in an array to keep the structure consistent
+    () => rejectStudent(status, reason.value !== 'Other' ? reason.value : discription.value, [ernpId]),
     (res) => {
-      
+      // Always close the modal
+      isEachModalVisible.value = false;
+
       if (res.success) {
+        console.log('Updating status for student:', ernpId);
         sudents.updateStatus(status, reason.value, [ernpId]); // Update the status of the specific row
-        reason = ''
+        reason.value = ''; // Reset the reason if it's reactive
+      } else {
+        console.error('Error in response:', res.error);
       }
-      isEachModalVisible.value = !isEachModalVisible.value;
-      //status.value = values.status;
+      isEachModalVisible.value = false;
       toasted(res.success, 'Rejected', res.error); // Show a toast notification
     }
   );
@@ -162,9 +168,8 @@ function rejectSelection() {
 
   const status = 'rejected'; // or any other status you need
 
-  
   request.send(
-    () => rejectStudent(status, reason.value != 'Other' ? reason.value : discription.value,[ernpId]),
+    () => rejectStudent(status, reason.value != 'Other' ? reason.value : discription.value,selected.value),
     (res) => {
       if (res.success) {
         sudents.updateStatus(status, reason.value, selected.value);
@@ -425,9 +430,9 @@ const isRoleHrdi = computed(
       class="border w-[829px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4"
     >
       <option value="" disabled selected>State the reason for rejection</option>
-      <option value="" >Select a reason for rejection</option>
-      <option value="Incomplete Documents">University is currently full</option>
-      <option value="Incomplete Documents">Program is currently Unuvailable</option>
+      
+      <option value="University is currently full">University is currently full</option>
+      <option value="Program is currently Unavailable">Program is currently Unavailable</option>
       <option value="Incomplete Documents">Incomplete Documents</option>
       <option value="Invalid Information">Invalid Information</option>
       <option value="Other">Other</option>
@@ -442,7 +447,7 @@ const isRoleHrdi = computed(
        
     />
               <div class="flex justify-end">
-                <button class="bg-[#FF4040] h-[40px] w-[82px] text-white px-4 py-2 rounded mr-2" @click="rejectSelection()">
+                <button class="bg-[#FF4040] h-[40px] w-[82px] text-white px-4 py-2 rounded mr-2" @click="rejectSelection">
                   Reject
                 </button>
                 <button class="bg-gray-300 text-gray-700 px-4 py-2 rounded" @click="closeModal">
@@ -537,7 +542,78 @@ const isRoleHrdi = computed(
             </button>
            
           </div>
-          <div v-else-if="row?.registrationStatus == 'rejected'">
+          <div v-if="isRoleHrdi && row?.registrationStatus == 'registered'" class="flex gap-2">
+            <button  @click="showEachModal(row.ernpId)">
+              <svg
+                width="18"
+                height="21"
+                viewBox="0 0 18 21"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M6.5 0.409912C5.67157 0.409912 5 1.08149 5 1.90991V2.90991C5 3.73834 5.67157 4.40991 6.5 4.40991H11.5C12.3284 4.40991 13 3.73834 13 2.90991V1.90991C13 1.08149 12.3284 0.409912 11.5 0.409912H6.5Z"
+                  fill="#FF4040"
+                />
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M0.87868 3.28685C1.44798 2.71755 2.24209 2.5171 3.5 2.44653V2.90991C3.5 4.56677 4.84315 5.90991 6.5 5.90991H11.5C13.1569 5.90991 14.5 4.56677 14.5 2.90991V2.44653C15.7579 2.5171 16.552 2.71755 17.1213 3.28685C18 4.16553 18 5.57975 18 8.40817V14.4082C18 17.2366 18 18.6508 17.1213 19.5295C16.2426 20.4082 14.8284 20.4082 12 20.4082H6C3.17157 20.4082 1.75736 20.4082 0.87868 19.5295C0 18.6508 0 17.2366 0 14.4082V8.40817C0 5.57975 0 4.16553 0.87868 3.28685ZM9.00001 11.8493L7.03033 9.87958C6.73744 9.58669 6.26256 9.58669 5.96967 9.87958C5.67678 10.1725 5.67678 10.6473 5.96967 10.9402L7.93935 12.9099L5.96969 14.8796C5.6768 15.1725 5.6768 15.6473 5.96969 15.9402C6.26258 16.2331 6.73746 16.2331 7.03035 15.9402L9.00001 13.9706L10.9696 15.9402C11.2625 16.2331 11.7374 16.2331 12.0303 15.9402C12.3232 15.6473 12.3232 15.1725 12.0303 14.8796L10.0607 12.9099L12.0303 10.9403C12.3232 10.6474 12.3232 10.1725 12.0303 9.8796C11.7374 9.58671 11.2626 9.58671 10.9697 9.8796L9.00001 11.8493Z"
+                  fill="#FF4040"
+                />
+              </svg>
+            </button>
+            <!-- <button
+              @click="confirmeachSelection(row.ernpId)"
+        >
+              <svg
+                width="24"
+                height="25"
+                viewBox="0 0 24 25"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M2.54497 9.13996C2 10.2095 2 11.6096 2 14.4099C2 17.2102 2 18.6103 2.54497 19.6799C3.02433 20.6207 3.78924 21.3856 4.73005 21.8649C5.79961 22.4099 7.19974 22.4099 10 22.4099H14C16.8003 22.4099 18.2004 22.4099 19.27 21.8649C20.2108 21.3856 20.9757 20.6207 21.455 19.6799C22 18.6103 22 17.2102 22 14.4099C22 11.6096 22 10.2095 21.455 9.13996C20.9757 8.19915 20.2108 7.43425 19.27 6.95488C18.2004 6.40991 16.8003 6.40991 14 6.40991H10C7.19974 6.40991 5.79961 6.40991 4.73005 6.95488C3.78924 7.43425 3.02433 8.19915 2.54497 9.13996ZM15.0595 12.9094C15.3353 12.6005 15.3085 12.1263 14.9995 11.8505C14.6905 11.5746 14.2164 11.6014 13.9406 11.9104L10.9286 15.2838L10.0595 14.3104C9.78359 14.0014 9.30947 13.9746 9.0005 14.2505C8.69152 14.5263 8.66468 15.0005 8.94055 15.3094L10.3691 16.9094C10.5114 17.0688 10.7149 17.1599 10.9286 17.1599C11.1422 17.1599 11.3457 17.0688 11.488 16.9094L15.0595 12.9094Z"
+                  fill="#36CB56"
+                />
+                <path
+                  d="M20.5348 3.87438C19.0704 2.40991 16.7133 2.40991 11.9993 2.40991C7.28525 2.40991 4.92823 2.40991 3.46377 3.87438C2.70628 4.63187 2.3406 5.62815 2.16406 7.06589C2.69473 6.47523 3.33236 5.98319 4.04836 5.61837C4.82984 5.22019 5.66664 5.05871 6.59316 4.98301C7.48829 4.90988 8.58971 4.90989 9.93646 4.90991H14.0621C15.4089 4.90989 16.5103 4.90988 17.4054 4.98301C18.332 5.05871 19.1688 5.22019 19.9502 5.61837C20.6662 5.98319 21.3039 6.47523 21.8345 7.06589C21.658 5.62815 21.2923 4.63187 20.5348 3.87438Z"
+                  fill="#36CB56"
+                />
+              </svg>
+            </button> -->
+           
+          </div>
+          <div v-if="isRoleHrdi && row?.registrationStatus == 'rejected'" class="flex gap-2">
+      
+            <button
+              @click="confirmeachSelection(row.ernpId)"
+        >
+              <svg
+                width="24"
+                height="25"
+                viewBox="0 0 24 25"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M2.54497 9.13996C2 10.2095 2 11.6096 2 14.4099C2 17.2102 2 18.6103 2.54497 19.6799C3.02433 20.6207 3.78924 21.3856 4.73005 21.8649C5.79961 22.4099 7.19974 22.4099 10 22.4099H14C16.8003 22.4099 18.2004 22.4099 19.27 21.8649C20.2108 21.3856 20.9757 20.6207 21.455 19.6799C22 18.6103 22 17.2102 22 14.4099C22 11.6096 22 10.2095 21.455 9.13996C20.9757 8.19915 20.2108 7.43425 19.27 6.95488C18.2004 6.40991 16.8003 6.40991 14 6.40991H10C7.19974 6.40991 5.79961 6.40991 4.73005 6.95488C3.78924 7.43425 3.02433 8.19915 2.54497 9.13996ZM15.0595 12.9094C15.3353 12.6005 15.3085 12.1263 14.9995 11.8505C14.6905 11.5746 14.2164 11.6014 13.9406 11.9104L10.9286 15.2838L10.0595 14.3104C9.78359 14.0014 9.30947 13.9746 9.0005 14.2505C8.69152 14.5263 8.66468 15.0005 8.94055 15.3094L10.3691 16.9094C10.5114 17.0688 10.7149 17.1599 10.9286 17.1599C11.1422 17.1599 11.3457 17.0688 11.488 16.9094L15.0595 12.9094Z"
+                  fill="#36CB56"
+                />
+                <path
+                  d="M20.5348 3.87438C19.0704 2.40991 16.7133 2.40991 11.9993 2.40991C7.28525 2.40991 4.92823 2.40991 3.46377 3.87438C2.70628 4.63187 2.3406 5.62815 2.16406 7.06589C2.69473 6.47523 3.33236 5.98319 4.04836 5.61837C4.82984 5.22019 5.66664 5.05871 6.59316 4.98301C7.48829 4.90988 8.58971 4.90989 9.93646 4.90991H14.0621C15.4089 4.90989 16.5103 4.90988 17.4054 4.98301C18.332 5.05871 19.1688 5.22019 19.9502 5.61837C20.6662 5.98319 21.3039 6.47523 21.8345 7.06589C21.658 5.62815 21.2923 4.63187 20.5348 3.87438Z"
+                  fill="#36CB56"
+                />
+              </svg>
+            </button>
+           
+          </div>
+          <!-- <div v-else-if="row?.registrationStatus == 'rejected'">
             <button @click="openRejectionReasonModal(row)" class="text-[#21618C] text-sm hover:italic hover:underline" >
                open
           </button>
@@ -547,7 +623,7 @@ const isRoleHrdi = computed(
             <button @click="openStudent(row)" class="text-[#21618C] text-sm hover:italic hover:underline" >
               Take Action
           </button>
-          </div>
+          </div> -->
         </template>
         
         <template #headerFirst>

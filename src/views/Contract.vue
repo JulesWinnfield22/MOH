@@ -146,7 +146,7 @@ const isRoleHrdi = computed(() => auth.auth?.user?.privileges?.[0] == 'ROLE_Univ
   <div class="relative w-64">
     <select id="table-select" v-model="selectedTable" class="appearance-none bg-white border-gray-300 rounded-md py-2 px-4 pr-8 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer">
       <option value="approved">Approved</option>
-      <option value="waiting">Waiting</option>
+      <option value="waiting">Submitted</option>
       <option value="declined">Declined</option>
     </select>
     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">

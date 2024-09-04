@@ -26,9 +26,9 @@
 	}
 </script>
 <template>
-	<div class="py-2 border-b mb-2">
+	<!-- <div class="py-2 border-b mb-2">
 		<Button @click="$router.go(-1)" type="primary">go back</Button>
-	</div>
+	</div> -->
 	<UserForm
 		:pending="req.pending.value"
 		:onSubmit="add"

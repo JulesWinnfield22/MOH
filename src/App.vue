@@ -1,7 +1,6 @@
 <script setup>
 import { computed, onMounted, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
-import {} from 'stompjs';
 import { useSocket } from './composables/useSocket';
 const defaultLayout = 'default';
 

@@ -1,34 +1,57 @@
-<script setup lang="ts">
+<script setup >
 import StudentDataProvider from '@/features/students/components/StudentDataProvider.vue';
 import { useAuth } from '@/store/auth';
-const auth = useAuth()
+const auth = useAuth();
 </script>
 
 <template>
   <div class="container">
-    <StudentDataProvider v-slot="{ student, pending, isRegistered }">
-      <div v-if="!pending" class="message text-center">
-        <h1 v-if="status">
     <StudentDataProvider v-slot="{ student, contract, pending, isRegistered }">
+      {{ console.log(student) }}
       <div v-if="!pending" class="message text-center">
-        <h1 v-if="isRegistered && ['Waiting', 'Rejcted'].includes(contract.contractStatus)">
-          Go to <RouterLink class="text-primary italic" to="/SigninDocuments"> Sign In Documents </RouterLink> For your contract
-          <p>
+        <h1 v-if="isRegistered && contract.contractStatus == 'Approved'">
+          <p class="font-bold text-2xl text-center text-green-600 mt-4">
+  You have been approved by Legal
+</p>
+
+          Go to <RouterLink class="text-primary italic" :to='`/Sponsorship?name=${auth.auth?.user?.name}`'> Download Your sponsership letter </RouterLink>
+        </h1>
+        <h1 v-else-if="isRegistered && [ 'Declined'].includes(contract.contractStatus)">
+         <p>
+            You have been declined due to 
             {{
               contract?.rejectionReason
             }}
+            so complete your documents and re submit your contract
           </p>
+        
+          Go to <RouterLink class="text-primary italic" to="/SigninDocuments"> Sign In Documents </RouterLink> For your contract
+          
         </h1>
-        <h1 v-else-if="isRegistered && contract.contractStatus == 'Approved'">
-          Go to <RouterLink class="text-primary italic" :to='`/Sponsorship?name=${auth.auth?.user?.name}`'> Download Your sponsership letter </RouterLink>
+        <h1 v-else-if="isRegistered && [ 'Submitted'].includes(contract.contractStatus)">
+         <p>
+            You contract have been Succesfully Submitted so wait until <p>legal reviews your contract
+           </p>
+           </p>
+        
         </h1>
-        <h1 v-if="student.student?.registrationStatus == 'rejected'">
-          <p>You have been Rejected</p>
+        <h1 v-else-if="isRegistered">
+          Go to <RouterLink class="text-primary italic" to="/SigninDocuments"> Sign In Contracts </RouterLink> For your contract
           <p>
-            {{ student.student?.rejectionReason }}
+           You need to sign-in contracts now
+          </p>
+        
+        </h1>
+      
+     
+        <h1 v-if="student?.registrationStatus == 'rejected'">
+          <p>You have been Rejected by {{ student?.universityName }}</p>
+          <p>
+            due to
+            {{ student?.rejectionReason }}
           </p>
         </h1>
-        <div v-if="student.student?.registrationStatus == 'waiting'" class="w-full justify-center mb-[36px] flex">
+        <div v-if="student?.registrationStatus == 'waiting'" class="w-full justify-center mb-[36px] flex">
           <h1 class="font-bold w-[650px] text-[#4E585F] font-dm-sans">
             Please Go and Report to {{ student?.universityName }} In Person!
           </h1>
@@ -43,23 +66,18 @@ const auth = useAuth()
         >
           <line y1="0.5" x2="893" y2="0.5" stroke="#21618C" />
         </svg>
-        <div v-if="student.student?.registrationStatus == 'waiting'" class="justify-center flex">
+        <div v-if="student?.registrationStatus == 'waiting'" class="justify-center flex">
           <!-- <a
                href="/Profile"
                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"
                 >  {{ auth.auth?.user?.name}}</a> -->
-          <p class="mt-[36px] w-[800px]">
-            To register at the registrar’s office, first gather the necessary
-            documents, such as your identification. Check
-            the registration dates and locate the office on campus, ensuring you
-            visit during open hours. Upon arrival, request and complete the
-            required registration forms, then submit them along with your
-            documents. Be prepared to pay any applicable fees, and keep a record
-            of your submission for future reference. Finally, stay informed by
-            regularly checking your student portal or email for updates on your
-            registration status.
-          </p>
-        </div>
+                <p class="text-left mt-[36px] w-[800px]">
+    To register at the registrar’s office, first gather the necessary documents, such as your identification. Check the registration dates and locate the office on campus, ensuring you visit during open hours. Upon arrival, request and complete the required registration forms, then submit them along with your documents. Be prepared to pay any applicable fees, and keep a record of your submission for future reference. Finally, stay informed by regularly checking your student portal or email for updates on your registration status.
+ if you are married don't forget to download and sign all documents.
+            download pdf here if you are married  
+          <div><RouterLink class="text-primary italic" :to='`/Requirement`'> Download </RouterLink>
+          </div> </p>  
+                  </div>
         <div class="w-full py-10 justify-center">
           <svg
             class="w-full justify-center"
@@ -131,10 +149,12 @@ h1 {
 p {
   color: #666;
   font-family: 'DM Sans', sans-serif;
-  font-size: 18px;
-  font-weight: 400;
+  font-size: 25px;
+  font-weight: 700;
   line-height: 30px;
   text-align: center;
+  gap: 3px;
+  margin: 20px 0;
 }
 
 .icon {

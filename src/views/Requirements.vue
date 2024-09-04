@@ -4,7 +4,7 @@
       <h2>Agency agreement Format</h2>
       <p>Agency_document.docx</p>
     </div>
-    <button class="download-btn" @click="$router.push('/Requirement')">Open</button>
+    <button class="download-btn" @click="$router.push('/Requirement')">Download</button>
   </div>
   <div class="containers my-8 font-sans text-[#79838C]">
     <!-- Left Side Section -->

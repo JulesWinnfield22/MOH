@@ -32,11 +32,11 @@ const selectedStatus = ref(''); // To hold the selected status filter
 const buttonClass = computed(() => {
   switch (camStatus.value) {
     case 'Withdrawn':
-      return 'bg-[#FF4040]'; // Example color for Withdrawn
+      return 'bg-[#3d3d39]'; // Example color for Withdrawn
     case 'Suspended':
       return 'bg-[#FFA500]'; // Example color for Suspended
     case 'Dismissed':
-      return 'bg-[#FFD700]'; // Example color for Dismissed
+      return 'bg-[#FF0700]'; // Example color for Dismissed
     case 'Graduated':
       return 'bg-[#32CD32]'; // Example color for Graduated
     default:
@@ -184,27 +184,48 @@ function rejectSelection() {
 function withdrawSelectedStudent(ernpId) {
   if (request.pending.value) return; // Prevent action if request is pending
 
-  // const camStatus = 'Withdrawn'; // Define the status for rejection
+  console.log('Reason:', reasons.value);
 
-  console.log(reasons.value);
-  
   request.send(
-    () => withdrawStud(camStatus.value, reasons.value != 'Other' ? reasons.value : discription.value, [ernpId]), // Pass the ernpId in an array to keep the structure consistent
-  
+    () =>
+      withdrawStud(
+        camStatus.value,
+        reasons.value !== 'Other' ? reasons.value : discription.value,
+        [ernpId] // Pass the ernpId in an array to keep the structure consistent
+      ),
     (res) => {
-      
       if (res.success) {
-        sudents.updateCampusStatus(camStatus.value, reasons.value, [ernpId]); 
-        console.log([ernpId]);
-        reasons.value = '' // Update the status of the specific row
-        resetModalValues(); 
+        sudents.updateCampusStatus(camStatus.value, reasons.value, [ernpId]);
+        console.log('ERNP ID:', [ernpId]);
+        reasons.value = ''; // Reset reasons
+        resetModalValues();
       }
+
       isWithdrawStudent.value = !isWithdrawStudent.value;
-      //status.value = values.status;
-      toasted(res.success, 'Rejected', res.error); // Show a toast notification
+
+      // Normalize and log the campus status for debugging
+      const normalizedStatus = camStatus.value.trim().toLowerCase();
+      console.log('Normalized Campus Status:', normalizedStatus);
+
+      // Determine the toast message based on the normalized status
+      let toastMessage = 'Action Completed'; // Default message
+      if (normalizedStatus === 'withdrawn') {
+        toastMessage = 'Withdrawn';
+      } else if (normalizedStatus === 'graduated') {
+        toastMessage = 'Graduated';
+      } else if (normalizedStatus === 'dismissed') {
+        toastMessage = 'Dismissed';
+      } else if (normalizedStatus === 'suspended') {
+        toastMessage = 'Suspended';
+      }
+
+      console.log('Toast Message:', toastMessage); // Log the toast message for debugging
+
+      toasted(res.success, toastMessage, res.error); // Show a toast notification with the correct message
     }
   );
 }
+
 
 function selectUser(item) {
   const idx = selected.value.findIndex((el) => {
@@ -279,11 +300,9 @@ const isRoleHrdi = computed(
        v-model="reasons"
       class="border w-[829px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4"
     >
-      <option value="" disabled>Select a reason for Withdrawal</option>
-      <option value="University is currently full">University is currently full</option>
-      <option value="Program is currently Unavailable ">Program is currently Unavailable</option>
-      <option value="Incomplete Documents">Incomplete Documents</option>
-      <option value="Invalid Information">Invalid Information</option>
+      <option value="" disabled>Select a reason</option>
+      <option value="Illness">Illness</option>
+      
       <option value="">Other</option>
     </select>
 
@@ -323,10 +342,9 @@ const isRoleHrdi = computed(
       class="border w-[829px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4"
     >
       <option value="" disabled>Select a reason for rejection</option>
-      <option value="University is currently full">University is currently full</option>
-      <option value="Program is currently Unavailable ">Program is currently Unavailable</option>
-      <option value="Incomplete Documents">Incomplete Documents</option>
-      <option value="Invalid Information">Invalid Information</option>
+      <option value="Illness">Illness</option>
+    
+     
       <option value="">Other</option>
     </select>
 
@@ -366,10 +384,8 @@ const isRoleHrdi = computed(
     >
       <option value="" disabled selected>State the reason for rejection</option>
       <option value="" >Select a reason for rejection</option>
-      <option value="Incomplete Documents">University is currently full</option>
-      <option value="Incomplete Documents">Program is currently Unuvailable</option>
-      <option value="Incomplete Documents">Incomplete Documents</option>
-      <option value="Invalid Information">Invalid Information</option>
+      <option value="illness">illness</option>
+      
       <option value="Other">Other</option>
     </select>
 
@@ -711,9 +727,9 @@ const isRoleHrdi = computed(
     <button 
       type="button" 
       @click="withdrawStudent(currentRow.ernpId)" 
-      class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-[#ee1919] transition"
+      class="bg-[#21618C] text-white px-4 py-2 rounded-md hover:bg-[#1c5c86] transition"
     >
-      Withdraw This Student
+      Take Actions
     </button>
     
   </div>

@@ -9,17 +9,15 @@ const content = ref();
 function getPdf() {
   const docDif = {
     content: [
-      {
-        text: 'Terms and Condition ',
-        style: 'header',
-      },
-      {
-        marginTop: 10,
-        text: 'I have entered into this educational contractual agreement under the sponsorship of the Ministry of Health. When I completed my studies, I shall perform my duties to the place where the Ministry assigns me and give service to period mentioned in the contract. I agree that the education and training directive issued by the Ministry of Health shall be applicable to the contract. If I fail to comply with contract, I agree to pay the amount mentioned in the contract.   ',
-      },
+    
+      
       {
         marginTop: 20,
         text: 'Agency Agreement format',
+        style: 'header',
+      },
+        {
+        text: 'የውክልና ውል',
         style: 'header',
       },
       {

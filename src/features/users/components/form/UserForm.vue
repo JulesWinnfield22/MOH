@@ -8,34 +8,38 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  user: Object,
+  user: {
+    type: Object,
+    default: () => ({}), // Correctly initialize user to an empty object
+  },
   universities: {
     type: Array,
-    default: [],
+    default: () => [], // Use a function to return an empty array
   },
   onSubmit: {
     type: Function,
   },
 });
 
-const user = ref({})
-if(Object.keys(props.user).length > 0) {
-  const [title, firstName, fathersName, grandFathersName] = props.user.fullName.split(" ")
+const user = ref({});
+if (Object.keys(props.user).length > 0) {
+  const [title, firstName, fathersName, grandFathersName] = props.user?.fullName?.split(' ') || []; // Use optional chaining
   user.value = {
     ...props.user,
     title,
     firstName,
     fathersName,
-    grandFathersName
-  }
+    grandFathersName,
+  };
 }
+
 const type = ref(props.user?.userType || '');
 const selectedOption = ref([]);
 const isOtherSelected = ref(false);
 const InputNewUniversity = ref('');
 
 const combinedOptions = computed(() => {
-   const otherOption = [];
+  const otherOption = [];
 
   const universityOptions = props.universities.map((el) => ({
     label: el.universityName,
@@ -49,137 +53,123 @@ const combinedOptions = computed(() => {
 watch(selectedOption, (newVal) => {
   isOtherSelected.value = newVal === 'other';
   if (!isOtherSelected.value) {
-    InputNewUniversity.value = ''; // Reset custom gender if "Other" is not selected
+    InputNewUniversity.value = ''; // Reset input if "Other" is not selected
   }
 });
 
 function submitForm({ values, reset }) {
   props.onSubmit(values);
-  console.log('sdf');
   reset();
 }
 
-console.log(props.universities)
+console.log(props.universities);
 </script>
-<template>
-  <Form v-slot="{ submit }" id="userForm" class="flex flex-col gap-4">
-    <div class="grid user-form-grid gap-4">
-      <Select
-        label="Title"
-        name="title"
-        :options="['Mrs.', 'Mr.', 'Dr']"
-        :value="user?.title || 'Mrs.'"
-        :attributes="{ type: 'text', placeholder: 'Select Title' }"
-      />
-      <Input
-        label="First Name"
-        name="firstName"
-        :value="user?.firstName"
-        validation="required"
-        :attributes="{ type: 'text', placeholder: 'Enter Your First Name' }"
-      />
-      <Input
-        label="Fathers Name"
-        name="fathersName"
-        :value="user?.fathersName"
-        validation="required"
-        :attributes="{ type: 'text', placeholder: 'Enter Your Fathers Name' }"
-      />
-      <Input
-        label="Grand Fathers Name"
-        name="grandFathersName"
-        validation="required"
-        :value="user?.grandFathersName"
-        :attributes="{
-          type: 'text',
-          placeholder: 'Enter Your Grandfathers Name',
-        }"
-      />
-    </div>
-    <div class="grid grid-cols-3 gap-4">
-      <Input
-        label="phone"
-        name="phone"
-        :value="user?.phone"
-        validation="required|phone"
-        :attributes="{ placeholder: 'Enter your phone number' }"
-      />
-      <Input
-        label="Email"
-        name="email"
-        :value="user?.email"
-        validation="required|email"
-        :attributes="{ type: 'text', placeholder: 'Enter Your Email' }"
-      />
-      <Input
-        label="Birth Date"
-        :attributes="{ type: 'date', placeholder: 'Enter Your Birth Date' }"
-        validation="required"
-        name="birthDate"
-        :value="user?.birthDate"
-      />
-      <Select
-        label="Gender"
-        name="gender"
-        :value="user?.gender"
-        :options="['Male', 'Female']"
-        validation="required"
-        :attributes="{ type: 'text', placeholder: 'Select Gender' }"
-      />
-      {{console.log(type)}}
-      <Select
-        v-model="type"
-        label="User Type"
-        name="userType"
-        :options="['HRDI', 'University', 'LegalOffice']"
-        validation="required"
-        :attributes="{ type: 'text', placeholder: 'Select User Type' }"
-      />
-      <div>
-        <Select
-          v-if="type == 'University'"
-          :obj="true"
-          label="University"
-          name="universityUuid"
-          v-model="selectedOption"
-          :options="combinedOptions"
-          validation="required"
-          :attributes="{ type: 'text', placeholder: 'Select University' }"
-        />
 
-        <!-- Show input if "Other" is selected -->
-        <!-- <Input
-          v-if="isOtherSelected"
-          type="text"
-          v-model="InputNewUniversity"
-          name="universityName"
-          :attributes="{ type: 'text', placeholder: 'Input University' }"
-        /> -->
-      </div>
-    </div>
-    <!-- <div class="grid grid-cols-2 gap-4">
-      <InputPassword
-        label="Password"
-        name="password"
-        validation="required"
-        :attributes="{ type: 'text', placeholder: 'Enter Your Password' }"
-      />
-      <InputPassword
-        :skip="true"
-        label="Confirm Password"
-        name="confirmPassword"
-        validation="required|equalTo-password"
-        :attributes="{ type: 'text', placeholder: 'Confirm your password' }"
-      />
-    </div> -->
-    <Button
-      :pending="pending"
-      @click.prevent="submit(submitForm)"
-      type="secondary"
-    >
-      Submit
-    </Button>
-  </Form>
+<template>
+  <div class="py-2 border-b mb-2">
+		<Button @click="$router.go(-1)" type="primary">go back</Button>
+	</div>
+  <Form v-slot="{ submit }" id="userForm" class="flex flex-col gap-6 p-6 bg-white shadow-md rounded-lg">
+  <h2 class="text-lg font-semibold mb-4">User Information</h2>
+  
+  <div class="grid user-form-grid gap-6">
+    <Select
+      label="Title"
+      name="title"
+      :options="['Mrs.', 'Mr.', 'Dr']"
+      v-model="user.title"
+      :attributes="{ placeholder: 'Select Title' }"
+    />
+    
+    <Input
+      label="First Name *"
+      name="firstName"
+      v-model="user.firstName"
+      validation="required"
+      :attributes="{ placeholder: 'Enter Your First Name' }"
+    />
+    
+    <Input
+      label="Father's Name *"
+      name="fathersName"
+      v-model="user.fathersName"
+      validation="required"
+      :attributes="{ placeholder: 'Enter Your Fathers Name' }"
+    />
+    
+    <Input
+      label="Grandfather's Name *"
+      name="grandFathersName"
+      v-model="user.grandFathersName"
+      validation="required"
+      :attributes="{ placeholder: 'Enter Your Grandfathers Name' }"
+    />
+  </div>
+  
+  <div class="grid grid-cols-2 gap-6">
+    <Input
+      label="Phone *"
+      name="phone"
+      v-model="user.phone"
+      validation="required|phone"
+      :attributes="{ placeholder: 'Enter your phone number' }"
+    />
+    
+    <Input
+      label="Email *"
+      name="email"
+      v-model="user.email"
+      validation="required|email"
+      :attributes="{ type: 'email', placeholder: 'Enter Your Email' }"
+    />
+    
+    <Input
+      label="Birth Date *"
+      name="birthDate"
+      v-model="user.birthDate"
+      :attributes="{ type: 'date', placeholder: 'Enter Your Birth Date' }"
+    />
+    
+    <Select
+      label="Gender *"
+      name="gender"
+      v-model="user.gender"
+      :options="['Male', 'Female']"
+      validation="required"
+      :attributes="{ placeholder: 'Select Gender' }"
+    />
+  </div>
+  
+  <div class="grid grid-cols-2 gap-6">
+    <Select
+      v-model="type"
+      label="User Type *"
+      name="userType"
+      :options="['HRDI', 'University', 'LegalOffice']"
+      validation="required"
+      :attributes="{ placeholder: 'Select User Type' }"
+    />
+    
+    <Select
+      v-if="type === 'University'"
+      :obj="true"
+      label="University *"
+      name="universityName"
+      :options="universities.map(el => ({ label: el.universityName, value: el.universityUuid }))"
+      validation="required"
+      :attributes="{ placeholder: 'Select University' }"
+    />
+  </div>
+  
+  <Button
+    :pending="pending"
+    @click.prevent="submit(submitForm)"
+    type="secondary"
+    class="mt-4"
+  >
+    Submit
+  </Button>
+</Form>
 </template>
 
 <style>

@@ -558,8 +558,10 @@ function getPdf() {
           {
             width: 'auto',
             marginLeft: 5,
-            text: 'የህክምና ስፔሻሊቲ ስልጠናውን ሲያጠናቅቅ ዉል ሰጪ በሚመድበዉ ቦታ ለ'
+            text: 'የህክምና ስፔሻሊቲ ስልጠናውን ሲያጠናቅቅ ዉል ሰጪ በሚመድበዉ ቦታ ለ',
+            value: props.contract?.duration
           },
+         
           {
             width: 'auto',
             marginLeft: 5,

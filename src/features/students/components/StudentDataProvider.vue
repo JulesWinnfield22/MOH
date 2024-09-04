@@ -38,8 +38,6 @@ const isRegistered = computed(() => {
 	return student.student?.registrationStatus == 'registered'
 })
 </script>
-
-
 <template>
 	<slot
 		:student="student.student"
