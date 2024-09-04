@@ -33,7 +33,10 @@ const routes = [
     component: Verification,
     meta: { layout: 'empty' },
   },
-  
+  //   {
+  //   path: '/',
+  //   redirect: '/login', // Redirect from root path to /login
+  // },
   {
     path: '/login',
     name: 'Login',

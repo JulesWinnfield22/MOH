@@ -50,12 +50,14 @@ function submit(values) {
       const fd = getFormData({
         identity_file: values.identity_file,
         marriage_file: values.marriage_file,
+        spouseIdentity_file:values.spouseIdentity_file,
         ...agent_file,
       });
 
       delete values.identity_file,
         delete values.marriage_file,
         delete values.agent_file,
+        delete values.spouseIdentity_file,
         req.send(
           () => createContract({ ...values, martialStatus: married.value }, fd),
           (res) => {

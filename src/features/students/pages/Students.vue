@@ -141,9 +141,11 @@ function confirmeachSelection(ernpId) {
     }
   );
 }
-
 function rejectEachSelection(ernpId) {
-  if (request.pending.value) return; // Prevent action if request is pending
+  if (request.pending.value) {
+    console.warn('Request is still pending.');
+    return; // Prevent action if request is pending
+  }
 
   const status = 'rejected'; // Define the status for rejection
 
@@ -158,11 +160,11 @@ function rejectEachSelection(ernpId) {
       ), // Pass the ernpId in an array to keep the structure consistent
     (res) => {
       if (res.success) {
+        console.log('Updating status for student:', ernpId);
         sudents.updateStatus(status, reason.value, [ernpId]); // Update the status of the specific row
         reason.value = '';
       }
-      isEachModalVisible.value = !isEachModalVisible.value;
-      //status.value = values.status;
+      isEachModalVisible.value = false;
       toasted(res.success, 'Rejected', res.error); // Show a toast notification
     }
   );

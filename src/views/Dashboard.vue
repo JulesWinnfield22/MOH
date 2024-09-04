@@ -1,5 +1,104 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { usePaginationTemp } from '@/composables/usePaginaionTemp'
+import { findAllByContractStatusApproved } from '@/features/students/api/contractApi'
+import { useAuth } from '@/store/auth.js'
+import Table from '@com/Table.vue'
+import { useContracts } from '@/features/students/store/contractStore'
+import TableRowSkeleton from '@/skeletons/TableRowSkeleton.vue'
+import { confirmContract, rejectContract } from '@/features/students/api/contractApi'
+import { useApiRequest } from '@/composables/useApiRequest'
+import { formatCurrency, toasted } from '@/utils/utils'
+
+const selectedTable = ref('approved');
+const contract = useContracts()
+const auth = useAuth()
+const currentRow = ref(null);
+const showStudent = ref(false);
+
+function openStudent(row) {
+  currentRow.value = row;
+  showStudent.value = true;
+}
+
+function closeStudent(){
+  showStudent.value=false;
+}
+
+const selected = ref([])
+
+const route = useRoute()
+const uniId = route.params.id
+
+const request = useApiRequest()
+
+const pagination = usePaginationTemp({
+  store: contract,
+  cb: (data, config) => findAllByContractStatusApproved(),
+})
+
+function confirmSelection() {
+  if(!selected.value?.length || request.pending.value) return
+
+  request.send(
+    () => confirmContract(selected.value),
+    res => {
+      if(res.success) {
+        contract.updateStatus('registered', selected.value)
+        selected.value = []
+      }
+      toasted(res.success, 'Registered', res.error)
+    }
+  )
+}
+
+function rejectSelection() {
+  if(!selected.value?.length || request.pending.value) return
+  
+  request.send(
+    () => rejectContract(selected.value),
+    res => {
+      if(res.success) {
+        contract.updateStatus('rejected', selected.value)
+        selected.value = []
+      }
+      toasted(res.success, 'Rejected', res.error)
+    }
+  )
+}
+
+function selectUser(item) {
+  const idx = selected.value.findIndex(el => {
+    return item == el
+  })
+  if (idx === -1) {
+    selected.value.push(item)
+  } else {
+    selected.value.splice(idx, 1)
+  }
+}
+
+function selectAll(select) {
+  console.log(select)
+  if(select) {
+    selected.value = (contract.contracts || []).map(el => el.ernpId) || []
+  } else {
+    selected.value = []
+  }
+}
+
+// Remove filtering and return all rows
+const allRows = computed(() => {
+  return contract.contracts;
+});
+
+const allSelected = computed(() => {
+  const len = (contract.contracts || []).length
+  return len != 0 && len == selected.value?.length
+})
+
+const isRoleHrdi = computed(() => auth.auth?.user?.privileges?.[0] == 'ROLE_University')
 
 interface User {
   name: string
@@ -100,238 +199,26 @@ const users = ref<User[]>([...Array(10).keys()].map(() => testUser))
           </p>
         </div>
       </div>
-      <div class="bg-[#FBFBFB] p-4 rounded-md mb-4 text-[#4E585F] w-[704.7px]">
+      <div class="bg-[#FBFBFB] p-4 rounded-md mb-4 text-[#4E585F] w-[954.7px]">
         <h2 class="text-lg font-bold mb-4 leading-6 text-[#4E585F]">
           Latest Signed Contacts
         </h2>
-        <table class="w-full">
-          <thead>
-            <tr class="border-b border-b-[#D9D9D9]">
-              <th
-                class="text-left leading-[21px] text-[14] font-bold text-[#4E585F]"
-              >
-                #
-              </th>
-              <th
-                class="text-left leading-[21px] text-[14px] font-bold text-[#4E585F]"
-              >
-                Resident
-              </th>
-              <th
-                class="text-left leading-[21px] text-[14] font-bold text-[#4E585F]"
-              >
-                University
-              </th>
-              <th
-                class="text-left leading-[21px] text-[14] font-bold text-[#4E585F]"
-              >
-                Location
-              </th>
-              <th
-                class="text-left leading-[21px] text-[14px] font-bold text-[#4E585F]"
-              >
-                Status
-              </th>
-              <th class="text-left" />
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="border-b-[0.3px] border-b-[#D9D9D9]">
-              <td class="text-left p-2">
-                1
-              </td>
-              <td
-                class="text-left leading-[21px] text-[14px] font-bold text-[#4E585F]"
-              >
-                Dr. Girma Lemma
-                <div
-                  class="text-left leading-[21px] text-[12px] font-normal text-[#4E585F]"
-                >
-                  Today
-                </div>
-              </td>
-              <td
-                class="text-left leading-[21px] text-[14px] font-bold text-[#4E585F]"
-              >
-                Gondar University
-              </td>
-              <td
-                class="text-left leading-[21px] text-[14px] font-normal text-[#4E585F]"
-              >
-                Gonder
-              </td>
-              <td class="text-left">
-                <span
-                  class="text-[#21618C] leading-[21px] text-[14] font-normal"
-                >Info Updated</span>
-              </td>
+        <Table
+  :Fallback="TableRowSkeleton"
+  :firstCol="isRoleHrdi"
+  :headers="{
+    head: ['Ernp ID', 'Full Name', 'Program', 'University', 'Duration', 'Salary', 'Contract Amount', 'Status'],
+    row: ['id', 'fullName', 'program', 'university', 'duration', 'salary', 'totalSalary','contractStatus']
+  }"
+  :cells="{
+    totalSalary: totalSalary => formatCurrency(totalSalary),
+    salary: salary => formatCurrency(salary)
+  }"
+  :rows="allRows"
+>
+ 
+</Table>
 
-              <td class="text-left">
-                <span class="text-[#092537] leading-[21px] text-[14] font-bold">open</span>
-              </td>
-            </tr>
-            <tr class="border-b-[0.3px] border-b-[#D9D9D9]">
-              <td class="text-left p-2">
-                2
-              </td>
-              <td
-                class="text-left leading-[21px] text-[14] font-bold text-[#4E585F]"
-              >
-                Dr. Abel Tesfaye
-                <div
-                  class="text-left leading-[21px] text-[12px] font-normal text-[#4E585F]"
-                >
-                  09 July 2024
-                </div>
-              </td>
-              <td
-                class="text-left leading-[21px] text-[14] font-bold text-[#4E585F]"
-              >
-                Black-lion Hospital
-              </td>
-              <td
-                class="text-left leading-[21px] text-[14px] font-normal text-[#4E585F]"
-              >
-                Adiss Abeba
-              </td>
-              <td class="text-left">
-                <span
-                  class="text-[#36CB56] leading-[21px] text-[14] font-normal"
-                >Signed</span>
-              </td>
-              <td class="text-left">
-                <span class="text-[#21618C] leading-[21px] text-[14] font-bold">Approved</span>
-              </td>
-            </tr>
-            <tr class="border-b-[0.3px] border-b-[#D9D9D9]">
-              <td class="text-left p-2">
-                3
-              </td>
-              <td
-                class="text-left leading-[21px] text-[14] font-bold text-[#4E585F]"
-              >
-                Dr. Fimon Kiros
-                <div
-                  class="text-left leading-[21px] text-[12px] font-normal text-[#4E585F]"
-                >
-                  09 July 2024
-                </div>
-              </td>
-              <td
-                class="text-left leading-[21px] text-[14] font-bold text-[#4E585F]"
-              >
-                Ayder Comprehensive Hospital
-              </td>
-              <td
-                class="text-left leading-[21px] text-[14px] font-normal text-[#4E585F]"
-              >
-                Mekelle
-              </td><td class="text-left">
-                <span
-                  class="text-[#36CB56] leading-[21px] text-[14] font-normal"
-                >Signed</span>
-              </td>
-              <td class="text-left">
-                <span class="text-[#21618C] leading-[21px] text-[14] font-bold">Approved</span>
-              </td>
-            </tr>
-            <tr class="border-b-[0.3px] border-b-[#D9D9D9]">
-              <td class="text-left p-2">
-                4
-              </td>
-              <td
-                class="text-left leading-[21px] text-[14] font-bold text-[#4E585F]"
-              >
-                Dr. Semere Tsadik
-                <div
-                  class="text-left leading-[21px] text-[12px] font-normal text-[#4E585F]"
-                >
-                  09 July 2024
-                </div>
-              </td>
-              <td
-                class="text-left leading-[21px] text-[14] font-bold text-[#4E585F]"
-              >
-                Black-lion Hospital
-              </td>
-              <td
-                class="text-left leading-[21px] text-[14px] font-normal text-[#4E585F]"
-              >
-                Adiss Abeba
-              </td><td class="text-left leading-[21px] text-[14] font-bold">
-                <span
-                  class="text-[#21618C] leading-[21px] text-[14] font-normal"
-                >Info Updated</span>
-              </td>
-              <td class="text-left leading-[21px] text-[14] font-bold">
-                <span class="text-[#092537] leading-[21px] text-[14] font-bold">open</span>
-              </td>
-            </tr>
-            <tr class="border-b-[0.3px] border-b-[#D9D9D9]">
-              <td class="text-left p-2">
-                5
-              </td>
-              <td class="text-left leading-[21px] text-[14] font-bold">
-                Dr. Mahlet Mengstu
-                <div
-                  class="text-left leading-[21px] text-[12px] font-normal text-[#4E585F]"
-                >
-                  09 July 2024
-                </div>
-              </td>
-              <td
-                class="text-left leading-[21px] text-[14] font-bold text-[#4E585F]"
-              >
-                Ayder Comprehensive Hospital
-              </td>
-              <td
-                class="text-left leading-[21px] text-[14px] font-normal text-[#4E585F]"
-              >
-                Mekelle
-              </td>
-              <td class="text-left">
-                <span
-                  class="text-[#21618C] leading-[21px] text-[14] font-normal"
-                >Info Updated</span>
-              </td>
-              <td class="text-left">
-                <span class="text-[#092537] leading-[21px] text-[14] font-bold">open</span>
-              </td>
-            </tr>
-            <tr class="border-b-[0.3px] border-b-[#D9D9D9]">
-              <td class="text-left p-2">
-                6
-              </td>
-              <td
-                class="text-left leading-[21px] text-[14] font-bold text-[#4E585F]"
-              >
-                Dr. Amanuel Amare
-                <div
-                  class="text-left leading-[21px] text-[12px] font-normal text-[#4E585F]"
-                >
-                  09 July 2024
-                </div>
-              </td>
-              <td
-                class="text-left leading-[21px] text-[14] font-bold text-[#4E585F]"
-              >
-                Gondar University
-              </td>
-              <td
-                class="text-left leading-[21px] text-[14px] font-normal text-[#4E585F]"
-              >
-                Gonder
-              </td><td class="text-left">
-                <span
-                  class="text-[#21618C] leading-[21px] text-[14] font-normal"
-                >Info Updated</span>
-              </td>
-              <td class="text-left">
-                <span class="text-[#092537] leading-[21px] text-[14] font-bold">open</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
       </div>
     </div>
     <div class="bg-[#FBFBFB] p-4 rounded-[16px 24px 16px 24px] gap-2.5 ml-12 rounded-md w-[297px]" style="margin-bottom: 30px;">

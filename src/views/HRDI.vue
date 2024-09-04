@@ -134,7 +134,7 @@ const fileInput = ref(null)
       <div class="flex-1 h-full p-4 flex flex-col justify-center">
         <div class="bg-white rounded p-4 flex flex-col gap-2">
           <p>import</p>
-          <div class="h-10 rounded overflow-hidden bg-red-200 relative">
+          <div class="h-10 rounded overflow-hidden bg-[#b1afaf] relative">
             <div ref="progress" class="progress absolute rounded w-0 top-0 left-0 inset-0 bg-secondary" />
           </div>
         </div>

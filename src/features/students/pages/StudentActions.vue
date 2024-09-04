@@ -38,11 +38,11 @@ const selectedStatus = ref(''); // To hold the selected status filter
 const buttonClass = computed(() => {
   switch (camStatus.value) {
     case 'Withdrawn':
-      return 'bg-[#FF4040]'; // Example color for Withdrawn
+      return 'bg-[#3d3d39]'; // Example color for Withdrawn
     case 'Suspended':
       return 'bg-[#FFA500]'; // Example color for Suspended
     case 'Dismissed':
-      return 'bg-[#FFD700]'; // Example color for Dismissed
+      return 'bg-[#FF0700]'; // Example color for Dismissed
     case 'Graduated':
       return 'bg-[#32CD32]'; // Example color for Graduated
     default:
@@ -61,7 +61,7 @@ const filteredStudents = computed(() => {
 const filteredstatStudents = computed(() => {
   if (!selectedStatus.value) return sudents.students || [];
   return (sudents.students || []).filter(
-    (student) => student.registrationStatus === selectedStatus.value
+    (student) => student.campusStatus === selectedStatus.value
   );
 });
 const pagination = usePaginationTemp({
@@ -199,9 +199,7 @@ function rejectSelection() {
 function withdrawSelectedStudent(ernpId) {
   if (request.pending.value) return; // Prevent action if request is pending
 
-  // const camStatus = 'Withdrawn'; // Define the status for rejection
-
-  console.log(reasons.value);
+  console.log('Reason:', reasons.value);
 
   request.send(
     () =>
@@ -218,12 +216,32 @@ function withdrawSelectedStudent(ernpId) {
         reasons.value = ''; // Update the status of the specific row
         resetModalValues();
       }
+
       isWithdrawStudent.value = !isWithdrawStudent.value;
-      //status.value = values.status;
-      toasted(res.success, 'Rejected', res.error); // Show a toast notification
+
+      // Normalize and log the campus status for debugging
+      const normalizedStatus = camStatus.value.trim().toLowerCase();
+      console.log('Normalized Campus Status:', normalizedStatus);
+
+      // Determine the toast message based on the normalized status
+      let toastMessage = 'Action Completed'; // Default message
+      if (normalizedStatus === 'withdrawn') {
+        toastMessage = 'Withdrawn';
+      } else if (normalizedStatus === 'graduated') {
+        toastMessage = 'Graduated';
+      } else if (normalizedStatus === 'dismissed') {
+        toastMessage = 'Dismissed';
+      } else if (normalizedStatus === 'suspended') {
+        toastMessage = 'Suspended';
+      }
+
+      console.log('Toast Message:', toastMessage); // Log the toast message for debugging
+
+      toasted(res.success, toastMessage, res.error); // Show a toast notification with the correct message
     }
   );
 }
+
 
 function selectUser(item) {
   const idx = selected.value.findIndex((el) => {

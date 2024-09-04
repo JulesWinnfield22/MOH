@@ -121,7 +121,7 @@ export default {
       <div class="flex items-center justify-between mb-4">
         <div>
           <h1 class="text-2xl font-bold">
-            63 ጤና ሚኒስቴር-ኢትዮጵያ
+            ጤና ሚኒስቴር-ኢትዮጵያ
           </h1>
           <p class="text-sm text-gray-500">
             MINISTRY OF HEALTH-ETHIOPIA

@@ -1,11 +1,14 @@
 <template>
   <div class="gap-3">
-   <button
-      class="bg-[#092537] my-4 text-white py-2 px-4 rounded-lg shadow-md hover:bg-[#0f3c58] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-      @click="$router.push('/Requirements')"
+    <div class="py-2 border-b mb-2">
+      <Button 
+      @click="$router.go(-1)" 
+      type="primary" 
+      class="text-white bg-[#092537] rounded-lg shadow-md hover:bg-[#0f3c58] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 text-sm py-1 px-2"
     >
-      Back
-    </button>
+      Go Back
+    </Button>
+	</div>
     <RequirementsPdf />
   </div>
 </template>
