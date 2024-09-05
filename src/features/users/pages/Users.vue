@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
   import {getAllUsers} from '@/features/university/api/userApi'
   import TableRowSkeleton from '@skl/TableRowSkeleton.vue'
  import { usePagination } from '@/composables/usePagination'
@@ -41,8 +41,9 @@ const fileInput = ref(null)
 
 
 <template>
-	<div class="flex py-2 border-b items-center justify-end">
-		<Button @click="$router.push('/users/add')" type="primary">
+	<div class="flex justify-between py-2 border-b items-center">
+		<input @keydown.enter=" paginations.search.value = $event.target.value " class="rounded " placeholder="search users" />
+    <Button @click="$router.push('/users/add')" type="primary">
 			Add user
 		</Button>
 	</div>

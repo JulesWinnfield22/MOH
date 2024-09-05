@@ -345,7 +345,7 @@ function getPdf() {
           },
           {
             text: 'የጋብቻ ሁኔታ፡',
-            value: props.maritalStatus,
+            value: props.maritalStatus || ' ',
           }
         ].reduce((state, el) => {
           state.push({

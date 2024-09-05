@@ -50,6 +50,15 @@ export async function confirmContract(id, status, rejectionReason) {
   }
 }
 
+export function editContract(id, qyery, data) {
+  const qr = getQueryFormObject(qyery)
+  return api.addAuthenticationHeader().put(`${path}/editContract/${id}${qr}`, data, {
+    headers: {
+      "Content-Type": 'multipart/form-data'
+    }
+  })
+}
+
 export function getUserContract(userUuid) {
 	return api.addAuthenticationHeader().get(`${path}/findByUserUuid/${userUuid}`)
 }

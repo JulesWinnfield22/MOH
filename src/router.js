@@ -25,6 +25,7 @@ import AddStudents from './views/AddStudents.vue'
 import Profile from './views/Profile.vue'
 import Verification from './features/verification/pages/Verification.vue'
 import ContractFile from './features/students/pages/ContractFile.vue'
+import EditContractForm from './views/EditContractForm.vue'
 
 const routes = [
   {
@@ -236,6 +237,16 @@ const routes = [
     path: '/SigninDocuments',
     name: 'SigninDocuments',
     component: SigninDocuments,
+    meta: {
+      requiresAuth: true,
+      privileges: ['Student'],
+      status: 'registered'
+    }
+  },
+  {
+    path: '/editsignindocuments',
+    name: 'EditSigninDocuments',
+    component: EditContractForm,
     meta: {
       requiresAuth: true,
       privileges: ['Student'],

@@ -42,6 +42,8 @@ const props = defineProps({
   }, // set to true if you dont want the value in the submited value
 });
 
+console.log(props.value);
+
 const initialValue = ref(props.modelValue || props.value);
 const initialAttrs = ref({ type: 'text', ...(props.attributes || {}) });
 
@@ -296,6 +298,7 @@ watch(thisValue, () => {
 
 function updateEl(setError = true) {
   if (initialAttrs.value?.type == 'file') {
+    console.log("hahaah")
     inputEl.value.val = thisValue.value;
   } else if (booleaninputTypes.includes(initialAttrs.value?.type)) {
     if (inputEl.value.checked) {

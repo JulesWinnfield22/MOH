@@ -24,8 +24,9 @@ watch(file, () => {
   <InputParent
     v-model="file"
     :attributes="{ ...attributes, type: 'file' }"
-    v-slot="{ setRef, error, value, changeValue }"
+    v-slot="{ setRef, error, value, name, changeValue }"
   >
+    {{ console.log(name, value) }}
     <InputLayout :error="error" :label="$attrs?.label">
       <div class="flex max-w-full gap-4 items-center">
         <label

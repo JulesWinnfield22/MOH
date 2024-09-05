@@ -5,7 +5,7 @@ import { useApiRequest } from '@/composables/useApiRequest';
 import { useStudent } from '@/features/students/store/studentStore'
 import { computed } from 'vue';
 import { allRequest } from '@/utils/utils';
-import { getUserContract } from '../api/contractApi';
+import { getContractFileById, getUserContract } from '../api/contractApi';
 
 const props = defineProps({
 	contract: {
@@ -18,6 +18,8 @@ const student = useStudent()
 
 const auth = useAuth()
 const req = useApiRequest()
+const files = useApiRequest()
+
 if(Object.keys(student.student).length == 0) {
 	req.send(
 		() => allRequest({
@@ -29,6 +31,29 @@ if(Object.keys(student.student).length == 0) {
 			if(res.success) {
 				student.set(res.data?.user)
 				student.setContract(res.data?.contract)
+
+				const docs = {}
+				
+				if(res.data?.contract?.martialCertName) {
+					docs.martialCertName = getContractFileById(res.data.contract?.martialCertName)
+				}
+
+				if(res.data?.contract?.identityCertName) {
+					docs.identityCertName = getContractFileById(res.data.contract?.identityCertName)
+				}
+				if(res.data?.contract?.agentCertName) {
+					docs.agentCertName = getContractFileById(res.data.contract?.agentCertName)
+				}
+
+				console.log(docs)
+				files.send(
+					() => allRequest(docs),
+					res => {
+						console.log("here", res.data);
+						
+					}
+					
+				)
 			}
 		}
 	)
@@ -45,5 +70,6 @@ const isRegistered = computed(() => {
 		:pending="req.pending.value"
 		:error="req.error.value"
 		:isRegistered="isRegistered"
+		v-bind="files.response.value"
 	/>
 </template>

@@ -22,11 +22,11 @@ const auth = useAuth();
             {{
               contract?.rejectionReason
             }}
-            so complete your documents and re submit your contract
+            so complete your documents and<button @click="$router.push('/editsignindocuments')" class="italic underline text-primary">re submit your contract</button>
           </p>
         
           Go to <RouterLink class="text-primary italic" to="/SigninDocuments"> Sign In Documents </RouterLink> For your contract
-          
+        
         </h1>
         <h1 v-else-if="isRegistered && [ 'Submitted'].includes(contract.contractStatus)">
          <p>

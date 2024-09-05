@@ -39,11 +39,11 @@ function submit(values) {
       data: values,
       student: student.student,
       contract: student.contract,
-      maritalStatus: married.value,
+      maritalStatus: values?.martialStatus,
     },
     (res) => {
       if (!res) return;
-      const agent_file = !isSingle.value
+      const agent_file = values.married != "Single"
         ? { agent_file: values['agent_file'] }
         : {};
 
@@ -59,7 +59,7 @@ function submit(values) {
         delete values.agent_file,
         delete values.spouseIdentity_file,
         req.send(
-          () => createContract({ ...values, martialStatus: married.value }, fd),
+          () => createContract(values, fd),
           (res) => {
             console.log(res);
             toasted(res.success, 'Created', res.error);

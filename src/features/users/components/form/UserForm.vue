@@ -74,6 +74,7 @@ console.log(props.universities);
   
   <div class="grid user-form-grid gap-6">
     <Select
+      validation="required"
       label="Title"
       name="title"
       :options="['Mrs.', 'Mr.', 'Dr']"
@@ -82,26 +83,26 @@ console.log(props.universities);
     />
     
     <Input
+      validation="required"
       label="First Name *"
       name="firstName"
       v-model="user.firstName"
-      validation="required"
       :attributes="{ placeholder: 'Enter Your First Name' }"
     />
     
     <Input
+      validation="required"
       label="Father's Name *"
       name="fathersName"
       v-model="user.fathersName"
-      validation="required"
       :attributes="{ placeholder: 'Enter Your Fathers Name' }"
     />
     
     <Input
+      validation="required"
       label="Grandfather's Name *"
       name="grandFathersName"
       v-model="user.grandFathersName"
-      validation="required"
       :attributes="{ placeholder: 'Enter Your Grandfathers Name' }"
     />
   </div>
@@ -124,6 +125,7 @@ console.log(props.universities);
     />
     
     <Input
+      validation="required"
       label="Birth Date *"
       name="birthDate"
       v-model="user.birthDate"
