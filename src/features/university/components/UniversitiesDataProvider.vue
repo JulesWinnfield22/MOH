@@ -13,7 +13,7 @@ import { useApiRequest } from '@/composables/useApiRequest';
 			() => getAllUniversities({}),
 			res => {
 				if(res.success) {
-					universities.set(res.data)
+					universities.set(res.data.content)
 				}
 			}
 		)

@@ -10,7 +10,10 @@
 	const createReq = useApiRequest()
 
 	req.send(
-		() => getAllUniversities({})
+		() => getAllUniversities({}),
+		res => {
+			console.log(res, 'sdfsdf')
+		}
 	)
 
 	function add(value) {
@@ -29,9 +32,10 @@
 	<!-- <div class="py-2 border-b mb-2">
 		<Button @click="$router.go(-1)" type="primary">go back</Button>
 	</div> -->
+	{{ console.log(req.response.value) }}
 	<UserForm
-		:pending="req.pending.value"
+		v-if="!req.pending.value"
 		:onSubmit="add"
-		:universities="req.response.value || []"
+		:universities="req.response.value?.content || []"
 	/>
 </template>

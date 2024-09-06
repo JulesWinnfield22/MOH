@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { usePaginationTemp } from '@/composables/usePaginaionTemp';
-import { getUniStudents } from '@/features/students/api/studentApi.js';
+import { getStudentsByUniId, getUniStudents } from '@/features/students/api/studentApi.js';
 import { useAuth } from '@/store/auth.js';
 import Table from '@com/Table.vue';
 import { useStudents } from '../store/studentsStore';
@@ -14,6 +14,7 @@ import {
 } from '@/features/students/api/studentApi.js';
 import { useApiRequest } from '@/composables/useApiRequest';
 import { toasted } from '@/utils/utils';
+import { usePagination } from '@/composables/usePagination';
 
 const sudents = useStudents();
 const auth = useAuth();
@@ -60,11 +61,11 @@ const filteredStudents = computed(() => {
   );
 });
 
-const pagination = usePaginationTemp({
+const pagination = usePagination({
   store: sudents,
-  cb: (data, config) =>
-    getUniStudents(uniId || auth.auth?.user?.universityProviderUuid),
+  cb: (data, config) => getStudentsByUniId(uniId || auth.auth?.user?.universityProviderUuid, data),
 });
+
 const showRejectionReasonModal = ref(false);
 const showStudent = ref(false);
 function applyFilter() {

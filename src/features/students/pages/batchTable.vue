@@ -11,6 +11,7 @@ import { useBatchs } from '../store/batchStore';
 import { useApiRequest } from '@/composables/useApiRequest';
 import { formatCurrency, toasted } from '@/utils/utils';
 import { getAllUniversities } from '@/features/university/api/uniApI';
+import { usePagination } from '@/composables/usePagination';
 const auth = useAuth();
 
 const selected = ref([]);
@@ -24,9 +25,9 @@ const paginations = usePaginationTemp({
   cb: getAllUniversities,
 });
 
-const pagination = usePaginationTemp({
+const pagination = usePagination({
   store: batchs,
-  cb: (data, config) => getBatchStudents(uniId),
+  cb: (data, config) => getBatchStudents(uniId, data),
 });
 
 const isModalVisible = ref(false);
@@ -89,13 +90,9 @@ const program = ref([]);
 watch(
   selectedRow,
   () => {
-    console.log(
-      (paginations.data.value || []).find(
-        (el) => el.universityName == selectedRow.value?.universityName
-      )
-    );
+    console.log(paginations.data.value);
     program.value =
-      (paginations.data.value || []).find(
+      (paginations.data.value?.content || []).find(
         (el) => el.universityName == selectedRow.value?.universityName
       )?.programs || [];
   },
@@ -104,8 +101,8 @@ watch(
 </script>
 <template>
   <div class="bg-[#FBFBFB] overflow-x-scroll show-scrollbar">
-    <div class="flex justify-end w-full">
-      {{}}
+    <div class="flex justify-between w-full">
+      <input class="rounded" @keydown.enter="pagination.search.value = $event.target.value" placeholder='Search Studetns' />
       <button
         class="bg-[#21618C] text-white flex gap-2 font-dm-sans p-2 rounded-md"
         @click="$router.push(`/AddStudents/${route.params.batchId}`)"
@@ -282,6 +279,7 @@ watch(
               >Date of Birth</label
             >
             <input
+              type='date'
               v-model="selectedRow.dateOfBirth"
               id="dateOfBirth"
               class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
@@ -349,7 +347,7 @@ watch(
               <option
                 :key="uni.universityName"
                 :value="uni.universityName"
-                v-for="uni in paginations.data.value || []"
+                v-for="uni in paginations.data.value?.content || []"
               >
                 {{ uni.universityName }}
               </option>

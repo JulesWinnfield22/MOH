@@ -1,3 +1,4 @@
+import { getQueryFormObject } from '@/utils/utils'
 import ApiService from '../../../services/ApiService'
 
 // import { getQueryFormObject } from "@/utils/utils";
@@ -14,11 +15,11 @@ export function getStudents() {
     .get(`${path}/all`)
 }
 
-export function getBatchStudents(batchId) {
-  //   const qr = getQueryFormObject(query);
+export function getBatchStudents(batchId, query = {}) {
+     const qr = getQueryFormObject(query);
     return api
       .addAuthenticationHeader()
-      .get(`${path}/batches/${batchId}`)
+      .get(`${path}/batches/${batchId}${qr}`)
   }
   
 export function addStudent(data) {
