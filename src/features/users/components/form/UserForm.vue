@@ -43,7 +43,7 @@ const combinedOptions = computed(() => {
 
   const universityOptions = props.universities.map((el) => ({
     label: el.universityName,
-    value: el.universityUuid,
+    value: el.universityName,
   }));
 
   return [...otherOption, ...universityOptions];
@@ -157,7 +157,7 @@ console.log(props.universities);
       :obj="true"
       label="University *"
       name="universityName"
-      :options="universities.map(el => ({ label: el.universityName, value: el.universityUuid }))"
+      :options="universities.map(el => ({ label: el.universityName, value: el.universityName }))"
       validation="required"
       :attributes="{ placeholder: 'Select University' }"
     />

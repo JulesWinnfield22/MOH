@@ -26,9 +26,9 @@ function openStudent(row) {
 const filteredRows = computed(() => {
   return contract.contracts.filter(row => row.contractStatus === 'submitted');
 });
-const filteredRowsApproved = computed(() => {
-  return contract.contracts.filter(row => row.contractStatus === 'Approved' ,'submitted','Declined' );
-});
+// const filteredRowsApproved = computed(() => {
+//   return contract.contracts.filter(row => row.contractStatus === 'Approved' ,'submitted','Declined' );
+// });
 function closeStudent(){
   showStudent.value=false;
 }
