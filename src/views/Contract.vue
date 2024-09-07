@@ -10,6 +10,7 @@ import TableRowSkeleton from '@/skeletons/TableRowSkeleton.vue'
 import { confirmContract, rejectContract } from '@/features/students/api/contractApi'
 import { useApiRequest } from '@/composables/useApiRequest'
 import { formatCurrency, toasted } from '@/utils/utils'
+import { usePagination } from '@/composables/usePagination'
 const selectedTable = ref('approved');
 const contract = useContracts()
 const auth = useAuth()
@@ -40,7 +41,7 @@ const uniId = route.params.id
 
 const request = useApiRequest()
 
-const pagination = usePaginationTemp({
+const pagination = usePagination({
   store: contract,
   cb: (data, config) => findAllByContractStatusApproved(),
 })

@@ -32,7 +32,7 @@ export function usePagination(options = {}) {
                 ? ++searchPagination.page.value
                 : searchPagination.page.value
             : --searchPagination.page.value,
-          size: searchPagination.limit.value || 25,
+          limit: searchPagination.limit.value || 25,
         }),
       )
     }
@@ -46,7 +46,7 @@ export function usePagination(options = {}) {
                 ? ++pagination.page.value
                 : pagination.page.value
             : --pagination.page.value,
-          size: pagination.limit.value || 25,
+          limit: pagination.limit.value || 25,
         }),
       )
     }
@@ -62,12 +62,13 @@ export function usePagination(options = {}) {
       () => paginationOptions.value.cb(getPaginationData(next, current)),
       (res) => {
         if (paginationOptions.value.store && res.success)
-          paginationOptions.value.store.set(res.data?.response || [])
+          paginationOptions.value.store.set(res.data?.content || [])
 
-        pagination.totalPages.value = res.data?.totalPages || 1
+        console.log(res.data?.content?.length, pagination.limit.value)
+        pagination.totalPages.value = res.data?.page?.totalPages || 1
         if (
           res.success
-          && res.data?.response?.length < pagination.limit.value
+          && res.data?.content?.length < pagination.limit.value
         )
           pagination.done.value = true
       },
@@ -183,7 +184,7 @@ export function usePagination(options = {}) {
     data:
       paginationOptions.value.store && !searching.value
         ? paginationOptions.value.store.getAll()
-        : req.response || [],
+        : req.response.value?.content || [],
     error: req.error,
     pending: req.pending,
     dirty: req.dirty,

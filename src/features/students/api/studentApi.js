@@ -9,9 +9,15 @@ export function getUniStudents(id) {
 	return api.addAuthenticationHeader().get(`/university/${id}`)
 }
 
+export function getStudentsByUniId(id, query = {}) {
+	const qr = getQueryFormObject(query)
+	return api.addAuthenticationHeader().get(`${path}/findMYUniversityStudents/${id}${qr}`)
+}
+
 export function getStudentbyId(uuid) {
 	return api.addAuthenticationHeader().get(`${path}/${uuid}`)
 }
+
 export function getStudentbyBatch(batchNumber) {
 	return api.addAuthenticationHeader().get(`${path}/batches/${batchNumber}`)
 }

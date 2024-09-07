@@ -15,7 +15,7 @@ const totalPages = ref(5)
 const open = ref(false)
 
 
-  const paginations = usePagination({
+  const paginations = usePaginationTemp({
     cb: getAllUsers
   })
 

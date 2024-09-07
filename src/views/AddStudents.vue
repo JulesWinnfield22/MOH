@@ -35,8 +35,8 @@ req.send(
 		<Button @click="$router.go(-1)" type="primary">go back</Button>
 	</div>
 	<UserForm
-		:pending="req.pending.value"
+		v-if="!req.pending.value"
 		:onSubmit="add"
-		:universities="req.response.value || []"
+		:universities="req.response.value?.content || []"
 	/>
 </template>
