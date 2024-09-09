@@ -131,7 +131,7 @@ watch(reasons, (newVal) => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4">
+  <div class="flex flex-col p-5  gap-4">
     <FileMdl :closeFile="closeFile" v-if="file" :file="file" />
     
 		<p class="text-gray-500 font-semibold">Address</p>

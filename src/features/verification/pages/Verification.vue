@@ -91,7 +91,7 @@ function goBack() {
 }
 </script>
 <template>
-  <div class="w-[90vw] h-screen flex flex-col gap-8 mx-auto">
+  <div class="w-[90vw] h-screen flex p-5 flex-col gap-8 mx-auto">
     <div class="flex py-6 items-center justify-between">
       <div class="h-10">
         <img src="/src/assets/moh_logo.svg" />

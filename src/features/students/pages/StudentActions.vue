@@ -280,7 +280,7 @@ const isRoleHrdi = computed(
 </script>
 
 <template>
-  <div class="bg-[#FBFBFB]">
+  <div class="bg-[#FBFBFB] p-5 ">
     <!-- <div v-if="isRoleHrdi" class="flex justify-between items-center">
       <div
         class="p-4 text-[#4E585F] font-dm-sans text-[16px] font-bold leading-[24px] text-left"
@@ -357,7 +357,7 @@ const isRoleHrdi = computed(
         class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50"
       >
         <div
-          class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]"
+          class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px]"
         >
           <div class="flex justify-between">
             <h2
@@ -396,26 +396,56 @@ const isRoleHrdi = computed(
             <option value="Graduated">Graduated</option>
           </select>
           <select
+          v-if="camStatus === 'Withdrawn'"
             v-model="reasons"
             class="border w-[829px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4"
           >
-            <option value="" disabled>Select a reason for Withdrawal</option>
-            <option value="University is currently full">
-              University is currently full
+            <option value="" disabled>Select a reason</option>
+            <option value="Illness">
+              Illness
             </option>
-            <option value="Program is currently Unavailable ">
-              Program is currently Unavailable
-            </option>
+          
             <option value="Incomplete Documents">Incomplete Documents</option>
             <option value="Invalid Information">Invalid Information</option>
-            <option value="">Other</option>
+            <option value="Other">Other</option>
           </select>
-
+          <select
+          v-if="camStatus === 'Suspended'"
+            v-model="reasons"
+            class="border w-[829px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4"
+          >
+            <option value="" disabled>Select a reason</option>
+            <option value="Academic Dishonesty">
+              Academic Dishonesty
+            </option>
+          
+            <option value="Behavioral Issues">Behavioral Issues</option>
+            <option value="Substance Abuse">Substance Abuse</option>
+            <option value="Behavioral Issues">Behavioral Issues</option>
+            <option value="Violence or Threatening Behavior">Violence or Threatening Behavior</option>
+            <option value="Other">Other</option>
+          </select>
+          <select
+          v-if="camStatus === 'Dismissed'"
+            v-model="reasons"
+            class="border w-[829px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4"
+          >
+            <option value="" disabled>Select a reason</option>
+            <option value="Academic Dishonesty">
+              Academic Dishonesty
+            </option>
+          
+            <option value="Violent Behavior">Violent Behavior</option>
+            <option value="Severe Harassment or Bullying">Severe Harassment or Bullying</option>
+            <option value="Criminal Activity">Criminal Activity</option>
+            <option value="Threats to Campus Safety">Threats to Campus Safety</option>
+            <option value="Other">Other</option>
+          </select>
           <!-- Textarea displayed only when "Other" is selected -->
           <textarea
             v-if="reasons === 'Other'"
             v-model="discription"
-            placeholder="State the reason for rejection"
+            placeholder="State the reason"
             class="border w-[829px] h-[158px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4"
           />
           <div class="flex justify-end">

@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { usePaginationTemp } from '@/composables/usePaginaionTemp'
+import { usePagination } from '@/composables/usePagination'
 import { findAllByContractStatusApproved} from '@/features/students/api/contractApi'
 import { useAuth } from '@/store/auth.js'
 import Table from '@com/Table.vue'
@@ -10,7 +10,6 @@ import TableRowSkeleton from '@/skeletons/TableRowSkeleton.vue'
 import { confirmContract, rejectContract } from '@/features/students/api/contractApi'
 import { useApiRequest } from '@/composables/useApiRequest'
 import { formatCurrency, toasted } from '@/utils/utils'
-import { usePagination } from '@/composables/usePagination'
 const selectedTable = ref('approved');
 const contract = useContracts()
 const auth = useAuth()
@@ -63,7 +62,7 @@ function confirmSelection() {
 
 function rejectSelection() {
   if(!selected.value?.length || request.pending.value) return
-  
+   
   request.send(
     () => rejectContract(selected.value),
     res => {
@@ -108,7 +107,7 @@ const allSelected = computed(() => {
 const isRoleHrdi = computed(() => auth.auth?.user?.privileges?.[0] == 'ROLE_University')
 </script>
 <template>
-  <div class="bg-[#FBFBFB] overflow-x-scroll show-scrollbar">
+  <div class="bg-[#FBFBFB] p-5 overflow-x-scroll show-scrollbar">
     <div v-if="isRoleHrdi" class="flex justify-between items-center">
       <div class="p-4 text-[#4E585F] font-dm-sans text-[16px] font-bold leading-[24px] text-left">
         contracts
@@ -158,7 +157,7 @@ const isRoleHrdi = computed(() => auth.auth?.user?.privileges?.[0] == 'ROLE_Univ
     <p class=" font-bold pb-8 " v-if="contract.contracts.length"> 
       {{contract.contracts[0].unversityName}}
     </p>
-    <div v-if="selectedTable === 'approved'">
+    <div v-if="selectedTable === 'approved'" class="p-5">
    Approved
   <Table
     :Fallback="TableRowSkeleton"

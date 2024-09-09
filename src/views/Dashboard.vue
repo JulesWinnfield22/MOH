@@ -119,7 +119,7 @@ const users = ref([...Array(10).keys()].map(() => testUser));
 </script>
 
 <template>
-  <div class="grid grid-cols-3">
+  <div class="grid p-5 grid-cols-3">
     <div class="flex col-span-2 flex-col p-4">
       <!-- <div class="flex items-center justify-between mb-4">
       <<div class="fixed inset-y-0 left-0 z-30 w-64 overflow-y-auto transition duration-300 transform bg-[#092537] lg:translate-x-0 lg:static lg:inset-0 bg-cover bg-center" style="background-image: url('.../assets/Untitled.jpg');">

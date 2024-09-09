@@ -73,7 +73,7 @@ const allSelected = computed(() => {
 const isRoleHrdi = computed(() => auth.auth?.user?.privileges?.[0] == 'ROLE_University')
 </script>
 <template>
-  <div class="bg-[#FBFBFB] overflow-x-scroll show-scrollbar">
+  <div class="bg-[#FBFBFB] p-5 overflow-x-scroll show-scrollbar">
     <div v-if="showRejectionReasonModal " class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50">
             <div class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]">
               <div class=" flex justify-between">

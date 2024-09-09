@@ -1,12 +1,12 @@
 <template>
-  <div class="container">
-    <div class="left-content">
+  <div class="container p-5">
+    <div class="left-content p-5">
       <h2>Agency agreement Format</h2>
       <p>Agency_document.docx</p>
     </div>
     <button class="download-btn" @click="$router.push('/Requirement')">Download</button>
   </div>
-  <div class="containers my-8 font-sans text-[#79838C]">
+  <div class="containers my-8 p-5 font-sans text-[#79838C]">
     <!-- Left Side Section -->
     <section class="left-section my-3">
       <h3 class="font-bold">Note for Married Students</h3>

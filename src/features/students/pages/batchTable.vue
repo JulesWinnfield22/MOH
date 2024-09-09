@@ -100,7 +100,7 @@ watch(
 );
 </script>
 <template>
-  <div class="bg-[#FBFBFB] overflow-x-scroll show-scrollbar">
+  <div class="bg-[#FBFBFB] p-5 overflow-x-scroll show-scrollbar">
     <div class="flex justify-between w-full">
       <input class="rounded" @keydown.enter="pagination.search.value = $event.target.value" placeholder='Search Studetns' />
       <button

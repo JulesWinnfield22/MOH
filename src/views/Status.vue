@@ -5,7 +5,7 @@ const auth = useAuth();
 </script>
 
 <template>
-  <div class="container">
+  <div class="container p-5">
     <StudentDataProvider v-slot="{ student, contract, pending, isRegistered }">
       {{ console.log(student) }}
       <div v-if="!pending" class="message text-center">

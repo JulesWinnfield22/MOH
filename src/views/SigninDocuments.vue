@@ -70,7 +70,7 @@ function submit(values) {
 }
 </script>
 <template>
-  <div class="flex flex-col gap-2">
+  <div class="flex flex-col p-5 gap-2">
     <StudentDataProvider v-slot="{ pending, isRegistered }">
       <div
         class="p-2 border-l-4 border-red-500 bg-orange-200"

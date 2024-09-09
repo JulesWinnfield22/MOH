@@ -66,9 +66,7 @@ console.log(props.universities);
 </script>
 
 <template>
-  <div class="py-2 border-b mb-2">
-		<Button @click="$router.go(-1)" type="primary">go back</Button>
-	</div>
+
   <Form v-slot="{ submit }" id="userForm" class="flex flex-col gap-6 p-6 bg-white shadow-md rounded-lg">
   <h2 class="text-lg font-semibold mb-4">User Information</h2>
   

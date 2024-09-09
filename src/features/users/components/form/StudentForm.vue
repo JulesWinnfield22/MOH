@@ -53,7 +53,7 @@ function submitForm({ values, reset }) {
 </script>
 
 <template>
-  <Form v-slot="{ submit }" id="userForm" class="flex flex-col gap-4">
+  <Form v-slot="{ submit }" id="userForm" class="flex flex-col p-5 gap-4">
     <div class="grid grid-cols-4 gap-4">
       <!-- Batch Number Input -->
       <Input

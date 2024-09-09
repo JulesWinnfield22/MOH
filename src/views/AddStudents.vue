@@ -31,7 +31,7 @@ req.send(
 	}
 </script>
 <template>
-	<div class="py-2 border-b mb-2">
+	<div class="py-2 border-b p-5 mb-2">
 		<Button @click="$router.go(-1)" type="primary">go back</Button>
 	</div>
 	<UserForm
