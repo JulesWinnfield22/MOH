@@ -35,7 +35,7 @@ const combinedOptions = computed(() => {
 });
 
 const program = computed(() => {
-  return props.universities.find(el => el.universityUuid == uniId.value)?.programs || [];
+  return props.universities.find(el => el.universityName == uniId.value)?.programs || [];
 });
 
 // Watch for "Other" option selection
@@ -47,23 +47,7 @@ watch(selectedOption, (newVal) => {
 });
 
 function submitForm({ values, reset }) {
-  // Find the university name from its UUID
-  const selectedUniversity = props.universities.find(el => el.universityUuid === values.universityName);
-  const universityName = selectedUniversity?.universityName || '';
-
-  // Find the program name from its UUID
-  const selectedProgram = program.value.find(el => el.programUuid === values.programName);
-  const programName = selectedProgram?.programName || '';
-
-  // Prepare data to send with the desired fields
-  const dataToSend = {
-    ...values,
-    universityName,
-    programName
-  };
-
-  // Submit the form data
-  props.onSubmit(dataToSend);
+  props.onSubmit(values);
   reset();
 }
 </script>
@@ -141,7 +125,7 @@ function submitForm({ values, reset }) {
         :obj="true"
         label="University *"
         name="universityName"
-        :options="universities.map(el => ({label: el.universityName, value: el.universityUuid}))"
+        :options="universities.map(el => ({label: el.universityName, value: el.universityName}))"
         validation="required"
         :attributes="{ type: 'text', placeholder: 'Select University' }"
       />
