@@ -156,7 +156,7 @@ console.log(props.universities);
       v-if="type === 'University'"
       :obj="true"
       label="University *"
-      name="universityName"
+      name="universityUuid"
       :options="universities.map(el => ({ label: el.universityName, value: el.universityUuid }))"
       validation="required"
       :attributes="{ placeholder: 'Select University' }"
