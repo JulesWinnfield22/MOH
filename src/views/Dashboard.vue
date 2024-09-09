@@ -187,14 +187,6 @@ const users = ref([...Array(10).keys()].map(() => testUser));
           <h2
             class="text-sm font-normal mb-2 leading-[21px] text-[#4E585F] font-dm-sans"
           >
-            Total Applications
-          </h2>
-          <p class="text-3xl font-bold leading-8 text-[#4E585F]">1,345</p>
-        </div>
-        <div class="bg-[#FBFBFB] p-4 rounded-md">
-          <h2
-            class="text-sm font-normal mb-2 leading-[21px] text-[#4E585F] font-dm-sans"
-          >
             Current Residents
           </h2>
           <p class="text-3xl font-bold leading-8 text-[#4E585F]">890</p>
@@ -203,7 +195,7 @@ const users = ref([...Array(10).keys()].map(() => testUser));
           <h2
             class="text-sm font-normal mb-2 leading-[21px] text-[#4E585F] font-dm-sans"
           >
-            Contacts
+            Contrcts
           </h2>
           <p class="text-3xl font-bold leading-8 text-[#4E585F]">1,870</p>
         </div>
@@ -261,42 +253,42 @@ const users = ref([...Array(10).keys()].map(() => testUser));
         </li>
       </ul>
     </div>
-    <div class="bg-[#FBFBFB] p-4 rounded-md mb-4 text-[#4E585F] w-[954.7px]">
-        <h2 class="text-lg font-bold mb-4 leading-6 text-[#4E585F]">
-          Latest Signed Contacts
-        </h2>
-        <Table
-          :Fallback="TableRowSkeleton"
-          :firstCol="isRoleHrdi"
-          :headers="{
-            head: [
-              'Ernp ID',
-              'Full Name',
-              'Program',
-              'University',
-              'Duration',
-              'Salary',
-              'Contract Amount',
-              'Status',
-            ],
-            row: [
-              'id',
-              'fullName',
-              'program',
-              'university',
-              'duration',
-              'salary',
-              'totalSalary',
-              'contractStatus',
-            ],
-          }"
-          :cells="{
-            totalSalary: (totalSalary) => formatCurrency(totalSalary),
-            salary: (salary) => formatCurrency(salary),
-          }"
-          :rows="allRows"
-        >
-        </Table>
-      </div>
   </div>
+  <div class="bg-[#FBFBFB] w-full col-span-3 p-4 rounded-md mb-4 text-[#4E585F] w-[954.7px]">
+      <h2 class="text-lg font-bold mb-4 leading-6 text-[#4E585F]">
+        Latest Signed Contacts
+      </h2>
+      <Table
+        :Fallback="TableRowSkeleton"
+        :firstCol="isRoleHrdi"
+        :headers="{
+          head: [
+            'Ernp ID',
+            'Full Name',
+            'Program',
+            'University',
+            'Duration',
+            'Salary',
+            'Contract Amount',
+            'Status',
+          ],
+          row: [
+            'id',
+            'fullName',
+            'program',
+            'university',
+            'duration',
+            'salary',
+            'totalSalary',
+            'contractStatus',
+          ],
+        }"
+        :cells="{
+          totalSalary: (totalSalary) => formatCurrency(totalSalary),
+          salary: (salary) => formatCurrency(salary),
+        }"
+        :rows="allRows"
+      >
+      </Table>
+    </div>
 </template>

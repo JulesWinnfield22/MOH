@@ -95,7 +95,10 @@ export function usePagination(options = {}) {
             signal: controller.signal,
           }),
         (res) => {
-          searchPagination.totalPages.value = res.data?.totalPages || 1
+          if (paginationOptions.value.store && res.success) {
+            paginationOptions.value.store.set(res.data?.content || []) 
+            searchPagination.totalPages.value = res.data?.page?.totalPages || 1
+          }
           if (
             res?.success
             && res.data?.response?.length < searchPagination.limit.value
@@ -176,7 +179,13 @@ export function usePagination(options = {}) {
       : pagination.page.value
   })
 
+  function send() {
+    pagination.done.value = false;
+    pagination.page.value = 1;
+    fetch()
+  }
   return {
+    send,
     page,
     search,
     perPage,

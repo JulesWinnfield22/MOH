@@ -187,7 +187,7 @@ function rejectSelection() {
       if (res.success) {
         sudents.updateStatus(status, reason.value, selected.value);
         selected.value = [];
-        reason = '';
+        reason.value = '';
       }
       toasted(res.success, 'Rejected', res.error);
     }
@@ -327,8 +327,8 @@ const isRoleHrdi = computed(
         </button>
       </div>
     </div>
-    <p class="font-bold pb-8" v-if="!pagination.pending.value">
-      {{ sudents.students.universityName }}
+    <p class="font-bold pb-8 py-2 text-xl">
+      {{ sudents.students?.[0]?.universityName}}
     </p>
 
     <div v-if="isRoleHrdi">
