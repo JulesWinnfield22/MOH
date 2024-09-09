@@ -12,7 +12,12 @@ module.exports = {
         dark: 'rgba(var(--dark) / <alpha-value>)',
         secondary: 'rgba(var(--secondary) / <alpha-value>)',
         primary: 'rgba(var(--primary) / <alpha-value>)',
+        "base-clr": 'rgba(var(--base-clr) / <alpha-value>)',
       },
+      spacing: {
+        'drawer-width': 'var(--drawer-width)',
+        "navbar-height": 'var(--navbar-height)'
+      }
     },
   },
   plugins: [

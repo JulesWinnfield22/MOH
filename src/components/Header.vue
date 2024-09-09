@@ -25,7 +25,7 @@ const toggleVisibility = () => {
 
 <template>
   <header
-    class="flex items-center justify-between px-6 py-4 bg-white border-b-4 border-b-[#D9D9D9]"
+    class="flex items-center h-full justify-between px-6 py-4 bg-white border-b-4 border-b-[#D9D9D9]"
   >
     <div class="flex items-center">
       <button
