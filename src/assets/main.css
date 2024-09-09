@@ -9,15 +9,27 @@
   --dark: 78 88 95;
   --primary: 33 97 140;
   --secondary: 9 37 55;
+  --base-clr: 255 255 255;
+
+  --drawer-width: 18rem;
+  --navbar-height: 3.5rem;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  overflow: hidden;
 }
 
 .show-scrollbar {
   scrollbar-width: thin;
+  overflow: auto;
 }
 
-.show-scrollbar::-webkit-scrollbar-track {
-  display: block;
-  width: 5px;
+.show-scrollbar::-webkit-scrollbar {
+  color: red;
+  width: 15px;
 }
 
 *,
@@ -27,29 +39,14 @@
   box-shadow: none;
 }
 
-::-webkit-scrollbar {
-  width: 7px;
-}
-
 .dm-sans{
   font-family: dmSans;
 }
 
-::-webkit-scrollbar-track{
-  background: #2D3748;
-}
-
-::-webkit-scrollbar-thumb{
-  background: #CBD5E0;
-}
-
-::-webkit-scrollbar-thumb:hover{
-  background: #718096;
-}
-<!-- In your Vue.js component -->
 .dm-sans {
   font-family: 'DM Sans', sans-serif;
 }
+
 .edit-button {
   width: 69.77px;
   height: 31px;

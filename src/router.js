@@ -26,8 +26,224 @@ import Profile from './views/Profile.vue'
 import Verification from './features/verification/pages/Verification.vue'
 import ContractFile from './features/students/pages/ContractFile.vue'
 import EditContractForm from './views/EditContractForm.vue'
+import MainLayout from './layout/MainLayout.vue'
 
 const routes = [
+  {
+    path: '',
+    component: MainLayout,
+    name: 'Dashboard',
+    children: [
+      {
+        path: '/',
+        name: 'Dashboard',
+        component: Dashboard,
+        meta: {
+          requiresAuth: true,
+        }
+      },
+      {
+        path: '/Profile',
+        name: 'Profile',
+        component: Profile,
+        meta: {
+          requiresAuth: true,
+        }
+      },
+      {
+        path: '/University',
+        name: 'University',
+        component: University,
+        meta: {
+          requiresAuth: true,
+          privileges: ['HRDI',]
+        }
+      },
+      {
+        path: '/Contract',
+        name: 'Contract',
+        component: Contract,
+        meta: {
+          requiresAuth: true,
+          privileges: ['HRDI',]
+        }
+      },
+      {
+        path: '/StudentActions',
+        name: 'studentActions',
+        component: StudentActions,
+        meta: {
+          requiresAuth: true,
+          privileges: ['University',]
+        }
+      },
+      {
+        path: '/students',
+        name: 'students',
+        component: Students,
+        meta: {
+          requiresAuth: true,
+          privileges: ['University',]
+        }
+      },
+      {
+        path: '/contracts',
+        name: 'contracts',
+        component: Contracts,
+        meta: {
+          requiresAuth: true,
+          privileges: ['LegalOffice',]
+        }
+      },
+      {
+        path: '/student-batch/:batchId',
+        name: 'student batch',
+        component: Batches,
+        meta: {
+          requiresAuth: true,
+          privileges: ['HRDI',]
+        }
+      },
+      
+      {
+        path: '/contractsApp',
+        name: 'contractsApproved',
+        component: ContractsApproved,
+        meta: {
+          requiresAuth: true,
+          privileges: ['LegalOffice',]
+        }
+      },
+      {
+        path: '/contractsDec',
+        name: 'contractsDeclined',
+        component: ContractsDeclined,
+        meta: {
+          requiresAuth: true,
+          privileges: ['LegalOffice',]
+        }
+      },
+      {
+        path: '/contract-file/:contractId',
+        name: 'contracts file',
+        component: ContractFile,
+        meta: {
+          requiresAuth: true,
+          privileges: ['LegalOffice',]
+        }
+      },
+      {
+        path: '/students/:uniId',
+        name: 'University Students',
+        component: Students,
+        meta: {
+          requiresAuth: true,
+          privileges: ['HRDI',]
+        }
+      },
+      {
+        path: '/MoHLegal',
+        name: 'MoHLegal',
+        component: MoHLegal,
+        meta: {
+          requiresAuth: true,
+          privileges: ['LegalOffice']
+        }
+      },
+      {
+        path: '/HRDI',
+        name: 'HRDI',
+        component: HRDI,
+        meta: {
+          requiresAuth: true,
+          privileges: ['HRDI']
+        }
+      },
+      {
+        path: '/users',
+        name: 'Users',
+        component: UsersIndex,
+        meta: {
+          requiresAuth: true,
+          privileges: ['HRDI']
+        },
+        children: [
+          {
+            path: '',
+            name: 'Users',
+            component: Users
+          },
+          {
+            path: 'add',
+            name: 'Add User',
+            component: AddUsers
+          }
+       
+        ]
+      },
+      {
+        path: '/AddStudents/:batchId',
+        name: 'Add Student',
+        component: AddStudents
+      },
+      {
+        path: '/Status',
+        name: 'Status',
+        component: Status,
+        meta: {
+          requiresAuth: true,
+          privileges: ['Student']
+        }
+      },
+      {
+        path: '/Requirements',
+        name: 'Requirements',
+        component: Requirements,
+        meta: {
+          requiresAuth: true,
+          privileges: ['Student']
+        }
+      },
+      {
+      path: '/Requirement',
+      name: 'Requirement',
+      component: Requirement,
+      meta: {
+        requiresAuth: true,
+        privileges: ['Student']
+      }
+    },
+    {
+      path: '/Sponsorship',
+      name: 'Sponsorship',
+      component: Sponsorship,
+      meta: {
+        requiresAuth: true,
+        privileges: ['Student','HRDI']
+      }
+    },
+      {
+        path: '/SigninDocuments',
+        name: 'SigninDocuments',
+        component: SigninDocuments,
+        meta: {
+          requiresAuth: true,
+          privileges: ['Student'],
+          status: 'registered'
+        }
+      },
+      {
+        path: '/editsignindocuments',
+        name: 'EditSigninDocuments',
+        component: EditContractForm,
+        meta: {
+          requiresAuth: true,
+          privileges: ['Student'],
+          status: 'registered'
+        }
+      },
+    ]
+  },
   {
     path: '/verification',
     name: 'verification',
@@ -44,216 +260,6 @@ const routes = [
     component: Login,
     meta: { layout: 'empty' },
   },
-  {
-    path: '/Profile',
-    name: 'Profile',
-    component: Profile,
-    meta: {
-      requiresAuth: true,
-    }
-  },
-  {
-    path: '/Dashboard',
-    name: 'Dashboard',
-    component: Dashboard,
-    meta: {
-      requiresAuth: true,
-      
-    }
-  },
-  {
-    path: '/University',
-    name: 'University',
-    component: University,
-    meta: {
-      requiresAuth: true,
-      privileges: ['HRDI',]
-    }
-  },
-  {
-    path: '/Contract',
-    name: 'Contract',
-    component: Contract,
-    meta: {
-      requiresAuth: true,
-      privileges: ['HRDI',]
-    }
-  },
-  {
-    path: '/StudentActions',
-    name: 'studentActions',
-    component: StudentActions,
-    meta: {
-      requiresAuth: true,
-      privileges: ['University',]
-    }
-  },
-  {
-    path: '/students',
-    name: 'students',
-    component: Students,
-    meta: {
-      requiresAuth: true,
-      privileges: ['University',]
-    }
-  },
-  {
-    path: '/contracts',
-    name: 'contracts',
-    component: Contracts,
-    meta: {
-      requiresAuth: true,
-      privileges: ['LegalOffice',]
-    }
-  },
-  {
-    path: '/student-batch/:batchId',
-    name: 'student batch',
-    component: Batches,
-    meta: {
-      requiresAuth: true,
-      privileges: ['HRDI',]
-    }
-  },
-  
-  {
-    path: '/contractsApp',
-    name: 'contractsApproved',
-    component: ContractsApproved,
-    meta: {
-      requiresAuth: true,
-      privileges: ['LegalOffice',]
-    }
-  },
-  {
-    path: '/contractsDec',
-    name: 'contractsDeclined',
-    component: ContractsDeclined,
-    meta: {
-      requiresAuth: true,
-      privileges: ['LegalOffice',]
-    }
-  },
-  {
-    path: '/contract-file/:contractId',
-    name: 'contracts file',
-    component: ContractFile,
-    meta: {
-      requiresAuth: true,
-      privileges: ['LegalOffice',]
-    }
-  },
-  {
-    path: '/students/:uniId',
-    name: 'University Students',
-    component: Students,
-    meta: {
-      requiresAuth: true,
-      privileges: ['HRDI',]
-    }
-  },
-  {
-    path: '/MoHLegal',
-    name: 'MoHLegal',
-    component: MoHLegal,
-    meta: {
-      requiresAuth: true,
-      privileges: ['LegalOffice']
-    }
-  },
-  {
-    path: '/HRDI',
-    name: 'HRDI',
-    component: HRDI,
-    meta: {
-      requiresAuth: true,
-      privileges: ['HRDI']
-    }
-  },
-  {
-    path: '/users',
-    name: 'Users',
-    component: UsersIndex,
-    meta: {
-      requiresAuth: true,
-      privileges: ['HRDI']
-    },
-    children: [
-      {
-        path: '',
-        name: 'Users',
-        component: Users
-      },
-      {
-        path: 'add',
-        name: 'Add User',
-        component: AddUsers
-      }
-   
-    ]
-  },
-  {
-    path: '/AddStudents/:batchId',
-    name: 'Add Student',
-    component: AddStudents
-  },
-  {
-    path: '/Status',
-    name: 'Status',
-    component: Status,
-    meta: {
-      requiresAuth: true,
-      privileges: ['Student']
-    }
-  },
-  {
-    path: '/Requirements',
-    name: 'Requirements',
-    component: Requirements,
-    meta: {
-      requiresAuth: true,
-      privileges: ['Student']
-    }
-  },
-  {
-  path: '/Requirement',
-  name: 'Requirement',
-  component: Requirement,
-  meta: {
-    requiresAuth: true,
-    privileges: ['Student']
-  }
-},
-{
-  path: '/Sponsorship',
-  name: 'Sponsorship',
-  component: Sponsorship,
-  meta: {
-    requiresAuth: true,
-    privileges: ['Student','HRDI']
-  }
-},
-  {
-    path: '/SigninDocuments',
-    name: 'SigninDocuments',
-    component: SigninDocuments,
-    meta: {
-      requiresAuth: true,
-      privileges: ['Student'],
-      status: 'registered'
-    }
-  },
-  {
-    path: '/editsignindocuments',
-    name: 'EditSigninDocuments',
-    component: EditContractForm,
-    meta: {
-      requiresAuth: true,
-      privileges: ['Student'],
-      status: 'registered'
-    }
-  },
-
 ]
 
 const router = createRouter({

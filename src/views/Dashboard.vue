@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { usePaginationTemp } from '@/composables/usePaginaionTemp';
@@ -106,16 +106,7 @@ const isRoleHrdi = computed(
   () => auth.auth?.user?.privileges?.[0] == 'ROLE_University'
 );
 
-interface User {
-  name: string;
-  email: string;
-  title: string;
-  title2: string;
-  status: string;
-  role: string;
-}
-
-const testUser: User = {
+const testUser = {
   name: 'John Doe',
   email: 'john@example.com',
   title: 'Software Engineer',
@@ -124,7 +115,7 @@ const testUser: User = {
   role: 'Owner',
 };
 
-const users = ref<User[]>([...Array(10).keys()].map(() => testUser));
+const users = ref([...Array(10).keys()].map(() => testUser));
 </script>
 
 <template>

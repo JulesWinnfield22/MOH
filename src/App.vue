@@ -5,15 +5,6 @@ import { useRouter } from 'vue-router';
 import { useNotifications } from './store/notifications';
 import { useAuth } from './store/auth';
 
-const defaultLayout = 'default';
-
-const auth = useAuth()
-const { currentRoute } = useRouter();
-
-const layout = computed(
-  () => `${currentRoute.value.meta.layout || defaultLayout}-layout`
-);
-
 //const socket = useSocket()
 //const notifications = useNotifications()
 //watchEffect(async (cleanUp) => {
@@ -47,7 +38,5 @@ const layout = computed(
 </script>
 
 <template>
-  <component :is="layout">
-    <router-view />
-  </component>
+  <router-view />
 </template>
