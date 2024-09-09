@@ -41,12 +41,13 @@ const fileInput = ref(null)
 
 
 <template>
-	<div class="flex justify-between py-2 border-b items-center">
+	<div class="flex justify-between p-5 py-2 border-b items-center">
 		<input @keydown.enter=" paginations.search.value = $event.target.value " class="rounded " placeholder="search users" />
     <Button @click="$router.push('/users/add')" type="primary">
 			Add user
 		</Button>
 	</div>
+  <div class="p-5">
 	<Table class="Table-header"
     :pending="paginations.pending.value"
     :Fallback="TableRowSkeleton"
@@ -57,6 +58,7 @@ const fileInput = ref(null)
     }"
     :rows="(paginations.data.value || [])"
   > 
+  
     <template #actions="{row}">
       <button
           class="items-end bg-[#092537] text-white flex gap-2 font-dm-sans p-2 rounded-md"
@@ -81,4 +83,5 @@ const fileInput = ref(null)
         </button>
     </template>
   </Table>
+</div>
 </template>

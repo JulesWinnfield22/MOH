@@ -21,7 +21,11 @@ onMounted(() => {
 })
 </script>
 <template>
-	<div :key="file.name" @click="closeFile" class="fixed inset-0 flex z-30 bg-black/50">
+	<div 
+  :key="file.name" 
+  @click="closeFile" 
+  class="fixed inset-0 flex items-center justify-center z-30 bg-black/50 p-11"
+>
 		<div class="w-[16rem]"></div>
 		<div class="realtive p-2">
 			<button @click="closeFile" class="z-50 w-8 h-8 rounded-full shadow-lg bg-white absolute top-2 right-2">

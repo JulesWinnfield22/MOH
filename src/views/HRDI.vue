@@ -133,7 +133,7 @@ const fileInput = ref(null);
 </script>
 
 <template>
-  <div class="bg-[#FBFBFB] relative">
+  <div class="bg-[#FBFBFB] p-5 relative">
     <div
       v-if="hrdiReq.pending.value"
       class="z-10 flex justify-center fixed inset-0 bg-dark/40"

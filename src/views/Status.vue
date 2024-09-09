@@ -5,7 +5,7 @@ const auth = useAuth();
 </script>
 
 <template>
-  <div class="container">
+  <div class="container p-5">
     <StudentDataProvider v-slot="{ student, contract, pending, isRegistered }">
       {{ console.log(student) }}
       <div v-if="!pending" class="message text-center">
@@ -25,7 +25,6 @@ const auth = useAuth();
             so complete your documents and<button @click="$router.push('/editsignindocuments')" class="italic underline text-primary">re submit your contract</button>
           </p>
         
-          Go to <RouterLink class="text-primary italic" to="/SigninDocuments"> Sign In Documents </RouterLink> For your contract
         
         </h1>
         <h1 v-else-if="isRegistered && [ 'Submitted'].includes(contract.contractStatus)">
@@ -76,7 +75,7 @@ const auth = useAuth();
  if you are married don't forget to download and sign all documents.
             download pdf here if you are married  
           <div><RouterLink class="text-primary italic" :to='`/Requirement`'> Download </RouterLink>
-          </div> </p>  
+          </div> </p>  r
                   </div>
         <div class="w-full py-10 justify-center">
           <svg

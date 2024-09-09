@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { usePaginationTemp } from '@/composables/usePaginaionTemp'
+import { usePagination } from '@/composables/usePagination'
 import {findAllByContractStatus , findAllByContractStatusDeclined} from '@/features/students/api/contractApi'
 import { useAuth } from '@/store/auth.js'
 import Table from '@com/Table.vue'
@@ -28,7 +28,7 @@ const uniId = route.params.id
 const request = useApiRequest()
 
 
-const pagination = usePaginationTemp({
+const pagination = usePagination({
   store: contract,
   cb: (data, config) => findAllByContractStatusDeclined(),
 })
@@ -73,7 +73,7 @@ const allSelected = computed(() => {
 const isRoleHrdi = computed(() => auth.auth?.user?.privileges?.[0] == 'ROLE_University')
 </script>
 <template>
-  <div class="bg-[#FBFBFB] overflow-x-scroll show-scrollbar">
+  <div class="bg-[#FBFBFB] p-5 overflow-x-scroll show-scrollbar">
     <div v-if="showRejectionReasonModal " class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50">
             <div class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]">
               <div class=" flex justify-between">

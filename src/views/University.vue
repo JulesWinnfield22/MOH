@@ -8,6 +8,7 @@ import UniversitiesDataProvider from '@/features/university/components/Universit
 
 </script>
 <template>
+ <div class="p-5">
   <UniversitiesDataProvider v-slot="{ universities, pending }">
     {{ console.log(universities) }}
     <Table
@@ -26,4 +27,5 @@ import UniversitiesDataProvider from '@/features/university/components/Universit
       </template>
     </Table>
   </UniversitiesDataProvider>
+  </div>
 </template>

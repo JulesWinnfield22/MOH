@@ -123,7 +123,7 @@ const isRoleHrdi = computed(
 );
 </script>
 <template>
-  <div class="bg-[#FBFBFB] overflow-x-scroll show-scrollbar">
+  <div class="bg-[#FBFBFB] p-5 overflow-x-scroll show-scrollbar">
     <div v-if="isRoleHrdi" class="flex justify-between items-center">
       <div
         class="p-4 text-[#4E585F] font-dm-sans text-[16px] font-bold leading-[24px] text-left"
