@@ -127,8 +127,8 @@ console.log(props.universities);
     <Input
       validation="required"
       label="Birth Date *"
-      name="birthDate"
-      v-model="user.birthDate"
+      name="dateOfBirth"
+      v-model="user.dateOfBirth"
       :attributes="{ type: 'date', placeholder: 'Enter Your Birth Date' }"
     />
     

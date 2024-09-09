@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { usePaginationTemp } from '@/composables/usePaginaionTemp'
+import { usePagination } from '@/composables/usePagination'
 import {findAllByContractStatus , findAllByContractStatusDeclined} from '@/features/students/api/contractApi'
 import { useAuth } from '@/store/auth.js'
 import Table from '@com/Table.vue'
@@ -28,7 +28,7 @@ const uniId = route.params.id
 const request = useApiRequest()
 
 
-const pagination = usePaginationTemp({
+const pagination = usePagination({
   store: contract,
   cb: (data, config) => findAllByContractStatusDeclined(),
 })

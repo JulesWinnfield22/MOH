@@ -226,7 +226,7 @@ watch(reasons, (newVal) => {
       class="border w-[829px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4"
     >
       <option value="" disabled>Select a reason for Rejection</option>
-      <option value="Program is currently Unavailable">Id is Blurred</option>
+      <option value="Id is Blurred">Id is Blurred</option>
       <option value="Incomplete Documents">Incomplete Documents</option>
       <option value="Invalid Information">Invalid Information</option>
       <option value="Other">Other</option>

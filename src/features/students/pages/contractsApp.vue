@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { usePaginationTemp } from '@/composables/usePaginaionTemp'
+
 import { findAllByContractStatusApproved} from '@/features/students/api/contractApi'
 import { useAuth } from '@/store/auth.js'
 import Table from '@com/Table.vue'
@@ -10,7 +10,7 @@ import TableRowSkeleton from '@/skeletons/TableRowSkeleton.vue'
 import { confirmContract, rejectContract } from '@/features/students/api/contractApi'
 import { useApiRequest } from '@/composables/useApiRequest'
 import { formatCurrency, toasted } from '@/utils/utils'
-
+import { usePagination } from '@/composables/usePagination';
 const contract = useContracts()
 const auth = useAuth()
 
@@ -33,7 +33,7 @@ const uniId = route.params.id
 
 const request = useApiRequest()
 
-const pagination = usePaginationTemp({
+const pagination = usePagination({
   store: contract,
   cb: (data, config) => findAllByContractStatusApproved(),
 })
