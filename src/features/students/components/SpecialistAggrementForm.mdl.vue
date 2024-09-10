@@ -18,8 +18,13 @@ import { closeModal } from '@/modals';
 		<SpecialistAggrementFormPdf
 			v-bind="data"
 		/>
-		<Button @click="closeModal(true)" size="lg" type="primary" class="shadow-xl fixed z-10  bottom-2 right-2">
-			Submit
-		</Button>
+		<div class='fixed z-10  bottom-2 right-2 flex items-center gap-4'>
+			<Button v-if="data?.showBtn ?? true" @click="closeModal(true)" type="primary" class="shadow-xl">
+				Submit
+			</Button>
+			<Button class="bg-red-500" @click="closeModal()">
+				Cancel
+			</Button>
+		</div>
 	</div>
 </template>

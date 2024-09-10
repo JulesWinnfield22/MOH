@@ -16,3 +16,7 @@ export function getAllstudents(query = {}) {
 export function createStudent(data) {
 	return api.addAuthenticationHeader().post(`${path}/create`, data)
 }
+
+export function removeStudent(id) {
+	return api.addAuthenticationHeader().delete(`${path}/DeleteStudent/${id}`)
+}

@@ -11,6 +11,7 @@ import { confirmContract, rejectContract } from '@/features/students/api/contrac
 import { useApiRequest } from '@/composables/useApiRequest'
 import { formatCurrency, toasted } from '@/utils/utils'
 import { usePagination } from '@/composables/usePagination';
+import { openModal } from '@/modals'
 const contract = useContracts()
 const auth = useAuth()
 
@@ -94,6 +95,13 @@ const allSelected = computed(() => {
 })
 
 const isRoleHrdi = computed(() => auth.auth?.user?.privileges?.[0] == 'ROLE_University')
+
+function openPdf(data) {
+  openModal('SpecialistAggrementForm', {
+    data,
+    showBtn: false,
+  })
+}
 </script>
 <template>
   <div class="bg-[#FBFBFB] p-5 overflow-x-scroll show-scrollbar">
@@ -138,7 +146,7 @@ const isRoleHrdi = computed(() => auth.auth?.user?.privileges?.[0] == 'ROLE_Univ
     :Fallback="TableRowSkeleton"
     :firstCol="isRoleHrdi"
     :headers="{
-      head: ['Ernp ID', 'Full Name', 'Program', 'university', 'Duration', 'Salary', 'Contract Amount', 'region','city','subCity','woreda','houseNumber','status',],
+      head: ['Ernp ID', 'Full Name', 'Program', 'university', 'Duration', 'Salary', 'Contract Amount', 'region','city','subCity','woreda','houseNumber','status', 'actions'],
       row: ['id', 'fullName', 'program', 'university', 'duration', 'salary', 'totalSalary', 'totalTrainingCost','subCity','city','woreda','houseNumber','contractStatus']
     }"
     :cells="{
@@ -147,15 +155,9 @@ const isRoleHrdi = computed(() => auth.auth?.user?.privileges?.[0] == 'ROLE_Univ
     }"
     :rows="filteredRowsApproved"
   >
-    <template #headerFirst>
-      <div class="px-1">
-        <input @click="selectAll($event.target.checked)" :checked="allSelected" type="checkbox" />
-      </div>
+    <template #actions="{ row }">
+      <button @click='openPdf(row)' class='bg-secondary px-4 py-1 rounded text-white'>PDF</button>
     </template>
-    <template #select="{ row }">
-      <input @change="selectUser(row?.ernpId)" :checked="selected.includes(row.ernpId)" type="checkbox" />
-    </template>
-    
   </Table>
     <div class="flex justify-center items-center">
     </div>

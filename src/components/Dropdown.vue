@@ -1,95 +1,85 @@
 <script setup>
-import { ref, watch, onMounted, onUpdated } from "vue";
-import { vOnClickOutside, OnClickOutside } from "@vueuse/components";
+import { onMounted, onUpdated, ref, watch, watchEffect } from 'vue';
+
 
 const props = defineProps({
-  open: {
-    type: Boolean,
-    default: false,
-  },
   position: {
-    type: String,
-    default: "bottom-right",
-  },
-  top: {
-    type: String,
-    default: "100%",
-  },
-  right: {
-    type: String,
-    default: "0",
-  },
-  left: {
-    type: String,
-  },
-  bottom: {
-    type: String,
+    type: String, // "left-bototm" | "right-bottom">
+    default: "left-bottom",
   },
 });
 
-onUpdated(() => {
-  setStyle();
-});
-
-const openDropdown = ref(props.open);
-const dropdown = ref("");
+const dropdownWrapper = ref();
+const openDropdown = ref(false);
 
 function setRef(el) {
-  dropdown.value = el;
+  dropdownWrapper.value = el;
 }
 
-function toggleDropdown() {
+watchEffect((cleanUP) => {
+  function clieckHandler() {
+    openDropdown.value = false;
+  }
+
+  document.addEventListener("click", clieckHandler);
+  return cleanUP(() => {
+    document.removeEventListener("click", clieckHandler);
+  });
+});
+
+function toggle() {
+  console.log('sf');
+  
   openDropdown.value = !openDropdown.value;
 }
 
-function setValue() {
-  if (!openDropdown.value) dropdown.value.style.display = "none";
-  else dropdown.value.style.removeProperty("display");
-}
+onUpdated(() => {
+  dropdownWrapper.value?.classList.add("__dropdown-wrapper", props.position);
+});
 
-function setStyle() {
-  dropdown.value.style.position = "absolute";
-  dropdown.value.style.zIndex = 20;
+onMounted(() => {
+  dropdownWrapper.value?.classList.add("__dropdown-wrapper", props.position);
+})
 
-  dropdown.value.style.setProperty("--top", props.top);
-  dropdown.value.style.setProperty("--right", props.right);
-  dropdown.value.style.setProperty("--left", props.left);
-  dropdown.value.style.setProperty("--bottom", props.bottom);
-
-  setValue();
-
-  if (props.position == "bottom-right") {
-    dropdown.value.classList.add("bottom-right");
+function showHide() {
+  if(!dropdownWrapper.value) return
+  const height = [...dropdownWrapper.value.children].reduce((sum, el) => el.clientHeight + sum, 0)
+  
+  if(!openDropdown.value) {
+    dropdownWrapper.value.style.setProperty('display', 'none')
+    dropdownWrapper.value.style.height = `${height}px`
+  } else {
+    dropdownWrapper.value.style.removeProperty('display')
   }
 }
 
-watch(openDropdown, setValue);
-watch(props, setStyle);
-
-onMounted(setStyle);
+onMounted(showHide)
+watch(openDropdown, showHide)
 </script>
-
 <template>
-  <OnClickOutside
-    :class="[!dropdown ? 'loading-dropdown' : 'dropdown']"
-    class="inline-flex relative"
-    @trigger="openDropdown = false"
-  >
-    <slot
-      :setRef="setRef"
-      :toggleDropdown="toggleDropdown"
-      :open="openDropdown"
-    ></slot>
-  </OnClickOutside>
+  <div @click.prvent.stop="() => {}" class="relative">
+    <slot :toggle="toggle" :setRef="setRef" />
+  </div>
 </template>
 
 <style>
-.loading-dropdown * {
-  visibility: hidden;
+.__dropdown-wrapper {
+  top: 125%;
+  position: absolute;
+  z-index: 100;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  grid-auto-rows: max-content;
 }
 
-.bottom-right {
-  top: var(--top);
-  right: var(--right);
+.right-bottom {
+  right: 0;
+  bottom: 0;
+}
+
+.left-bottom {
+  left: 0;
+  bottom: 0;
 }
 </style>

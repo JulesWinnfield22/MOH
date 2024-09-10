@@ -1,40 +1,57 @@
 <script setup>
 import { computed, onMounted, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
-//import { useSocket } from './composables/useSocket';
+import { useSocket } from './composables/useSocket';
 import { useNotifications } from './store/notifications';
 import { useAuth } from './store/auth';
 
-//const socket = useSocket()
-//const notifications = useNotifications()
-//watchEffect(async (cleanUp) => {
-//  try {
-//    let sock = await socket.connect()
-//    socket.send('/app/toHRDI', JSON.stringify(
-//      {
-//        userId: auth.auth?.user?.userUuid,
-//        userType: auth.auth?.user?.userType,
-//      }
-//    ))
+const auth = useAuth();
 
-//    socket.subscribe('/topic/notifyHRDI', (messgae) => {
-//      console.log("hrdi");
-//      console.log(messgae)
-//      notifications.setNotifications(messgae)
-//    })
+const socket = useSocket();
+const notifications = useNotifications();
+watchEffect(async (cleanUp) => {
+  if (!auth.auth?.user?.userUuid && !auth.auth?.user?.userType) return;
 
-//    socket.subscribe('/notify/residents', (messgae) => {
-//      console.log("residents");
-//      console.log(messgae)
-//    })
-//  } catch(err) {
-//    console.log(err.messgae)
-//  }
+  try {
+    let sock = await socket.connect();
+    if(!['LegalOffice', 'University'].includes(auth.auth?.user?.userType)) {
+      socket.send(
+        '/app/notification',
+        JSON.stringify({
+          userUuid: auth.auth?.user?.userUuid,
+          userType: auth.auth?.user?.userType,
+        })
+      );
+      socket.subscribe('/topic/notify', (messgae) => {
+        console.log('hrdi');
+        console.log(JSON.parse(messgae.body));
+        notifications.setNotifications(messgae);
+      });
+    }
 
-//  return cleanUp(async () => {
-//    await socket.unSub()
-//  })
-//}); 
+    if (auth.auth?.user?.userType == 'HRDI') {
+      socket.subscribe('/topic/notifyHRDI', (messgae) => {
+        console.log('hrdi');
+        console.log(JSON.parse(messgae.body));
+        notifications.setNotifications(messgae);
+      });
+    }
+
+    if (auth.auth?.user?.userType == 'Student') {
+      socket.subscribe('/topic/notifyResidents', (messgae) => {
+        console.log('resi');
+        console.log(JSON.parse(messgae.body));
+        notifications.setNotifications(messgae);
+      });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+
+  return cleanUp(async () => {
+    await socket.unSub();
+  });
+});
 </script>
 
 <template>

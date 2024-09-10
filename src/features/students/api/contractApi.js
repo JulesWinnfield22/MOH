@@ -20,6 +20,12 @@ export function findAllByContractStatusApproved() {
     .addAuthenticationHeader()
     .get(`${path}/findAllByContractStatus?contractStatus=Approved`);
 }
+
+export function findAllByContrac(status) {
+  return api
+    .addAuthenticationHeader()
+    .get(`${path}/findAllByContractStatus?contractStatus=${status}`);
+}
 export async function rejectContract(id, status, rejectionReason) {
   try {
     const response = await api
