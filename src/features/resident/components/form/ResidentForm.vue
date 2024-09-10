@@ -49,6 +49,7 @@ watch(
       ..._filter.value,
       agent_file: !isSingle.value,
     };
+    console.log(_filter.value)
   },
   { immediate: true }
 );
@@ -57,17 +58,17 @@ function submitForm({ values }) {
   props.onSubmit({ ...values, martialStatus: married.value });
 }
 
-watch(
-  [props, married],
-  () => {
-    console.log(married.value);
-    _filter.value = {
-      ..._filter.value,
-      ...(props.filter || {}),
-    };
-  },
-  { immediate: true }
-);
+//watch(
+//  [props, married],
+//  () => {
+//    console.log(married.value);
+//    _filter.value = {
+//      ..._filter.value,
+//      ...(props.filter || {}),
+//    };
+//  },
+//  { immediate: true }
+//);
 
 const dis = ref(props.disabled ? { disabled: true } : {});
 watch(
@@ -207,10 +208,10 @@ watch(
         <InputFile
           v-if="_filter.marriage_file"
           :value="martialCertName"
-          label="Marriage/UnMarriage File"
+          :label="isSingle ? 'UnMarriage File' : 'Marriage'"
           name="marriage_file"
           :attributes="{
-            placeholder: 'Marriage/UnMarriage file',
+            placeholder: isSingle ? 'UnMarriage File' : 'Marriage',
             ...dis,
           }"
           validation="required"
@@ -236,7 +237,6 @@ watch(
           }"
           validation="required"
         />
-
         <InputFile
           v-if="_filter.agent_file"
           label="Agent File"

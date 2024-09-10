@@ -35,11 +35,6 @@ export const useBatchs = defineStore('BatchStore', () => {
     batches.value.splice(idx, 1, student)
   }
 	
- 
-  
- 
-
-  
   function remove(id) {
     const idx = batches.value.findIndex(el => el.ernpId == id)
 

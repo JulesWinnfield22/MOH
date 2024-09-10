@@ -10,23 +10,19 @@ const auth = useAuth();
 const props = defineProps({
   data: {
     type: Object,
-    required: true,
   },
   student: {
     type: Object,
-    required: true,
   },
   maritalStatus: {
     type: String,
-    required: true,
   },
   contract: {
-    type: Object,
-    required: true
+    type: Object
   }
 });
 
-console.log(props.contract);
+console.log(props.data);
 
 const content = ref();
 
@@ -341,11 +337,11 @@ function getPdf() {
           },
           {
             text: 'ሞባይል፡',
-            value: props.student?.phone
+            value: props.student?.phone || props.data?.phone
           },
           {
             text: 'የጋብቻ ሁኔታ፡',
-            value: props.maritalStatus || ' ',
+            value: props?.maritalStatus || props.data?.martialStatus || ' ',
           }
         ].reduce((state, el) => {
           state.push({
@@ -393,11 +389,11 @@ function getPdf() {
         columns: [
           {
             text: 'የስልጠና ቦታ፡-',
-            value: props.contract?.university
+            value: props.contract?.university || props.data?.university || props.student?.universityName 
           },
           {
             text: 'ዲፓርትመንት፡-',
-            value: props.contract?.program
+            value: props.contract?.program || props.data?.program || props.student?.programName
           }
         ].reduce((state, el) => {
           state.push({
@@ -439,11 +435,11 @@ function getPdf() {
         columns: [
           {
             text: 'ስልጠናው የሚፈጀው ጊዜ፡',
-            value: props.contract?.duration
+            value: props.contract?.duration || props.data?.duration || props.student?.duration
           },
           {
             text: 'ወርሃዊ የገቢ:-',
-            value: formatCurrency(props.contract?.salary)
+            value: formatCurrency(props.contract?.salary || props.data?.salary || props.student?.salary)
           }
         ].reduce((state, el) => {
           state.push({
@@ -559,7 +555,6 @@ function getPdf() {
             width: 'auto',
             marginLeft: 5,
             text: 'የህክምና ስፔሻሊቲ ስልጠናውን ሲያጠናቅቅ ዉል ሰጪ በሚመድበዉ ቦታ ለ',
-            value: props.contract?.duration
           },
          
           {
@@ -569,7 +564,7 @@ function getPdf() {
               {
                 bold: true,
                 fontSize: 10,
-                text: ' ',
+                text: props.contract?.duration || props.data?.duration || props.student?.duration,
               },
               {
                 stack: [

@@ -190,9 +190,9 @@ const isRoleHrdi = computed(
         </button>
       </div>
     </div>
-    <div class="mb-4 flex items-center justify-between">
-      <label for="table-select" class="mr-2 font-medium">Select Table:</label>
-      <div class="relative w-64">
+    <div class="mb-4 flex items-center gap-4">
+      <label for="table-select" class="font-medium">Select Table:</label>
+      <div class="relative max-w-64">
         <select
           id="table-select"
           v-model="selectedTable"
@@ -206,12 +206,11 @@ const isRoleHrdi = computed(
           class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
         ></div>
       </div>
+      {{ contract?.contracts[0]?.university }}
     </div>
     <p class="font-bold pb-8" v-if="contract.contracts.length">
-      {{ contract.contracts[0].unversityName }}
     </p>
     <div v-if="selectedTable === 'Approved'">
-      Approved
       <Table
         :Fallback="TableRowSkeleton"
         :firstCol="isRoleHrdi"

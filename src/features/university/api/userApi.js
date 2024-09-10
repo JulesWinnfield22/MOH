@@ -19,3 +19,7 @@ export function updateUser(id, data) {
 	const qr = getQueryFormObject(data)
 	return api.addAuthenticationHeader().put(`${path}/updateUser/${id}`, data)
 }
+
+export function removeUser(id) {
+	return api.addAuthenticationHeader().delete(`${path}/deleteUser/${id}`)
+}

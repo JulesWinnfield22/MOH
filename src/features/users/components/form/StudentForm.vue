@@ -132,7 +132,7 @@ function submitForm({ values, reset }) {
       <Select
         v-model="selectedProgramUuid"
         :obj="true"
-        :options="program.map(el => ({label: el.programName, value: el.programUuid}))"
+        :options="program.map(el => ({label: el.programName, value: el.programName}))"
         label="Program *"
         name="programName"
         validation="required"

@@ -14,19 +14,20 @@ watchEffect(async (cleanUp) => {
 
   try {
     let sock = await socket.connect();
-    socket.send(
-      '/app/notification',
-      JSON.stringify({
-        userUuid: auth.auth?.user?.userUuid,
-        userType: auth.auth?.user?.userType,
-      })
-    );
-
-    socket.subscribe('/topic/notify', (messgae) => {
-      console.log('hrdi');
-      console.log(JSON.parse(messgae.body));
-      notifications.setNotifications(messgae);
-    });
+    if(!['LegalOffice', 'University'].includes(auth.auth?.user?.userType)) {
+      socket.send(
+        '/app/notification',
+        JSON.stringify({
+          userUuid: auth.auth?.user?.userUuid,
+          userType: auth.auth?.user?.userType,
+        })
+      );
+      socket.subscribe('/topic/notify', (messgae) => {
+        console.log('hrdi');
+        console.log(JSON.parse(messgae.body));
+        notifications.setNotifications(messgae);
+      });
+    }
 
     if (auth.auth?.user?.userType == 'HRDI') {
       socket.subscribe('/topic/notifyHRDI', (messgae) => {
