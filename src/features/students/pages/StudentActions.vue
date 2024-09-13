@@ -1025,7 +1025,7 @@ const isRoleHrdi = computed(
               @click="withdrawStudent(currentRow.ernpId)"
               class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-[#ee1919] transition"
             >
-              Withdraw This Student
+              Take Actions
             </button>
           </div>
         </form>
