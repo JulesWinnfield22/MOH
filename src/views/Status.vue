@@ -32,6 +32,10 @@ const auth = useAuth();
             You contract have been Succesfully Submitted so wait until <p>legal reviews your contract
            </p>
            </p>
+           <p>
+           If you Input your Document wrongly click here to 
+           <button @click="$router.push('/editsignindocuments')" class="italic underline text-primary">Edit your Contract</button>
+          </p>
         
         </h1>
         <h1 v-else-if="isRegistered">

@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { usePaginationTemp } from '@/composables/usePaginaionTemp';
+import { useStudents } from '@/features/students/store/studentsStore';
 import { findAllByContractStatusApproved } from '@/features/students/api/contractApi';
 import { useAuth } from '@/store/auth.js';
 import Table from '@com/Table.vue';
@@ -14,13 +15,19 @@ import {
 import { useApiRequest } from '@/composables/useApiRequest';
 import { formatCurrency, toasted } from '@/utils/utils';
 import { usePagination } from '@/composables/usePagination';
-
+import { getStudentsByUniId, getUniStudents } from '@/features/students/api/studentApi.js';
+const sudents = useStudents();
 const selectedTable = ref('approved');
 const contract = useContracts();
 const auth = useAuth();
+const route = useRoute();
+const uniId = route.params.uniId;
 const currentRow = ref(null);
 const showStudent = ref(false);
-
+const paginations = usePagination({
+  store: sudents,
+  cb: (data, config) => getStudentsByUniId(uniId || auth.auth?.user?.universityProviderUuid, data),
+});
 function openStudent(row) {
   currentRow.value = row;
   showStudent.value = true;
@@ -32,8 +39,6 @@ function closeStudent() {
 
 const selected = ref([]);
 
-const route = useRoute();
-const uniId = route.params.id;
 
 const request = useApiRequest();
 
@@ -120,6 +125,7 @@ const users = ref([...Array(10).keys()].map(() => testUser));
 
 <template>
   <div class="grid p-5 grid-cols-3">
+    
     <div class="flex col-span-2 flex-col p-4">
       <!-- <div class="flex items-center justify-between mb-4">
       <<div class="fixed inset-y-0 left-0 z-30 w-64 overflow-y-auto transition duration-300 transform bg-[#092537] lg:translate-x-0 lg:static lg:inset-0 bg-cover bg-center" style="background-image: url('.../assets/Untitled.jpg');">
@@ -182,6 +188,7 @@ const users = ref([...Array(10).keys()].map(() => testUser));
         in au neque. Sit consectetur senectus amet duis.
       </p> -->
       </div>
+      <div v-if="isRoleHrdi">
       <div class="grid grid-cols-3 gap-4 mb-4">
         <div class="bg-[#FBFBFB] p-4 rounded-md">
           <h2
@@ -189,7 +196,19 @@ const users = ref([...Array(10).keys()].map(() => testUser));
           >
             Current Residents
           </h2>
-          <p class="text-3xl font-bold leading-8 text-[#4E585F]">890</p>
+          <p class="text-3xl font-bold leading-8 text-[#4E585F]">   {{ (sudents.students || []).length }} </p>
+        </div>
+      
+      </div></div>
+      <div v-else>
+      <div class="grid grid-cols-3 gap-4 mb-4">
+        <div class="bg-[#FBFBFB] p-4 rounded-md">
+          <h2
+            class="text-sm font-normal mb-2 leading-[21px] text-[#4E585F] font-dm-sans"
+          >
+            Current Residents
+          </h2>
+          <p class="text-3xl font-bold leading-8 text-[#4E585F]">   {{ (sudents.students || []).length }} </p>
         </div>
         <div class="bg-[#FBFBFB] p-4 rounded-md">
           <h2
@@ -199,7 +218,7 @@ const users = ref([...Array(10).keys()].map(() => testUser));
           </h2>
           <p class="text-3xl font-bold leading-8 text-[#4E585F]">1,870</p>
         </div>
-      </div>
+      </div></div>
     </div>
     <div
       class="bg-[#FBFBFB] p-4 rounded-[16px 24px 16px 24px] gap-2.5 ml-12 rounded-md w-[297px]"
@@ -254,7 +273,39 @@ const users = ref([...Array(10).keys()].map(() => testUser));
       </ul>
     </div>
   </div>
-  <div class="bg-[#FBFBFB] w-full col-span-3 p-4 rounded-md mb-4 text-[#4E585F] w-[954.7px]">
+  <div class="bg-[#FBFBFB]  col-span-3 p-4 rounded-md mb-4 text-[#4E585F] w-full">
+    <div v-if="isRoleHrdi">
+      <Table
+        :Fallback="TableRowSkeleton"
+        :headers="{
+          head: [
+            'Ernp ID',
+            'Full Name',
+            'Gender',
+            'Program',
+            'Duration',
+            'Salary',
+            'Contract Amount',
+            'Status',
+            'campusStatus',
+          ],
+          row: [
+            'ernpId',
+            'fullName',
+            'gender',
+            'programName',
+            'duration',
+            'salary',
+            'totalSalary',
+            'registrationStatus',
+            'campusStatus',
+          ],
+        }"
+        :rows="sudents.students || []"
+      >
+      </Table>
+    </div>
+    <div v-else>
       <h2 class="text-lg font-bold mb-4 leading-6 text-[#4E585F]">
         Latest Signed Contacts
       </h2>
@@ -291,4 +342,5 @@ const users = ref([...Array(10).keys()].map(() => testUser));
       >
       </Table>
     </div>
+  </div>
 </template>

@@ -190,13 +190,20 @@ const isRoleHrdi = computed(
         </button>
       </div>
     </div>
-    <div class="mb-4 flex items-center gap-4">
-      <label for="table-select" class="font-medium">Select Table:</label>
-      <div class="relative max-w-64">
+    <!-- <div class="font-bold text-center text-gray-700 p-4 py-4 bg-white shadow-md rounded-lg">
+  
+       <h2 class="text-2xl mb-2">{{ contract?.contracts[0]?.university }}</h2>
+    
+</div> -->
+    <div class="mb-4  py-4 flex text-left items-center justify-end gap-4">
+      
+      <label for="table-select" class="font-medium flex ">Select Table:</label>
+      
+           <div class="relative max-w-64">
         <select
           id="table-select"
           v-model="selectedTable"
-          class="appearance-none bg-white border-gray-300 rounded-md py-2 px-4 pr-8 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer"
+          class="text-center border-gray-300 rounded-md py-2 px-4 pr-8 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer"
         >
           <option value="Approved">Approved</option>
           <option value="Submitted">Submitted</option>
@@ -206,7 +213,7 @@ const isRoleHrdi = computed(
           class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
         ></div>
       </div>
-      {{ contract?.contracts[0]?.university }}
+
     </div>
     <p class="font-bold pb-8" v-if="contract.contracts.length">
     </p>
@@ -376,7 +383,7 @@ const isRoleHrdi = computed(
                 >Approved Date</label
               >
               <input
-                v-model="currentRow.ApprovedDate"
+                v-model="currentRow.approvedDate"
                 id="duration"
                 readonly
                 class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
@@ -460,7 +467,7 @@ const isRoleHrdi = computed(
                 >Subcity</label
               >
               <input
-                v-model="currentRow.subcity"
+                v-model="currentRow.subCity"
                 id="totalSalary"
                 readonly
                 class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"

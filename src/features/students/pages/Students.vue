@@ -270,7 +270,14 @@ const isRoleHrdi = computed(
 
 <template>
   <div class="bg-[#FBFBFB] p-5">
+    <div class="font-bold text-center my-4 text-gray-700 p-1 items-center justify-center bg-white shadow-md rounded-lg">
+    <p class="font-bold pb-8 text-xl">
+      {{ sudents.students?.[0]?.universityName}}
+    </p>
+
+</div>
     <div v-if="isRoleHrdi" class="flex justify-between items-center">
+      
       <div
         class="p-4 text-[#4E585F] font-dm-sans text-[16px] font-bold leading-[24px] text-left"
       >
@@ -342,9 +349,6 @@ const isRoleHrdi = computed(
         </button>
       </div>
     </div>
-    <p class="font-bold pb-8 py-2 text-xl">
-      {{ sudents.students?.[0]?.universityName}}
-    </p>
 
     <div v-if="isRoleHrdi">
       <div
@@ -465,11 +469,11 @@ const isRoleHrdi = computed(
               State the reason for rejection
             </option>
             
-            <option value="Incomplete Documents">
+            <option value="University is currently full">
               University is currently full
             </option>
-            <option value="Incomplete Documents">
-              Program is currently Unuvailable
+            <option value=" Program is currently unavailable">
+              Program is currently unavailable
             </option>
             <option value="Incomplete Documents">Incomplete Documents</option>
             <option value="Invalid Information">Invalid Information</option>
@@ -544,7 +548,7 @@ const isRoleHrdi = computed(
               University is currently full
             </option>
             <option value="Incomplete Documents">
-              Program is currently Unuvailable
+              Program is currently Unavailable
             </option>
             <option value="Incomplete Documents">Incomplete Documents</option>
             <option value="Invalid Information">Invalid Information</option>

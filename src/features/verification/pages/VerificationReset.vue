@@ -1,7 +1,7 @@
 <script setup>
 import Button from '@/components/Button.vue';
 import { computed, ref, shallowRef } from 'vue';
-import VerifyEmail from '@/features/verification/components/VerifyEmail.vue';
+import VerifyEmail from '@/features/verification/components/EmailVerify.vue';
 import RestPassword from '../components/RestPassword.vue';
 import VerificationCode from '@/features/verification/components/VerificationCode.vue';
 import { useApiRequest } from '@/composables/useApiRequest';
@@ -9,7 +9,7 @@ import {
   resetPasswordApi,
   sendEmailVerification,
   sendVerificationCode,
-} from '../api/VerifyEmailApi';
+} from '../api/EmailVerifyApi';
 import { toasted } from '@/utils/utils';
 import { useRouter } from 'vue-router';
 const router = useRouter();
@@ -72,7 +72,8 @@ const components = shallowRef([
 const active = ref('email');
 
 const activeCom = computed(
-  () => components.value.find((el) => el.name == active.value)?.component);
+  () => components.value.find((el) => el.name == active.value)?.component
+);
 const activeIdx = computed(() =>
   components.value.findIndex((el) => el.name == active.value)
 );

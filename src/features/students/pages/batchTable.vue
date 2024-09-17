@@ -115,16 +115,20 @@ function remove(id) {
 </script>
 <template>
   <div class="bg-[#FBFBFB] p-5 overflow-x-scroll show-scrollbar">
-    <div class="flex justify-between w-full">
-      <input class="rounded" @keydown.enter="pagination.search.value = $event.target.value" placeholder='Search Studetns' />
-      <button
-        class="bg-[#21618C] text-white flex gap-2 font-dm-sans p-2 rounded-md"
-        @click="$router.push(`/AddStudents/${route.params.batchId}`)"
-        type="primary"
-      >
-        Add Student
-      </button>
-    </div>
+    <div class="flex justify-between items-center w-full p-4 bg-gray-100 rounded-lg shadow-md">
+  <input
+    class="flex-1 rounded-lg border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-[#21618C] placeholder-gray-500"
+    @keydown.enter="pagination.search.value = $event.target.value"
+    placeholder="Search Students"
+  />
+  <button
+    class="ml-4 bg-[#21618C] text-white flex items-center gap-2 font-dm-sans py-2 px-4 rounded-lg shadow-lg transition duration-300 ease-in-out hover:bg-[#1A4D6D]"
+    @click="$router.push(`/AddStudents/${route.params.batchId}`)"
+    type="button"
+  >
+    Add Student
+  </button>
+</div>
     <Table
       class="Table-header"
       :pending="pagination.pending.value"
@@ -132,8 +136,8 @@ function remove(id) {
       :headers="{
         head: [
           'ErnpId',
-          'FullName',
-          'UniversityName',
+          'Full Name',
+          'University Name',
           'Program Name',
           'Gender',
           'Salary',
@@ -175,11 +179,12 @@ function remove(id) {
             Edit
           </button>
           <button
-            @click="remove(row.ernpId)"
-            class="text-red-500 hover:italic hover:underline"
-          >
-            Delete
-          </button>
+  @click="remove(row.ernpId)"
+  class="flex gap-2 font-dm-sans p-2 rounded-md bg-red-500 text-white font-semibold py-2 px-2 shadow-md hover:bg-red-600 transition duration-300 ease-in-out transform hover:scale-105"
+>
+
+  Delete
+</button>
         </div>
       </template>
     </Table>

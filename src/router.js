@@ -24,6 +24,7 @@ import AddStudents from './views/AddStudents.vue'
 
 import Profile from './views/Profile.vue'
 import Verification from './features/verification/pages/Verification.vue'
+import VerificationReset from './features/verification/pages/VerificationReset.vue'
 import ContractFile from './features/students/pages/ContractFile.vue'
 import EditContractForm from './views/EditContractForm.vue'
 import MainLayout from './layout/MainLayout.vue'
@@ -248,6 +249,16 @@ const routes = [
     path: '/verification',
     name: 'verification',
     component: Verification,
+    meta: { layout: 'empty' },
+  },
+    {
+    path: '/',
+    redirect: '/login', // Redirect from root path to /login
+  },
+  {
+    path: '/verificationReset',
+    name: 'verificationReset',
+    component: VerificationReset,
     meta: { layout: 'empty' },
   },
     {

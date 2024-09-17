@@ -48,16 +48,19 @@ const fileInput = ref(null);
 </script>
 
 <template>
-  <div class="flex justify-between p-5 py-2 border-b items-center">
-    <input
-      @keydown.enter="paginations.search.value = $event.target.value"
-      class="rounded"
-      placeholder="search users"
-    />
-    <Button @click="$router.push('/users/add')" type="primary">
-      Add user
-    </Button>
-  </div>
+  <div class="flex justify-between items-center p-5 bg-gray-100 border-b shadow-md rounded-lg">
+  <input
+    @keydown.enter="paginations.search.value = $event.target.value"
+    class="flex-1 rounded-lg border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-[#21618C] placeholder-gray-500 transition duration-300"
+    placeholder="Search users"
+  />
+  <button
+    @click="$router.push('/users/add')"
+    class="ml-4 bg-[#21618C] text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out hover:bg-[#1A4D6D]"
+  >
+    Add User
+  </button>
+</div>
   <div class="p-5">
     <Table
       class="Table-header"
@@ -93,11 +96,11 @@ const fileInput = ref(null);
             Edit
           </button>
           <button
-            @click="remove(row.userUuid)"
-            class="text-red-500 hover:italic hover:underline"
-          >
-            Delete
-          </button>
+  @click="remove(row.userUuid)"
+  class="flex items-center gap-2 font-dm-sans py-2 px-2 rounded-lg bg-red-500 text-white font-semibold shadow-md hover:bg-red-600 transition duration-300 ease-in-out transform hover:scale-105"
+>
+  Delete
+</button>
         </div>
       </template>
     </Table>
