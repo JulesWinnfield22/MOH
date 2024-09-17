@@ -23,7 +23,7 @@ const uniId = route.params.batchId;
 const request = useApiRequest();
 
 const paginations = usePaginationTemp({
-  cb: getAllUniversities,
+  cb: getAllUniversities
 });
 
 const pagination = usePagination({
@@ -118,7 +118,7 @@ function remove(id) {
     <div class="flex justify-between items-center w-full p-4 bg-gray-100 rounded-lg shadow-md">
   <input
     class="flex-1 rounded-lg border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-[#21618C] placeholder-gray-500"
-    @keydown.enter="pagination.search.value = $event.target.value"
+    v-model="pagination.search.value"
     placeholder="Search Students"
   />
   <button
