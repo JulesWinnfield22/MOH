@@ -88,6 +88,9 @@ export function usePagination(options = {}) {
       clearTimeout(timeout)
     controller = new AbortController()
 
+    if (paginationOptions.value.store) {
+      paginationOptions.value.store?.reset()
+    }
     timeout = setTimeout(() => {
       req.send(
         () =>
