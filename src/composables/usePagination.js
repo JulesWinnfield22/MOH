@@ -194,6 +194,7 @@ export function usePagination(options = {}) {
       paginationOptions.value.store && !searching.value
         ? paginationOptions.value.store.getAll()
         : req.response.value?.content || [],
+    response: req.response,
     error: req.error,
     pending: req.pending,
     dirty: req.dirty,
