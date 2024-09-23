@@ -8,22 +8,15 @@ const api = new ApiService(URL)
 
 const path = '/users'
 
-export function sendEmailVerification(query={}) {
-  const qr = getQueryFormObject(query);
+export function sendEmailVerification(data) {
   return api
     .addAuthenticationHeader()
-    .post(`${path}/forgot-password${qr}`)
+    .post(`${path}/forgot-password`, data)
 }
-export function sendVerificationCode(query={}) {
-    const qr = getQueryFormObject(query);
-    return api
-      .addAuthenticationHeader()
-      .post(`${path}/forgot-password${qr}`)
-  }
 
-  export function resetPasswordApi(query={}) {
-    const qr = getQueryFormObject(query);
+
+  export function resetPasswordApi(data) {
     return api
       .addAuthenticationHeader()
-      .post(`${path}/Createpassword${qr}`)
+      .post(`${path}/reset-password`, data)
   }

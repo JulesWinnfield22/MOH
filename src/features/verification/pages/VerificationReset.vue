@@ -2,16 +2,16 @@
 import Button from '@/components/Button.vue';
 import { computed, ref, shallowRef } from 'vue';
 import VerifyEmail from '@/features/verification/components/EmailVerify.vue';
-import RestPassword from '../components/RestPassword.vue';
-import VerificationCode from '@/features/verification/components/VerificationCode.vue';
+import RestPassword from '../components/PasswordRest.vue';
+import VerificationCode from '@/features/verification/components/PasswordRest.vue';
 import { useApiRequest } from '@/composables/useApiRequest';
 import {
   resetPasswordApi,
   sendEmailVerification,
-  sendVerificationCode,
-} from '../api/EmailVerifyApi';
+} from '../api/EmailVerifyApi.js';
 import { toasted } from '@/utils/utils';
 import { useRouter } from 'vue-router';
+import { log } from 'pdfmake/build/pdfmake';
 const router = useRouter();
 
 const verifyEmailRequest = useApiRequest();
@@ -50,8 +50,10 @@ function verifyCode(values) {
 }
 
 function resetPassword(values) {
+  console.log(values);
+  
   verifyEmailRequest.send(
-    () => resetPasswordApi({ email: email.value, password: values.password }),
+    () => resetPasswordApi(values),
     (res) => {
       if (res.success) {
         toasted(res.success, 'Password created successfuly', res.error);
@@ -66,7 +68,6 @@ function resetPassword(values) {
 const components = shallowRef([
   { name: 'email', component: VerifyEmail },
   { name: 'verify', component: VerificationCode },
-  { name: 'reset', component: RestPassword },
 ]);
 
 const active = ref('email');
@@ -107,8 +108,7 @@ function goBack() {
       <div class="flex items-center flex-col gap-4">
         <p class="font-bold text-3xl text-center">Get Started</p>
         <p class="text-center text-lg">
-          Please fill the form below to receive a confirmation code in your
-          email to continue.
+         Reset Your Password Here 
         </p>
       </div>
       <div class="inline-flex items-center justify-center gap-2">

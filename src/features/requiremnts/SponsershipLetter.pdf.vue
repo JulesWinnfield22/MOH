@@ -17,7 +17,7 @@ function getPdf() {
       },
       {
         marginTop: 10,
-        text: 'This sponsorship agreement is made and entered into by and between the Ministry of Health (the "Sponsor") and [Student Name] (the "Sponsored Student").',
+        text: 'This sponsorship agreement is made and entered into by and between the Ministry of Health (the "Sponsor") and the "Sponsored Student"s.',
       },
       {
         marginTop: 20,

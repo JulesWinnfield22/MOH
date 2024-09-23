@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue'
 import { useToast } from "./store/toast.js";
 //import { mdiClose } from '@mdi/js'
-import BaseIcon from '@/components/base/BaseIcon.vue';
+import BaseIcon from '@/components/components/base/BaseIcon.vue';
 const { removeToast } = useToast()
 const props = defineProps({
   toast: {
