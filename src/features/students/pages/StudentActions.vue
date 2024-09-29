@@ -576,7 +576,7 @@ const isRoleHrdi = computed(
               University is currently full
             </option>
             <option value="Incomplete Documents">
-              Program is currently Unuvailable
+              Program is currently unavailable
             </option>
             <option value="Incomplete Documents">Incomplete Documents</option>
             <option value="Invalid Information">Invalid Information</option>

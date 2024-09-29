@@ -19,9 +19,9 @@ function submitForm({ values }) {
 <template>
   <div class="flex flex-col gap-6">
     <div>
-      <p class="font-bold text-2xl">Verify Your Email</p>
+      <p class="font-bold text-2xl">Enter Your Email</p>
       <p class="text-base max-w-[70%]">
-        Please enter your primary email that you sent to the MoH HDRI.
+        Please enter your primary email.
       </p>
     </div>
     <Form v-slot="{ submit }" id="verifyEmail" class="flex flex-col gap-4">

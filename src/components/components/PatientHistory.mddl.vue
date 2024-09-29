@@ -31,9 +31,7 @@ const pagination = usePaginationTemp({
   >
     <div class="flex flex-col gap-4 w-5/6 j bg-white p-8 rounded-4">
       <div class="flex justify-between items-center">
-        <p class="font-bold text-base capitalize">
-          {{ patientData.fullName }}'s History
-        </p>
+        <p class="font-bold text-base capitalize">{{ patientData.fullName }}'s History</p>
         <button @click="closeModal()">
           <h-icon name="fa-times" />
         </button>
@@ -43,13 +41,7 @@ const pagination = usePaginationTemp({
           :pending="pagination.pending.value"
           :Fallback="TableRowSkeleton"
           :headers="{
-            head: [
-              'Medicne Id',
-              'Chief Complaint',
-              'dosage form',
-              'Route',
-              'Price',
-            ],
+            head: ['Medicne Id', 'Chief Complaint', 'dosage form', 'Route', 'Price'],
             row: ['productId', 'chiefComplaint', 'dose', 'route', 'price'],
           }"
           :rows="patientStore.patient"

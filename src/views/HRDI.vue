@@ -449,7 +449,7 @@ const fileInput = ref(null);
     <div class="flex px-4 justify-between items-center bg-gray-100 rounded-lg shadow-md p-4">
   <input
     @keydown.enter="paginations.search.value = $event.target.value"
-    class="flex w-[1000px] rounded-lg border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-[#21618C] placeholder-gray-500 transition duration-300"
+    class="flex w-[800px] rounded-lg border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-[#21618C] placeholder-gray-500 transition duration-300"
     placeholder="Search Student"
   />
   <div class="flex items-center gap-6"> <!-- Increased gap here -->

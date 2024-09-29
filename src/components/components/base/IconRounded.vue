@@ -1,6 +1,6 @@
 <script setup>
 import { colorsText, colorsBgLight } from '@/colors.js';
-import BaseIcon from '@/components/base/BaseIcon.vue';
+import BaseIcon from '@/components/components/base/BaseIcon.vue';
 
 defineProps({
   icon: {

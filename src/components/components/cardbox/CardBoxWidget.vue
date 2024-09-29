@@ -2,8 +2,8 @@
 import { mdiCog } from "@mdi/js";
 import CardBox from "@/components/cardbox/CardBox.vue";
 import NumberDynamic from "@/components/base/NumberDynamic.vue";
-import BaseIcon from "@/components/base/BaseIcon.vue";
-import BaseLevel from "@/components/base/BaseLevel.vue";
+import BaseIcon from "@/components/components/base/BaseIcon.vue";
+import BaseLevel from "@/components/components/base/BaseLevel.vue";
 // import PillTagTrend from '@/components/pill-tag/PillTagTrend.vue';
 import BaseButton from "@/components/base/BaseButton.vue";
 

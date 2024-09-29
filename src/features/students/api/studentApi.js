@@ -26,6 +26,14 @@ export function getAllStudents(data) {
 	const qr = getQueryFormObject(data)
 	return api.addAuthenticationHeader().get(`${path}/batches${qr}`)
 }
+export function getAllStudent(id, data) {
+	const qr = getQueryFormObject(data)
+	return api.addAuthenticationHeader().get(`${path}/all${qr}`)
+}
+export function getAllContract(id, data) {
+	const qr = getQueryFormObject(data)
+	return api.addAuthenticationHeader().get(`contract/findAllByContractStatus?contractStatus=Approved${qr}`)
+}
 export function rejectStudent(status, rejectionReason, data) {
 	return api.addAuthenticationHeader().put(`${path}/updateStudentStatus?status=${status}&rejectionReason=${rejectionReason}`, data);
 }

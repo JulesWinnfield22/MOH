@@ -15,8 +15,9 @@ import {
 import { useApiRequest } from '@/composables/useApiRequest';
 import { formatCurrency, toasted } from '@/utils/utils';
 import { usePagination } from '@/composables/usePagination';
-import { getStudentsByUniId, getUniStudents } from '@/features/students/api/studentApi.js';
+import { getStudentsByUniId, getUniStudents ,getAllStudent,getAllContract} from '@/features/students/api/studentApi.js';
 const sudents = useStudents();
+const sudent = useStudents();
 const selectedTable = ref('approved');
 const contract = useContracts();
 const auth = useAuth();
@@ -28,6 +29,13 @@ const paginations = usePagination({
   store: sudents,
   cb: (data, config) => getStudentsByUniId(uniId || auth.auth?.user?.universityProviderUuid, data),
 });
+const paginatione = usePagination({
+  cb: (data, config) => getAllStudent(uniId, data),
+});
+const paginationed = usePagination({
+  cb: (data, config) => findAllByContractStatusApproved(uniId, data),
+});
+
 function openStudent(row) {
   currentRow.value = row;
   showStudent.value = true;
@@ -208,7 +216,8 @@ const users = ref([...Array(10).keys()].map(() => testUser));
           >
             Current Residents
           </h2>
-          <p class="text-3xl font-bold leading-8 text-[#4E585F]">   {{ (sudents.students || []).length }} </p>
+          {{ console.log(sudent.students) }}
+          <p class="text-3xl font-bold leading-8 text-[#4E585F]">   {{ paginatione.response.value?.page?.totalElements}} </p>
         </div>
         <div class="bg-[#FBFBFB] p-4 rounded-md">
           <h2
@@ -216,7 +225,7 @@ const users = ref([...Array(10).keys()].map(() => testUser));
           >
             Contrcts
           </h2>
-          <p class="text-3xl font-bold leading-8 text-[#4E585F]">1,870</p>
+          <p class="text-3xl font-bold leading-8 text-[#4E585F]">   {{ paginationed.response.value?.page?.totalElements}} </p>
         </div>
       </div></div>
     </div>
