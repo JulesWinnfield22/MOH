@@ -206,7 +206,7 @@ const users = ref([...Array(10).keys()].map(() => testUser));
           </h2>
           <p class="text-3xl font-bold leading-8 text-[#4E585F]">   {{ (sudents.students || []).length }} </p>
         </div>
-      
+    
       </div></div>
       <div v-else>
       <div class="grid grid-cols-3 gap-4 mb-4">
@@ -223,7 +223,7 @@ const users = ref([...Array(10).keys()].map(() => testUser));
           <h2
             class="text-sm font-normal mb-2 leading-[21px] text-[#4E585F] font-dm-sans"
           >
-            Contrcts
+            Contracts
           </h2>
           <p class="text-3xl font-bold leading-8 text-[#4E585F]">   {{ paginationed.response.value?.page?.totalElements}} </p>
         </div>
@@ -297,6 +297,7 @@ const users = ref([...Array(10).keys()].map(() => testUser));
             'Contract Amount',
             'Status',
             'campusStatus',
+            'Actions',
           ],
           row: [
             'ernpId',
@@ -316,7 +317,7 @@ const users = ref([...Array(10).keys()].map(() => testUser));
     </div>
     <div v-else>
       <h2 class="text-lg font-bold mb-4 leading-6 text-[#4E585F]">
-        Latest Signed Contacts
+        Latest Signed Contracts
       </h2>
       <Table
         :Fallback="TableRowSkeleton"
@@ -331,6 +332,7 @@ const users = ref([...Array(10).keys()].map(() => testUser));
             'Salary',
             'Contract Amount',
             'Status',
+            'Actions',
           ],
           row: [
             'id',
@@ -349,7 +351,259 @@ const users = ref([...Array(10).keys()].map(() => testUser));
         }"
         :rows="allRows"
       >
+      <template #actions="{ row }">
+          <button
+            @click="openStudent(row)"
+            class="text-[#21618C] text-sm hover:italic hover:underline"
+          >
+            Detail
+          </button>
+        </template>
       </Table>
+      <div
+        v-if="showStudent"
+        class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50"
+      >
+        <div
+          class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px]"
+        >
+          <div class="flex justify-between">
+            <h2
+              class="text-left flex font-dm-sans leading-[24px] text-[14px] font-bold text-[#4E585F]"
+            >
+              Student Information
+            </h2>
+            <button
+              class="h-[13px] w-[13px] px-4 py-2 rounded"
+              @click="closeStudent"
+            >
+              <svg
+                width="17"
+                height="17"
+                viewBox="0 0 17 17"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M15 2L2.00005 14.9999M2 1.99995L14.9999 14.9999"
+                  stroke="#FF4040"
+                  stroke-width="3.5"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </button>
+          </div>
+          <form
+            class="grid grid-cols-1 gap-y-4 gap-x-6 md:grid-cols-3 md:gap-x-8"
+          >
+            <!-- ERNP ID -->
+            <div class="col-span-1">
+              <label
+                for="ernpId"
+                class="block text-sm font-medium text-gray-700"
+                >ERNP ID</label
+              >
+              <input
+                v-model="currentRow.id"
+                id="ernpId"
+                readonly
+                class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              />
+            </div>
+
+            <!-- Full Name -->
+            <div class="col-span-1">
+              <label
+                for="fullName"
+                class="block text-sm font-medium text-gray-700"
+                >Full Name</label
+              >
+              <input
+                v-model="currentRow.fullName"
+                id="fullName"
+                readonly
+                class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              />
+            </div>
+            <!-- University Name -->
+            <div class="col-span-1">
+              <label
+                for="programName"
+                class="block text-sm font-medium text-gray-700"
+                >University</label
+              >
+              <input
+                v-model="currentRow.university"
+                id="programName"
+                readonly
+                class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              />
+            </div>
+
+            <!-- Program Name -->
+            <div class="col-span-1">
+              <label
+                for="programName"
+                class="block text-sm font-medium text-gray-700"
+                >Program</label
+              >
+              <input
+                v-model="currentRow.program"
+                id="programName"
+                readonly
+                class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              />
+            </div>
+            <div class="col-span-1">
+              <label
+                for="programName"
+                class="block text-sm font-medium text-gray-700"
+                >Contract Status</label
+              >
+              <input
+                v-model="currentRow.contractStatus"
+                id="campusStatus"
+                readonly
+                class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              />
+            </div>
+            <!-- Email -->
+            <!-- Phone -->
+
+            <!-- Gender -->
+
+            <!-- Date of Birth -->
+
+            <!-- Address -->
+
+            <!-- Duration -->
+            <div class="col-span-1">
+              <label
+                for="duration"
+                class="block text-sm font-medium text-gray-700"
+                >Approved Date</label
+              >
+              <input
+                v-model="currentRow.approvedDate"
+                id="duration"
+                readonly
+                class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              />
+            </div>
+
+            <!-- Salary -->
+            <div class="col-span-1">
+              <label
+                for="salary"
+                class="block text-sm font-medium text-gray-700"
+                >Salary</label
+              >
+              <input
+                v-model="currentRow.salary"
+                id="salary"
+                readonly
+                class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              />
+            </div>
+
+            <!-- Contract Amount -->
+            <div class="col-span-1">
+              <label
+                for="totalSalary"
+                class="block text-sm font-medium text-gray-700"
+                >Contract Amount</label
+              >
+              <input
+                v-model="currentRow.totalTrainingCost"
+                id="totalSalary"
+                readonly
+                class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              />
+            </div>
+
+            <!-- University Name -->
+            <div class="col-span-1">
+              <label
+                for="totalSalary"
+                class="block text-sm font-medium text-gray-700"
+                >Region</label
+              >
+              <input
+                v-model="currentRow.region"
+                id="totalSalary"
+                readonly
+                class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              />
+            </div>
+            <div class="col-span-1">
+              <label
+                for="totalSalary"
+                class="block text-sm font-medium text-gray-700"
+                >Woreda</label
+              >
+              <input
+                v-model="currentRow.woreda"
+                id="totalSalary"
+                readonly
+                class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              />
+            </div>
+            <div class="col-span-1">
+              <label
+                for="totalSalary"
+                class="block text-sm font-medium text-gray-700"
+                >City</label
+              >
+              <input
+                v-model="currentRow.city"
+                id="totalSalary"
+                readonly
+                class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              />
+            </div>
+            <div class="col-span-1">
+              <label
+                for="totalSalary"
+                class="block text-sm font-medium text-gray-700"
+                >Subcity</label
+              >
+              <input
+                v-model="currentRow.subCity"
+                id="totalSalary"
+                readonly
+                class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              />
+            </div>
+            <div class="col-span-1">
+              <label
+                for="totalSalary"
+                class="block text-sm font-medium text-gray-700"
+                >House Number</label
+              >
+              <input
+                v-model="currentRow.houseNumber"
+                id="totalSalary"
+                readonly
+                class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              />
+            </div>
+            <!-- Action Buttons -->
+            <div class="flex justify-end gap-3 pt-4 col-span-3">
+              <button
+                type="button"
+                @click="
+                  $router.push(
+                    `/Sponsorship?rep=${auth.auth?.user?.name}&name=${currentRow?.fullName}`
+                  )
+                "
+                class="bg-[#092537] text-white px-4 py-2 rounded-md  transition"
+              >
+                See Sponsorship Letter
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 </template>

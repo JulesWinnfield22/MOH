@@ -15,14 +15,14 @@ import UniversitiesDataProvider from '@/features/university/components/Universit
       :pending="pending"
       :Fallback="TableRowSkeleton"
       :headers="{
-        head: ['University Name','no' ,'actions'],
+        head: ['University Name','No of Students' ,'actions'],
         row: ['universityName','studentsLength']
       }"
       :rows="universities"
     > 
       <template #actions="{row}">
         <button class="text-[#21618C] text-sm hover:italic hover:underline" @click="$router.push(`/students/${row?.universityUuid}`)">
-           Open
+           Assigned Students
         </button>
       </template>
     </Table>

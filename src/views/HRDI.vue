@@ -441,16 +441,12 @@ const fileInput = ref(null);
       </div>
     </div>
 
-    <div
-      class="px-4 text-[#4E585F] font-dm-sans text-[16px] font-bold leading-[24px] text-left"
-    >
-      HRDI
-    </div>
-    <div class="flex px-4 justify-between items-center bg-gray-100 rounded-lg shadow-md p-4">
+  
+    <div class="flex px-4 justify-between items-center  rounded-lg shadow-md p-4">
   <input
     @keydown.enter="paginations.search.value = $event.target.value"
     class="flex w-[800px] rounded-lg border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-[#21618C] placeholder-gray-500 transition duration-300"
-    placeholder="Search Student"
+    placeholder="Search by BatchId"
   />
   <div class="flex items-center gap-6"> <!-- Increased gap here -->
     <div class="bg-[#21618C] text-white flex items-center gap-2 font-dm-sans p-2 rounded-lg shadow-md transition duration-300 ease-in-out hover:bg-[#1A4D6D]">

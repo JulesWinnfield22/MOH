@@ -72,7 +72,7 @@ export default [
 	privilage: ['HRDI']
 	},
 	{
-		name: 'Students',
+		name: 'Assigned Residents',
 		to: '/students',
 		icon: `
 			<svg 
@@ -91,7 +91,7 @@ export default [
 	privilage: ['University']
 	},
 	{
-		name: 'Campus Status',
+		name: 'Accepted Residents',
 		to: '/studentActions',
 		icon: `
 			<svg 

@@ -319,11 +319,31 @@ const isRoleHrdi = computed(
 
 <template>
   <div class="bg-[#FBFBFB] p-5">
-    <div class="font-bold text-center my-4 text-gray-700 p-1 items-center justify-center bg-white shadow-md rounded-lg">
-    <p class="font-bold pb-8 text-xl">
+    <div class="flex justify-between my-5"> 
+      <div v-if="isRoleHrdi" ></div>
+      <div v-else>
+      <button
+        class="text-sm flex justify-start h-10 text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 px-4 py-2 rounded-md shadow-sm transition-transform transform hover:scale-105"
+        @click="$router.push('/university')"
+      >
+        Back
+      </button></div>
+    <p class="font-bold  flex justify-center pb-8 text-xl">
       {{ sudents.students?.[0]?.universityName}}
     </p>
-
+    <div class="flex justify-end mb-4">
+        <select
+          v-model="selectedStatus"
+          @change="applyFilter"
+          class="block w-32 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
+        >
+          <option value="">All</option>
+          <option value="waiting">Waiting</option>
+          <option value="registered">Registered</option>
+          <option value="rejected">Rejected</option>
+        </select>
+      </div>
+   
 </div>
     <div v-if="isRoleHrdi" class="flex justify-between items-center">
       
@@ -392,14 +412,14 @@ const isRoleHrdi = computed(
                 fill="white"
               />
             </svg>
-            Confirm
+            Accept
           </template>
           <p v-else>...</p>
         </button>
       </div>
     </div>
 
-    <div v-if="isRoleHrdi">
+    <div v-if="isRoleHrdi" class="my-10">
       <div
         v-if="isWithdrawStudent"
         class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50"
@@ -628,18 +648,7 @@ const isRoleHrdi = computed(
         </div>
       </div>
 
-      <div class="flex justify-end mb-4">
-        <select
-          v-model="selectedStatus"
-          @change="applyFilter"
-          class="block  px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
-        >
-          <option value="">All</option>
-          <option value="waiting">Waiting</option>
-          <option value="registered">Registered</option>
-          <option value="rejected">Rejected</option>
-        </select>
-      </div>
+     
 
       <Table
         :Fallback="TableRowSkeleton"
@@ -786,26 +795,7 @@ const isRoleHrdi = computed(
         </template>
       </Table>
     </div>
-    <div v-else>
-      <button
-        class="text-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 px-4 py-2 rounded-md shadow-sm transition-transform transform hover:scale-105"
-        @click="$router.push('/university')"
-      >
-        Back
-      </button>
-      <div class="flex justify-end mb-4">
-        <select
-          v-model="selectedStatus"
-          @change="applyFilter"
-          class="block  px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
-        >
-          <option value="">All</option>
-          <option value="waiting">Waiting</option>
-          <option value="registered">Registered</option>
-          <option value="rejected">Rejected</option>
-        </select>
-      </div>
-
+    <div v-else class="my-10">
       <Table
         :Fallback="TableRowSkeleton"
         :headers="{
@@ -818,7 +808,7 @@ const isRoleHrdi = computed(
             'Salary',
             'Contract Amount',
             'Status',
-            'campusStatus',
+            'Campus Status',
             'Actions',
           ],
           row: [
@@ -990,142 +980,20 @@ const isRoleHrdi = computed(
         </button>
 
         <!-- Modal Title -->
-        <h3 class="text-xl font-semibold text-gray-800 mb-6">Edit Student</h3>
+        <h3 class="text-xl font-semibold text-gray-800 mb-6">Reassign Resident</h3>
 
         <!-- Form -->
         <form
           @submit.prevent="saveChanges"
           class="grid grid-cols-1 gap-y-4 gap-x-6 md:grid-cols-3 md:gap-x-8"
-        >
-          <!-- Input Fields -->
-          <div class="col-span-1">
-            <label for="ernpId" class="block text-sm font-medium text-gray-700"
-              >ERNP ID</label
-            >
-            <input
-              v-model="selectedRow.ernpId"
-              id="ernpId"
-              readonly
-              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-            />
-          </div>
-
-          <div class="col-span-1">
-            <label
-              for="fullName"
-              class="block text-sm font-medium text-gray-700"
-              >Full Name</label
-            >
-            <input
-              v-model="selectedRow.fullName"
-              id="fullName"
-              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-            />
-          </div>
-
-          <div class="col-span-1">
-            <label for="email" class="block text-sm font-medium text-gray-700"
-              >Email</label
-            >
-            <input
-              v-model="selectedRow.email"
-              id="email"
-              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-            />
-          </div>
-
-          <div class="col-span-1">
-            <label for="phone" class="block text-sm font-medium text-gray-700"
-              >Phone</label
-            >
-            <input
-              v-model="selectedRow.phone"
-              id="phone"
-              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-            />
-          </div>
-          <div class="col-span-1">
-            <label for="gender" class="block text-sm font-medium text-gray-700"
-              >Gender</label
-            >
-            <select
-              :obj="true"
-              v-model="selectedRow.gender"
-              id="gender"
-              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-              name="gender"
-              validation="required"
-            >
-              <option value="" disabled>Select Gender</option>
-              <!-- Placeholder option -->
-              <option value="Male" key="male">Male</option>
-              <option value="Female" key="female">Female</option>
-            </select>
-          </div>
+        ><div class=" py-4 gap-2 px-4 rounded bg-yellow-50 col-span-3"> <label class="font-bold "> Rejection Reason</label> <br>{{ selectedRow.rejectionReason }}</div>
+        <div class=" bg-blue-50 flex col-span-3 py-2 px-4 rounded justify-between ">
           
-
-          <div class="col-span-1">
-            <label
-              for="dateOfBirth"
-              class="block text-sm font-medium text-gray-700"
-              >Date of Birth</label
-            >
-            <input
-              type='date'
-              v-model="selectedRow.dateOfBirth"
-              id="dateOfBirth"
-              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-            />
-          </div>
-
-          <div class="col-span-1">
-            <label for="address" class="block text-sm font-medium text-gray-700"
-              >Address</label
-            >
-            <input
-              v-model="selectedRow.address"
-              id="address"
-              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-            />
-          </div>
-
-          <div class="col-span-1">
-            <label
-              for="duration"
-              class="block text-sm font-medium text-gray-700"
-              >Duration</label
-            >
-            <input
-              v-model="selectedRow.duration"
-              id="duration"
-              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-            />
-          </div>
-          <div class="col-span-1">
-            <label for="salary" class="block text-sm font-medium text-gray-700"
-              >Salary</label
-            >
-            <input
-              v-model="selectedRow.salary"
-              id="salary"
-              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-            />
-          </div>
-          <div class="col-span-1">
-            <label for="salary" class="block text-sm font-medium text-gray-700"
-              >Contract Amount</label
-            >
-            <input
-              v-model="selectedRow.totalTrainingCost"
-              id="salary"
-              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-            />
-          </div>
-
-          <div class="col-span-1">
+         <div class=" grid flex-1 grid-cols-2 gap-2">
+          <div class="" >
             <label
               for="universityName"
-              class="block text-sm font-medium text-gray-700"
+              class="block text-sm font-medium  text-gray-700"
               >University Name</label
             >
             <select
@@ -1145,7 +1013,7 @@ const isRoleHrdi = computed(
               </option>
             </select>
           </div>
-          <div class="col-span-1">
+          <div class="  ">
             <label for="salary" class="block text-sm font-medium text-gray-700"
               >Program</label
             >
@@ -1163,7 +1031,173 @@ const isRoleHrdi = computed(
               </option>
             </select>
           </div>
+         </div>
+          </div>
+        
+          <!-- Input Fields -->
+          <div class="col-span-1">
+            <label for="ernpId" class="block text-sm font-medium text-gray-700"
+              >ERNP ID</label
+            >
+            <input
+              v-model="selectedRow.ernpId"
+              id="ernpId"
+              disabled  
+              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            />
+          </div>
+
+          <div class="col-span-1">
+            <label
+              for="fullName"
+              class="block text-sm font-medium text-gray-700"
+              readonly
+              >Full Name</label
+            >
+            <input
+              v-model="selectedRow.fullName"
+              id="fullName"
+              disabled
+              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            />
+          </div>
           
+         
+          <div class="col-span-1">
+            <label for="email" class="block text-sm font-medium text-gray-700"
+              >Email</label
+            >
+            <input
+              v-model="selectedRow.email"
+              id="email"
+              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              disabled
+            />
+          </div>
+
+          <div class="col-span-1">
+            <label for="phone" class="block text-sm font-medium text-gray-700"
+              >Phone</label
+            >
+            <input
+              v-model="selectedRow.phone"
+              id="phone"
+              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              disabled />
+          </div>
+          <div class="col-span-1">
+            <label for="gender" class="block text-sm font-medium text-gray-700"
+              >Gender</label
+            >
+            <select
+              :obj="true"
+              v-model="selectedRow.gender"
+              id="gender"
+              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              name="gender"
+              validation="required"
+              disabled  >
+              <option value="" disabled>Select Gender</option>
+              <!-- Placeholder option -->
+              <option value="Male" key="male">Male</option>
+              <option value="Female" key="female">Female</option>
+            </select>
+          </div>
+          
+
+          <div class="col-span-1">
+            <label
+              for="dateOfBirth"
+              class="block text-sm font-medium text-gray-700"
+              >Date of Birth</label
+            >
+            <input
+              type='date'
+              v-model="selectedRow.dateOfBirth"
+              id="dateOfBirth"
+              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              disabled />
+          </div>
+
+          <div class="col-span-1">
+            <label for="address" class="block text-sm font-medium text-gray-700"
+              >Address</label
+            >
+            <input
+              v-model="selectedRow.address"
+              id="address"
+              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              disabled />
+          </div>
+
+          <div class="col-span-1">
+            <label
+              for="duration"
+              class="block text-sm font-medium text-gray-700"
+              >Duration</label
+            >
+            <input
+              v-model="selectedRow.duration"
+              id="duration"
+              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+           disabled
+            />
+          </div>
+          <div class="col-span-1">
+            <label for="salary" class="block text-sm font-medium text-gray-700"
+              >Salary</label
+            >
+            <input
+              v-model="selectedRow.salary"
+              id="salary"
+              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              disabled/>
+          </div>
+          <div class="col-span-1">
+            <label for="salary" class="block text-sm font-medium text-gray-700"
+              >Contract Amount</label
+            >
+            <input
+              v-model="selectedRow.totalTrainingCost"
+              id="salary"
+              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              disabled />
+          </div>
+          <div class="col-span-1">
+            <label for="registrationStatus" class="block text-sm font-medium text-gray-700"
+              >Registration Status</label
+            >
+            <select
+              :obj="true"
+              v-model="selectedRow.registrationStatus"
+              id="registrationStatus"
+              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              name="registrationStatus"
+              validation="required"
+              disabled  >
+              <option value="waiting" disabled>Waiting</option>
+              <!-- Placeholder option -->
+              <option value="Male" key="male">registrationStatus</option>
+              <option value="Female" key="female">registrationStatus</option>
+            </select>
+          </div>
+          
+
+          <div class="col-span-1">
+  <label
+    for="fullName"
+    class="block text-sm font-medium text-gray-700"
+    >Registration Status</label
+  >
+  <input
+    v-model="selectedRow.registrationStatus"
+    id="registrationStatus"
+    disabled
+    value="registered"  
+    class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+  />
+</div>
+         
           <!-- Action Buttons -->
           <div class="flex justify-end gap-3 pt-4 col-span-3">
             <button
@@ -1195,7 +1229,7 @@ const isRoleHrdi = computed(
           <h2
             class="text-left flex font-dm-sans leading-[24px] text-[14px] font-bold text-[#4E585F]"
           >
-            Student Informations
+            Student Information
           </h2>
           <button
             class="h-[13px] w-[13px] px-4 py-2 rounded"
@@ -1330,6 +1364,7 @@ const isRoleHrdi = computed(
               class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
             />
           </div>
+         
 
           <!-- Salary -->
           <div class="col-span-1">

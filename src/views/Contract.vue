@@ -197,7 +197,7 @@ const isRoleHrdi = computed(
 </div> -->
     <div class="mb-4  py-4 flex text-left items-center justify-end gap-4">
       
-      <label for="table-select" class="font-medium flex ">Select Table:</label>
+    
       
            <div class="relative max-w-64">
         <select
@@ -205,6 +205,7 @@ const isRoleHrdi = computed(
           v-model="selectedTable"
           class="text-center border-gray-300 rounded-md py-2 px-4 pr-8 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer"
         >
+        <option value="Approved">All</option>
           <option value="Approved">Approved</option>
           <option value="Submitted">Submitted</option>
           <option value="Declined">Declined</option>
@@ -255,7 +256,7 @@ const isRoleHrdi = computed(
             @click="openStudent(row)"
             class="text-[#21618C] text-sm hover:italic hover:underline"
           >
-            Open
+            Detail
           </button>
         </template>
       </Table>
@@ -270,7 +271,7 @@ const isRoleHrdi = computed(
             <h2
               class="text-left flex font-dm-sans leading-[24px] text-[14px] font-bold text-[#4E585F]"
             >
-              Student Informations
+              Student Information
             </h2>
             <button
               class="h-[13px] w-[13px] px-4 py-2 rounded"
@@ -495,9 +496,9 @@ const isRoleHrdi = computed(
                     `/Sponsorship?rep=${auth.auth?.user?.name}&name=${currentRow?.fullName}`
                   )
                 "
-                class="bg-[#7c18da] text-white px-4 py-2 rounded-md hover:bg-[#6113aa] transition"
+                class="bg-[#092537] text-white px-4 py-2 rounded-md  transition"
               >
-                Generate sponsorship Letter
+                See Sponsorship Letter
               </button>
             </div>
           </form>

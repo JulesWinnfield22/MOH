@@ -706,7 +706,7 @@ const isRoleHrdi = computed(
               @click="openStudent(row)"
               class="text-[#21618C] text-sm hover:italic hover:underline"
             >
-              Take Action
+            Change Campus Status
             </button>
           </div>
         </template>
@@ -825,7 +825,7 @@ const isRoleHrdi = computed(
           <h2
             class="text-left flex font-dm-sans leading-[24px] text-[14px] font-bold text-[#4E585F]"
           >
-            Student Informations
+            Student Information
           </h2>
           <button
             class="h-[13px] w-[13px] px-4 py-2 rounded"
@@ -1025,7 +1025,7 @@ const isRoleHrdi = computed(
               @click="withdrawStudent(currentRow.ernpId)"
               class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-[#ee1919] transition"
             >
-              Take Actions
+               Change Campus Status
             </button>
           </div>
         </form>

@@ -155,8 +155,8 @@ function submitForm({ values, reset }) {
       />
     </div>
 
-    <Button :pending="pending" @click.prevent="submit(submitForm)" type="secondary">
-      Submit
+    <Button :pending="pending" @click.prevent="submit(submitForm)" type="secondary" class="py-3 gap-3 my-5">
+      Add Resident
     </Button>
   </Form>
 </template>

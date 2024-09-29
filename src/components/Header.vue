@@ -27,8 +27,11 @@ function logout() {
 
 <template>
   <header
-    class="flex items-center h-full justify-between px-6 py-4 bg-white border-b-4 border-b-[#D9D9D9]"
+    class="flex  h-full justify-between px-6 py-4 bg-white border-b-4 border-b-[#D9D9D9]"
   >
+  <div class="flex px-5 text-left items-start font-bold font-sans gap-3 justify-start">
+  {{ auth.auth?.user?.userType }}
+</div>
     <div class="flex items-center">
       <button
         class="text-gray-500 focus:outline-none lg:hidden"
@@ -50,38 +53,12 @@ function logout() {
         </svg>
       </button>
 
-      <div class="relative mx-4 lg:mx-0">
-        <!-- <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-          <svg class="w-5 h-5 text-gray-500" viewBox="0 0 24 24" fill="none">
-            <path
-              d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </span> -->
-
-        <!-- <input
-          class="w-32 pl-10 pr-4 text-[#4E585F] border-gray-200 rounded-md sm:w-96 focus:border-[#4E585F] focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
-          type="text"
-          placeholder="Search for Student here"
-        /> -->
-      </div>
+    
+     
     </div>
-    <div class="flex text-right items-right font-bold font-sans gap-3">
-      {{ auth.auth?.user?.userType }}
-    </div>
+   
     <div class="flex items-center text-[#4E585F] font-sans gap-3">
-      <p class="font-bold">Welcome</p>
-
-      <a
-        href="/Profile"
-        class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"
-      >
-        {{ auth.auth?.user?.name }}</a
-      >
+      
       <Dropdown position="right-bottom" v-slot="{ setRef, toggle }">
         <button @click="toggle" class="flex mx-4 text-gray-600 focus:outline-none">
           <svg
@@ -145,7 +122,7 @@ function logout() {
             >Products</a> -->
             <button
               @click.stop="logout"
-              class="block text-left px-4 w-full py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"
+              class="block text-left px-4 w-full py-2 text-sm text-gray-700 hover:bg-red-600 hover:text-white"
             >
               Log out
             </button>
