@@ -341,6 +341,8 @@ function requiredMultipleSelect(value, _, __, message) {
 const added = {};
 
 const common = {
+  email,
+  required,
   alpha,
   max,
   min,

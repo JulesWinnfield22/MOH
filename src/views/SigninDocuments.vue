@@ -71,7 +71,7 @@ function submit(values) {
 </script>
 <template>
   <div class="flex flex-col p-5 gap-2">
-    <StudentDataProvider v-slot="{ pending, isRegistered }">
+    <StudentDataProvider v-slot="{ contract, pending, isRegistered }">
       <div
         class="p-2 border-l-4 border-red-500 bg-orange-200"
         v-if="!pending && !isRegistered"
@@ -79,10 +79,14 @@ function submit(values) {
         you need to be registered
       </div>
       <ResidentForm
+        v-if="!contract"
         :disabled="!isRegistered"
         :filter="filter"
         :on-submit="submit"
       />
+      <p v-else class="capitalize font-bold text-lg">
+        You Have already submitted the documents required.
+      </p>
     </StudentDataProvider>
   </div>
 </template>

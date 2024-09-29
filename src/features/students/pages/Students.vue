@@ -19,6 +19,9 @@ import { useApiRequest } from '@/composables/useApiRequest';
 import { toasted } from '@/utils/utils';
 import { usePagination } from '@/composables/usePagination';
 import { getAllUniversities } from '@/features/university/api/uniApI';
+import Form from '@/new_form_builder/Form.vue';
+import Select from '@/components/new_form_elements/Select.vue';
+import Textarea from '@/components/new_form_elements/Textarea.vue';
 
 
 const paginations = usePaginationTemp({
@@ -66,7 +69,7 @@ const isModalVisibles = ref(false);
 const selectedRow = ref({});
 
 function openEditModal(row) {
-  selectedRow.value = row; // Clone the row data
+  selectedRow.value = {...row, registrationStatus: 'waiting'}; // Clone the row data
   console.log(selectedRow.value);
   isModalVisibles.value = true;
 }
@@ -530,8 +533,43 @@ const isRoleHrdi = computed(
               </svg>
             </button>
           </div>
-          <select
-            v-model="reason"
+          <Form class="flex flex-col gap-4" v-slot='{ submit }' id="reject-form">
+            <Textarea
+              v-if="reason === 'Other'"
+              name="discription"
+              v-model="discription"
+              validation="required"
+              placeholder="State the reason for rejection"
+              class="border w-[829px] h-[158px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4"
+            />
+            <Select
+              v-else
+              v-model="reason"
+              name="reason"
+              validation="required"
+              :options="['University is currently full', 'Program is currently unavailable', 'Program is currently unavailable', 'Incomplete Documents', 'Invalid Information', 'Other']"
+              :attributes="{
+                type: 'text',
+                placeholder: 'State the reason for rejection'
+              }"
+            />
+            <div class="flex justify-end">
+              <button
+                class="bg-[#FF4040] h-[40px] w-[82px] text-white px-4 py-2 rounded mr-2"
+                @click.prevent="submit(({values}) => rejectEachSelection(selectedErnpId))"
+              >
+                {{ rejectRequest.pending.value ? '...' : 'Reject'}}
+              </button>
+              <button
+                class="bg-gray-300 text-gray-700 px-4 py-2 rounded"
+                @click="closeModal"
+              >
+                Cancel
+              </button>
+            </div>
+          </Form>
+          <!--<select
+            
             class="border w-[829px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4"
           >
             <option value="" disabled selected>
@@ -547,29 +585,11 @@ const isRoleHrdi = computed(
             <option value="Incomplete Documents">Incomplete Documents</option>
             <option value="Invalid Information">Invalid Information</option>
             <option value="Other">Other</option>
-          </select>
+          </select>-->
 
           <!-- Textarea displayed only when "Other" is selected -->
-          <textarea
-            v-if="reason === 'Other'"
-            v-model="discription"
-            placeholder="State the reason for rejection"
-            class="border w-[829px] h-[158px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4"
-          />
-          <div class="flex justify-end">
-            <button
-              class="bg-[#FF4040] h-[40px] w-[82px] text-white px-4 py-2 rounded mr-2"
-              @click="rejectEachSelection(selectedErnpId)"
-            >
-              {{ rejectRequest.pending.value ? '...' : 'Reject'}}
-            </button>
-            <button
-              class="bg-gray-300 text-gray-700 px-4 py-2 rounded"
-              @click="closeModal"
-            >
-              Cancel
-            </button>
-          </div>
+          
+          
         </div>
       </div>
       <div

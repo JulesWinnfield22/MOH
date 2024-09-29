@@ -4,6 +4,7 @@ import { getAllUniversities } from '../api/uniApI';
 import { useUniversity } from '../store/uniStore';
 import { useApiRequest } from '@/composables/useApiRequest';
 import { watch } from 'vue';
+import { removeUndefined } from '@/utils/utils';
 
 const props = defineProps({
 	search: String
@@ -12,7 +13,7 @@ const props = defineProps({
 	const pagination = usePagination({
 		store: universities,
 		auto: false,
-		cb: (data) => getAllUniversities({...data, search: props.search})
+		cb: (data) => getAllUniversities(removeUndefined({...data, search: props.search}))
 	})
 
 	const req = useApiRequest()

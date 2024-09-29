@@ -10,6 +10,7 @@ import Button from '@com/Button.vue';
 import { toasted } from '@/utils/utils';
 // import { openModal } from '@/modals';
 import BaseIcon from '@/components/components/base/BaseIcon.vue';
+import { openModal } from '@/modals';
 const showModalAdd = ref(false);
 const currentPage = ref(2);
 const totalPages = ref(5);

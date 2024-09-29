@@ -18,13 +18,16 @@ req.send(
 )
 
 
-	function add(value) {
+	function add(value, reset) {
 		if(req.pending.value) return
 
 		req.send(
 			() => createStudent(value),
 			res => {
 				toasted(res.success, 'Student Successfully Created', res.error)
+				if(res.success) {
+					reset()
+				}
 			}
 
 		)
