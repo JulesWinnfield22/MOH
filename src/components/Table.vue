@@ -150,7 +150,7 @@ const totalPages = inject("totalPages", 1);
         />
       </template>
     </DataTable>
-    <div v-if="showPagination && totalPages > 1" class="flex items-center justify-between">
+    <div v-if="showPagination" class="flex items-center justify-between">
       <button @click="previousPage" class="text-center px-4 py-2 rounded border">Previous</button>
       <p>
         Page {{ page }} of {{ totalPages }}

@@ -159,11 +159,8 @@ async function loginUser() {
           </div>
           <div class="flex items-center justify-between mb-6">
             <label class="inline-flex items-center">
-              <input
-                type="checkbox"
-                class="form-checkbox h-4 w-4 text-blue-500 rounded font-dm-sans"
-              />
-              <span class="ml-2 text-gray-700 font-dm-sans">Remember me</span>
+             
+              <span class="ml-2 text-gray-700 font-dm-sans"></span>
             </label>
             <a
               class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 font-dm-sans"

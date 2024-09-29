@@ -74,12 +74,10 @@ const auth = useAuth();
                href="/Profile"
                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"
                 >  {{ auth.auth?.user?.name}}</a> -->
-                <p class="text-left mt-[36px] w-[800px]">
-    To register at the registrar’s office, first gather the necessary documents, such as your identification. Check the registration dates and locate the office on campus, ensuring you visit during open hours. Upon arrival, request and complete the required registration forms, then submit them along with your documents. Be prepared to pay any applicable fees, and keep a record of your submission for future reference. Finally, stay informed by regularly checking your student portal or email for updates on your registration status.
- if you are married don't forget to download and sign all documents.
-            download pdf here if you are married  
-          <div><RouterLink class="text-primary italic" :to='`/Requirement`'> Download </RouterLink>
-          </div> </p>  r
+                <p class="text-left font-normal mt-[36px] w-[800px]">
+    To register at the registrar’s office, first gather the necessary documents, such as your identification. 
+
+          </p>  
                   </div>
         <div class="w-full py-10 justify-center">
           <svg

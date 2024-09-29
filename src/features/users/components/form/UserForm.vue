@@ -20,7 +20,7 @@ const props = defineProps({
     type: Function,
   },
 });
-
+console.log(props.user)
 const user = ref({})
 if(Object.keys((props.user || {})).length > 0) {
   const [title, firstName, fathersName, grandFathersName] = props.user.fullName.split(" ")
@@ -62,7 +62,7 @@ function submitForm({ values, reset }) {
   reset();
 }
 
-console.log(props.universities);
+console.log(props.user.universityName);
 </script>
 
 <template>
@@ -125,7 +125,7 @@ console.log(props.universities);
     <Input
       validation="required"
       label="Birth Date *"
-      name="dateOfBirth"
+      name="birthDate"
       v-model="user.dateOfBirth"
       :attributes="{ type: 'date', placeholder: 'Enter Your Birth Date' }"
     />
@@ -143,7 +143,7 @@ console.log(props.universities);
   <div class="grid grid-cols-2 gap-6">
     <Select
       v-model="type"
-      label="User Type *"
+      label="User Role *"
       name="userType"
       :options="['HRDI', 'University', 'LegalOffice']"
       validation="required"
