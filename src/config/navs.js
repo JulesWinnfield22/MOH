@@ -30,7 +30,7 @@ export default [
   },
 	{
 		name: 'Batch Of Students',
-		to: '/HRDI',
+		to: '/hrdi',
 		icon: `
 			<svg
 				class="w-5 h-5"

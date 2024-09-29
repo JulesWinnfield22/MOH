@@ -13,7 +13,7 @@ export function useTablePagination(responseLimit = 25) {
   const done = ref(false)
 
   function reset() {
-    page.value = 1
+    page.value = 0
     limit.value = responseLimit
     done.value = false
   }

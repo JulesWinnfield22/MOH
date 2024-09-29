@@ -50,7 +50,7 @@ const fileInput = ref(null);
 <template>
   <div class="flex justify-between items-center p-5 bg-gray-100 border-b shadow-md rounded-lg">
   <input
-    @keydown.enter="paginations.search.value = $event.target.value"
+    v-model="paginations.search.value"
     class="flex-1 rounded-lg border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-[#21618C] placeholder-gray-500 transition duration-300"
     placeholder="Search users"
   />

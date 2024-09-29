@@ -123,7 +123,7 @@ function remove(id) {
   />
   <button
     class="ml-4 bg-[#21618C] text-white flex items-center gap-2 font-dm-sans py-2 px-4 rounded-lg shadow-lg transition duration-300 ease-in-out hover:bg-[#1A4D6D]"
-    @click="$router.push(`/AddStudents/${route.params.batchId}`)"
+    @click="$router.push(`/hrdi/AddStudents/${route.params.batchId}`)"
     type="button"
   >
     Add Student
