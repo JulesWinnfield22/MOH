@@ -15,7 +15,7 @@ import UniversitiesDataProvider from '@/features/university/components/Universit
       :pending="pending"
       :Fallback="TableRowSkeleton"
       :headers="{
-        head: ['University Name','No of Students' ,'actions'],
+        head: ['University Name','No of Resident' ,'actions'],
         row: ['universityName','studentsLength']
       }"
       :rows="universities"
