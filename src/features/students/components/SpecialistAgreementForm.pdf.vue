@@ -63,7 +63,7 @@ function getPdf() {
                 width: 'auto',
                 bold: true,
                 fontSize: 10,
-                text: auth.auth?.user?.name,
+                text: auth.auth?.user?.userType == 'LegalOffice' ? (props.student?.fullName || props.data?.fullName) : auth.auth?.user?.name,
               },
               {
                 width: 'auto',
@@ -250,7 +250,7 @@ function getPdf() {
               {
                 bold: true,
                 fontSize: 10,
-                text: auth.auth?.user?.name,
+                text: auth.auth?.user?.userType == 'LegalOffice' ? (props.student?.fullName || props.data?.fullName) : auth.auth?.user?.name,
               },
               {
                 canvas: [

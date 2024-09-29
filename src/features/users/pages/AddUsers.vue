@@ -16,13 +16,16 @@
 		}
 	)
 
-	function add(value) {
+	function add(value, reset) {
 		if(createReq.pending.value || req.pending.value) return
 
 		createReq.send(
 			() => createUser(value),
 			res => {
 				toasted(res.success, 'Successfully Created', res.error)
+				if(res.success) {
+					reset()
+				}
 			}
 
 		)

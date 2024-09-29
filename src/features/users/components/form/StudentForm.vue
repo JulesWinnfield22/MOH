@@ -47,8 +47,7 @@ watch(selectedOption, (newVal) => {
 });
 
 function submitForm({ values, reset }) {
-  props.onSubmit(values);
-  reset();
+  props.onSubmit(values, reset);
 }
 </script>
 

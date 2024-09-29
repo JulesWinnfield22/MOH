@@ -18,7 +18,10 @@ watch(props, () => {
 onMounted(() => {
 	console.log(props.file.type)
 	fileDoc.value.src = URL.createObjectURL(props.file)
+	download.value.href = fileDoc.value.src
 })
+
+const download = ref()
 </script>
 <template>
 	<div 
@@ -28,9 +31,12 @@ onMounted(() => {
 >
 		<div class="w-[16rem]"></div>
 		<div class="realtive p-2">
-			<button @click="closeFile" class="z-50 w-8 h-8 rounded-full shadow-lg bg-white absolute top-2 right-2">
-				X
-			</button>
+			<div class="absolute top-2 right-2 flex gap-2 items-center">
+				<a download class="bg-primary px-4 py-1 rounded text-white" ref="download" >Download</a>
+				<button @click="closeFile" class="z-50 w-8 h-8 rounded-full shadow-lg bg-white">
+					X
+				</button>
+			</div>
 			<div class="">
 				<embed :type="file.type" ref="fileDoc" class="object-cover max-w-full"  />
 			</div>

@@ -3,26 +3,33 @@ import { usePagination } from '@/composables/usePagination';
 import { getAllUniversities } from '../api/uniApI';
 import { useUniversity } from '../store/uniStore';
 import { useApiRequest } from '@/composables/useApiRequest';
+import { watch } from 'vue';
+import { removeUndefined } from '@/utils/utils';
 
+const props = defineProps({
+	search: String
+})
 	const universities = useUniversity()
+	const pagination = usePagination({
+		store: universities,
+		auto: false,
+		cb: (data) => getAllUniversities(removeUndefined({...data, search: props.search}))
+	})
+
 	const req = useApiRequest()
 
-	console.log(universities.university.length == 0)
 	if(universities.university.length == 0) {
-		req.send(
-			() => getAllUniversities({}),
-			res => {
-				if(res.success) {
-					universities.set(res.data.content)
-				}
-			}
-		)
+		pagination.send()
 	}
+
+	watch(() => props.search, () => {
+		pagination.send()
+	})
 </script>
 <template>
 	<slot
 		:universities="universities.university"
-		:pending="req.pending.value"
-		:error="req.error.value"
+		:pending="pagination.pending.value"
+		:error="pagination.error.value"
 	/>
 </template>

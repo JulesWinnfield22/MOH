@@ -2,6 +2,7 @@
 import DataTable from './DataTable.vue';
 import { inject, ref, useAttrs, watch } from 'vue';
 import GenericTableRow from './GenericTableRow.vue';
+import TableRowSkeleton from '@/skeletons/TableRowSkeleton.vue';
 
 const emit = defineEmits([
   'row',
@@ -32,7 +33,10 @@ const props = defineProps({
   actions: Array,
   exceptions: Array,
   length: Number,
-  Fallback: Object,
+  Fallback: {
+    type: Object,
+    default: TableRowSkeleton
+  },
   pending: Boolean,
 });
 

@@ -61,8 +61,9 @@ export function usePagination(options = {}) {
     req.send(
       () => paginationOptions.value.cb(getPaginationData(next, current)),
       (res) => {
-        if (paginationOptions.value.store && res.success)
+        if (paginationOptions.value.store && res.success) {
           paginationOptions.value.store.set(res.data?.content || [])
+        }
 
         console.log(res.data?.content?.length, pagination.limit.value)
         pagination.totalPages.value = res.data?.page?.totalPages || 1
@@ -184,7 +185,7 @@ export function usePagination(options = {}) {
 
   function send() {
     pagination.done.value = false;
-    pagination.page.value = 1;
+    pagination.page.value = 0;
     fetch()
   }
   return {

@@ -10,6 +10,7 @@ import Button from '@com/Button.vue';
 import { toasted } from '@/utils/utils';
 // import { openModal } from '@/modals';
 import BaseIcon from '@/components/components/base/BaseIcon.vue';
+import { openModal } from '@/modals';
 const showModalAdd = ref(false);
 const currentPage = ref(2);
 const totalPages = ref(5);
@@ -50,8 +51,8 @@ const fileInput = ref(null);
 <template>
   <div class="flex justify-between items-center p-5 border-b shadow-md rounded-lg">
   <input
-    @keydown.enter="paginations.search.value = $event.target.value"
-    class="flex rounded-lg border w-[60%] p-2 focus:outline-none focus:ring-2 focus:ring-[#21618C] placeholder-gray-500 transition duration-300"
+    v-model="paginations.search.value"
+    class="flex-1 rounded-lg border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-[#21618C] placeholder-gray-500 transition duration-300"
     placeholder="Search users"
   />
   <button

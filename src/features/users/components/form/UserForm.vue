@@ -58,11 +58,10 @@ watch(selectedOption, (newVal) => {
 });
 
 function submitForm({ values, reset }) {
-  props.onSubmit(values);
-  reset();
+  props.onSubmit(values, reset);
 }
 
-console.log(props.user.universityName);
+console.log(props.universities);
 </script>
 
 <template>
@@ -77,7 +76,7 @@ console.log(props.user.universityName);
       name="title"
       :options="['Mrs.', 'Mr.', 'Dr']"
       v-model="user.title"
-      :attributes="{ placeholder: 'Select Title' }"
+      :attributes="{ type: 'text', placeholder: 'Select Title' }"
     />
     
     <Input
@@ -136,7 +135,7 @@ console.log(props.user.universityName);
       v-model="user.gender"
       :options="['Male', 'Female']"
       validation="required"
-      :attributes="{ placeholder: 'Select Gender' }"
+      :attributes="{ type: 'text', placeholder: 'Select Gender' }"
     />
   </div>
   
@@ -147,7 +146,7 @@ console.log(props.user.universityName);
       name="userType"
       :options="['HRDI', 'University', 'LegalOffice']"
       validation="required"
-      :attributes="{ placeholder: 'Select User Type' }"
+      :attributes="{ type: 'text', placeholder: 'Select User Type' }"
     />
     
     <Select
@@ -157,7 +156,7 @@ console.log(props.user.universityName);
       name="universityUuid"
       :options="universities.map(el => ({ label: el.universityName, value: el.universityUuid }))"
       validation="required"
-      :attributes="{ placeholder: 'Select University' }"
+      :attributes="{type: 'text', placeholder: 'Select University' }"
     />
   </div>
   

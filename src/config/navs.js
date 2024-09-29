@@ -29,8 +29,8 @@ export default [
   privilage: ['HRDI', 'LegalOffice'],
   },
 	{
-		name: 'Batch Of Resident',
-		to: '/HRDI',
+		name: 'Batch Of Students',
+		to: '/hrdi',
 		icon: `
 			<svg
 				class="w-5 h-5"

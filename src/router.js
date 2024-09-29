@@ -28,6 +28,8 @@ import VerificationReset from './features/verification/pages/VerificationReset.v
 import ContractFile from './features/students/pages/ContractFile.vue'
 import EditContractForm from './views/EditContractForm.vue'
 import MainLayout from './layout/MainLayout.vue'
+import BatchesIndex from './features/students/pages/BatchesIndex.vue'
+import UniversityIndex from './features/university/UniversityIndex.vue'
 
 const routes = [
   {
@@ -52,13 +54,29 @@ const routes = [
         }
       },
       {
-        path: '/University',
-        name: 'University',
-        component: University,
+        path: '/university',
+        name: 'universities',
+        component: UniversityIndex,
         meta: {
           requiresAuth: true,
           privileges: ['HRDI',]
-        }
+        },
+        children: [
+          {
+            path: '',
+            name: 'University',
+            component: University
+          },
+          {
+            path: 'students/:uniId',
+            name: 'University Students',
+            component: Students,
+            meta: {
+              requiresAuth: true,
+              privileges: ['HRDI',]
+            }
+          },
+        ]
       },
       {
         path: '/Contract',
@@ -97,13 +115,34 @@ const routes = [
         }
       },
       {
-        path: '/student-batch/:batchId',
-        name: 'student batch',
-        component: Batches,
+        path: '/hrdi',
+        name: 'HRDI',
+        component: BatchesIndex,
         meta: {
           requiresAuth: true,
           privileges: ['HRDI',]
-        }
+        },
+        children: [
+          {
+            path: '',
+            name: '',
+            component: HRDI,
+            meta: {
+              requiresAuth: true,
+              privileges: ['HRDI']
+            }
+          },
+          {
+            path: 'student-batch/:batchId',
+            name: 'students batch',
+            component: Batches
+          },
+          {
+            path: 'AddStudents/:batchId',
+            name: 'Add Student',
+            component: AddStudents
+          },
+        ]
       },
       
       {
@@ -134,30 +173,12 @@ const routes = [
         }
       },
       {
-        path: '/students/:uniId',
-        name: 'University Students',
-        component: Students,
-        meta: {
-          requiresAuth: true,
-          privileges: ['HRDI',]
-        }
-      },
-      {
         path: '/MoHLegal',
         name: 'MoHLegal',
         component: MoHLegal,
         meta: {
           requiresAuth: true,
           privileges: ['LegalOffice']
-        }
-      },
-      {
-        path: '/HRDI',
-        name: 'HRDI',
-        component: HRDI,
-        meta: {
-          requiresAuth: true,
-          privileges: ['HRDI']
         }
       },
       {
@@ -179,13 +200,7 @@ const routes = [
             name: 'Add User',
             component: AddUsers
           }
-       
         ]
-      },
-      {
-        path: '/AddStudents/:batchId',
-        name: 'Add Student',
-        component: AddStudents
       },
       {
         path: '/Status',

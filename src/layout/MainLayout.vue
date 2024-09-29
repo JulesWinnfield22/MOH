@@ -40,6 +40,11 @@ import Sidebar from '@/components/Sidebar.vue';
 </template>
 
 <style>
+.__drawer .router-link-active {
+  background-color: theme('colors.gray.500');
+  color: rgb(var(--base-clr));
+}
+
 .__drawer .router-link-exact-active {
   background-color: theme('colors.primary');
   color: rgb(var(--base-clr));
