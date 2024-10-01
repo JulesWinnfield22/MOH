@@ -4,6 +4,7 @@ import UserForm from './UserForm.vue';
 import { useApiRequest } from '@/composables/useApiRequest';
 import { updateUser } from '@/features/university/api/userApi';
 import { toasted } from '@/utils/utils';
+import { closeModal } from '@/modals';
 
 const props = defineProps({
   user: {
@@ -18,6 +19,7 @@ function edit(values) {
 		() => updateUser(props.user?.userUuid, values),
 		res => {
 			toasted(res.success, 'Successfully Updated', res.error)
+			closeModal();
 		}
 	)
 }

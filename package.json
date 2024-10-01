@@ -12,6 +12,7 @@
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/typography": "^0.5.9",
+    "@vueuse/components": "^11.1.0",
     "axios": "^1.7.3",
     "pdfmake": "^0.2.12",
     "pinia": "^2.1.6",

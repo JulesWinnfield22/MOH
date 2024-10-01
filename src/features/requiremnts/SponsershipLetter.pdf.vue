@@ -26,7 +26,7 @@ function getPdf() {
       },
       {
         marginTop: 10,
-        text: 'The Sponsor hereby agrees to provide financial sponsorship for the Sponsored Student to pursue their educational studies at [University/Institution]. The sponsorship will cover the following:',
+        text: 'The Sponsor hereby agrees to provide financial sponsorship for the Sponsored Student to pursue their educational studies at University. The sponsorship will cover the following:',
       },
       {
         marginTop: 10,
@@ -50,9 +50,9 @@ function getPdf() {
         marginTop: 10,
         ul: [
           'Maintain a satisfactory academic performance throughout the sponsored program',
-          'Comply with all rules and regulations of the [University/Institution]',
+          'Comply with all rules and regulations of the University',
           'Provide regular progress reports to the Sponsor',
-          'Upon completion of the sponsored program, serve the Sponsor for a period of [X] years at the assigned location.',
+          'Upon completion of the sponsored program, serve the Sponsor for a period of  years at the assigned location.',
         ],
       },
       {

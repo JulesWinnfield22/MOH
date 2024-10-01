@@ -1,20 +1,17 @@
 <script setup>
-import InputParent from "../../new_form_builder/InputParent.vue";
-import InputLayout from "./NewInputLayout.vue";
+import InputParent from '../../new_form_builder/InputParent.vue';
+import InputLayout from './NewInputLayout.vue';
 
 const props = defineProps({
-  focus: Boolean
-})
+  focus: Boolean,
+});
 </script>
 <template>
-  <InputParent v-slot="{ setRef, error, value, changeValue }">
-    <InputLayout :error="error" :label="$attrs?.label">
+  <InputParent v-slot="{ setRef, validation, error, value, changeValue }">
+    <InputLayout :validation="validation" :error="error" :label="$attrs?.label">
       <div class="flex w-full">
         <slot class="" name="left" />
-        <input
-          v-focus='focus'
-          :ref="setRef"
-        />
+        <input :ref="setRef" />
         <slot name="right" />
       </div>
     </InputLayout>

@@ -39,7 +39,7 @@ const auth = useAuth();
         
         </h1>
         <h1 v-else-if="isRegistered">
-          Go to <RouterLink class="text-primary italic" to="/SigninDocuments"> Sign In Contracts </RouterLink> For your contract
+          Go to <RouterLink class="text-primary italic" to="/SigninDocuments"> upload Documents </RouterLink> For your contract
           <p>
            You need to sign-in contracts now
           </p>

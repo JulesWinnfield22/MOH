@@ -65,7 +65,7 @@ function submitForm({ values, reset }) {
       
       <!-- ERNP ID Input -->
       <Input
-        label="Ernp Id *"
+        label="Ernp Id"
         name="ernpId"
         validation="required"
         :attributes="{ type: 'text', placeholder: 'ERNp ID' }"
@@ -74,7 +74,7 @@ function submitForm({ values, reset }) {
       <!-- Full Name Input -->
       <div class="col-span-2">
         <Input
-          label="Full Name *"
+          label="Full Name"
           name="fullName"
           validation="required"
           :attributes="{ type: 'text', placeholder: 'Enter Your Full Name' }"
@@ -83,38 +83,38 @@ function submitForm({ values, reset }) {
     </div>
     <div class="grid grid-cols-3 gap-4">
       <Input
-        label="Phone *"
+        label="Phone"
         name="phone"
         validation="required|phone"
         :attributes="{ placeholder: 'Enter Your Phone Number' }"
       />
       <Input
-        label="Email *"
+        label="Email"
         name="email"
         validation="required|email"
         :attributes="{ type: 'text', placeholder: 'Enter Your Email' }"
       />
       <Input
-        label="Birth Date *"
+        label="Birth Date"
         name="dateOfBirth"
         validation="required"
         :attributes="{ type: 'date', placeholder: 'Enter Your Birth Date' }"
       />
       <Select
-        label="Gender *"
+        label="Gender"
         name="gender"
         :options="['Male', 'Female']"
         validation="required"
         :attributes="{ type: 'text', placeholder: 'Select Gender' }"
       />
       <Input
-        label="Address *"
+        label="Address"
         name="address"
         validation="required"
         :attributes="{ type: 'text', placeholder: 'Enter Your Address' }"
       />
       <Input
-        label="Duration *"
+        label="Duration"
         name="duration"
         validation="required"
         :attributes="{ type: 'text', placeholder: 'Enter Duration' }"
@@ -122,7 +122,7 @@ function submitForm({ values, reset }) {
       <Select
         v-model="uniId"
         :obj="true"
-        label="University *"
+        label="University"
         name="universityName"
         :options="universities.map(el => ({label: el.universityName, value: el.universityName}))"
         validation="required"
@@ -132,24 +132,27 @@ function submitForm({ values, reset }) {
         v-model="selectedProgramUuid"
         :obj="true"
         :options="program.map(el => ({label: el.programName, value: el.programName}))"
-        label="Program *"
+        label="Program"
         name="programName"
         validation="required"
         :attributes="{ type: 'text', placeholder: 'Enter Program Name' }"
       />
       <Input
-        label="Salary *"
+        label="Salary"
         name="salary"
+        validation="required"
         :attributes="{ type: 'text', placeholder: 'Salary' }"
       />
       <Input
-        label="total salary *"
+        label="total salary"
         name="totalSalary"
+        validation="required"
         :attributes="{ type: 'text', placeholder: 'Total' }"
       />
       <Input
-        label="Contract Amount *"
+        label="Contract Amount"
         name="totalTrainingCost"
+        validation="required"
         :attributes="{ type: 'text', placeholder: 'Contract Amount' }"
       />
     </div>

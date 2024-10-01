@@ -1,16 +1,22 @@
 <script setup>
-import InputError from "./InputError.vue";
+import InputError from './InputError.vue';
 
-const props = defineProps(["label", "error"]);
+const props = defineProps(['label', 'error', 'validation']);
 </script>
 
 <template>
   <div class="flex flex-col items-start gap-1">
     <div class="flex flex-col gap-1 w-full">
-      <span :title="label" class="text-sm capitalize truncate" v-if="label">{{ label }}</span>
+      <span
+        :data-required="`${validation}`.includes('required') ? 'true' : 'false'"
+        :title="label"
+        class="text-sm capitalize px-1 truncate"
+        v-if="label"
+        >{{ label }}</span
+      >
       <div
-        class="focus-within:border-primary border max-w-full border-dark overflow-hidden text-base rounded-md min-h-11 flex"
-        :class="$attrs.class"
+        class="focus-within:border-primary overflow-hidden border bg-base-clr border-accent text-base rounded-md min-h-11 flex"
+        :class="$attrs?.class"
       >
         <slot></slot>
       </div>
@@ -22,13 +28,12 @@ const props = defineProps(["label", "error"]);
 <style>
 .custom-input,
 .custom-input,
-.custom-input,
-.skip_custom-input {
+.custom-input {
   border: none;
   outline: none;
   width: 100%;
   background-color: transparent;
-  padding: 0 0.5rem;
+  padding: 0 0.75rem;
   @apply text-sm;
 }
 
@@ -37,12 +42,13 @@ textarea.custom-input {
   resize: none;
   height: 6rem;
 }
-.custom-input::placeholder {
-  color: theme("colors.dark");
-  opacity: 0.6;
+
+.custom-input:focus {
+  box-shadow: none;
 }
 
-select.custom-input {
-  height: 2.75rem;
+.custom-input::placeholder {
+  color: theme('colors.dark');
+  opacity: 0.6;
 }
 </style>

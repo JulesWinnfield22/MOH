@@ -357,7 +357,7 @@ const isRoleHrdi = computed(
         class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50"
       >
         <div
-          class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px]"
+          class="bg-white ml-48 rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px]"
         >
           <div class="flex justify-between">
             <h2
@@ -461,10 +461,10 @@ const isRoleHrdi = computed(
       </div>
       <div
         v-if="isEachModalVisible"
-        class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50"
+        class="fixed inset-0  flex items-center justify-center bg-black bg-opacity-50"
       >
         <div
-          class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]"
+          class="bg-white ml-48  rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]"
         >
           <div class="flex justify-between">
             <h2
@@ -533,10 +533,10 @@ const isRoleHrdi = computed(
       </div>
       <div
         v-if="isModalVisible && selected?.length > 0"
-        class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50"
+        class="fixed inset-0  flex items-center justify-center bg-black bg-opacity-50"
       >
         <div
-          class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]"
+          class="bg-white ml-48 rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]"
         >
           <div class="flex justify-between">
             <h2
@@ -767,10 +767,10 @@ const isRoleHrdi = computed(
     </div>
     <div
       v-if="showRejectionReasonModal"
-      class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50"
+      class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
     >
       <div
-        class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]"
+        class="bg-white ml-48 rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]"
       >
         <div class="flex justify-between">
           <h2
@@ -816,10 +816,10 @@ const isRoleHrdi = computed(
     </div>
     <div
       v-if="showStudent"
-      class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50"
+      class="fixed inset-0 ml-92 flex items-center justify-center bg-black bg-opacity-50"
     >
       <div
-        class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px]"
+        class="bg-white ml-48 rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 "
       >
         <div class="flex justify-between">
           <h2

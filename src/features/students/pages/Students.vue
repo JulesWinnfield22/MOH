@@ -9,7 +9,7 @@ import Table from '@com/Table.vue';
 import { useStudents } from '../store/studentsStore';
 import TableRowSkeleton from '@/skeletons/TableRowSkeleton.vue';
 import { updateStudent } from '@/features/students/api/studentApi';
-
+import Status_row from '../components/Status_row.vue';
 import {
   confirmStudent,
   rejectStudent,
@@ -425,7 +425,7 @@ const isRoleHrdi = computed(
     <div v-if="isRoleHrdi" class="my-10">
       <div
         v-if="isWithdrawStudent"
-        class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50"
+        class="fixed inset-0  flex items-center justify-center bg-black bg-opacity-50"
       >
         <div
           class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]"
@@ -502,10 +502,10 @@ const isRoleHrdi = computed(
       </div>
       <div
         v-if="isEachModalVisible"
-        class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50"
+        class="fixed inset-0 ml-92 flex items-center justify-center bg-black bg-opacity-50"
       >
         <div
-          class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]"
+          class="bg-white ml-48 rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]"
         >
           <div class="flex justify-between">
             <h2
@@ -594,10 +594,10 @@ const isRoleHrdi = computed(
       </div>
       <div
         v-if="isModalVisible && selected?.length > 0"
-        class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50"
+        class="fixed inset-0  flex items-center justify-center bg-black bg-opacity-50"
       >
         <div
-          class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]"
+          class="bg-white ml-48 rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]"
         >
           <div class="flex justify-between">
             <h2
@@ -625,6 +625,7 @@ const isRoleHrdi = computed(
               </svg>
             </button>
           </div>
+          
           <select
             v-model="reason"
             class="border w-[829px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4"
@@ -843,6 +844,7 @@ const isRoleHrdi = computed(
             'campusStatus',
           ],
         }"
+        :rowCom="Status_row"
         :rows="filteredStudents"
       >
       <template #actions="{ row }">
@@ -893,11 +895,11 @@ const isRoleHrdi = computed(
               <p v-else>...</p>
             </button>
           </div>
-          <div v-else-if="row?.registrationStatus == 'rejected'">
+          <div v-else-if="row?.registrationStatus == 'rejected'" class="bg-red-500">
            
             
             <button
-            class="items-center bg-[#092537] text-white flex gap-2 font-dm-sans p-2 rounded-md"
+            class="items-center bg-[#092537]  text-white flex gap-2 font-dm-sans p-2 rounded-md"
             @click="openEditModal(row)"
           >
             <svg
@@ -924,10 +926,10 @@ const isRoleHrdi = computed(
     </div>
     <div
       v-if="showRejectionReasonModal"
-      class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50"
+      class="fixed inset-0  flex items-center justify-center bg-black bg-opacity-50"
     >
       <div
-        class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]"
+        class="bg-white ml-48 rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]"
       >
         <div class="flex justify-between">
           <h2
@@ -1240,10 +1242,10 @@ const isRoleHrdi = computed(
     </div>
     <div
       v-if="showStudent"
-      class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50"
+      class="fixed inset-0  flex items-center justify-center bg-black bg-opacity-50"
     >
       <div
-        class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px]"
+        class="bg-white ml-48 rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px]"
       >
         <div class="flex justify-between">
           <h2

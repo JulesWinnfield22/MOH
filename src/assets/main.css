@@ -61,3 +61,7 @@ body,
 .edit-button:hover {
   color: #092537; /* hover:text-indigo-900 */
 }
+[data-required='true']::after {
+  content: ' * ';
+  color: red;
+}

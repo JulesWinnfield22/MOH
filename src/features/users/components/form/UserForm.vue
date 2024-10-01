@@ -81,7 +81,7 @@ console.log(props.universities);
     
     <Input
       validation="required"
-      label="First Name *"
+      label="First Name"
       name="firstName"
       v-model="user.firstName"
       :attributes="{ placeholder: 'Enter Your First Name' }"
@@ -89,7 +89,7 @@ console.log(props.universities);
     
     <Input
       validation="required"
-      label="Father's Name *"
+      label="Father's Name"
       name="fathersName"
       v-model="user.fathersName"
       :attributes="{ placeholder: 'Enter Your Fathers Name' }"
@@ -97,7 +97,7 @@ console.log(props.universities);
     
     <Input
       validation="required"
-      label="Grandfather's Name *"
+      label="Grandfather's Name"
       name="grandFathersName"
       v-model="user.grandFathersName"
       :attributes="{ placeholder: 'Enter Your Grandfathers Name' }"
@@ -106,7 +106,7 @@ console.log(props.universities);
   
   <div class="grid grid-cols-2 gap-6">
     <Input
-      label="Phone *"
+      label="Phone"
       name="phone"
       v-model="user.phone"
       validation="required|phone"
@@ -114,7 +114,7 @@ console.log(props.universities);
     />
     
     <Input
-      label="Email *"
+      label="Email"
       name="email"
       v-model="user.email"
       validation="required|email"
@@ -123,14 +123,14 @@ console.log(props.universities);
     
     <Input
       validation="required"
-      label="Birth Date *"
+      label="Birth Date"
       name="birthDate"
       v-model="user.dateOfBirth"
       :attributes="{ type: 'date', placeholder: 'Enter Your Birth Date' }"
     />
     
     <Select
-      label="Gender *"
+      label="Gender"
       name="gender"
       v-model="user.gender"
       :options="['Male', 'Female']"
@@ -142,7 +142,7 @@ console.log(props.universities);
   <div class="grid grid-cols-2 gap-6">
     <Select
       v-model="type"
-      label="User Role *"
+      label="User Role"
       name="userType"
       :options="['HRDI', 'University', 'LegalOffice']"
       validation="required"
@@ -152,7 +152,7 @@ console.log(props.universities);
     <Select
       v-if="type === 'University'"
       :obj="true"
-      label="University *"
+      label="University"
       name="universityUuid"
       :options="universities.map(el => ({ label: el.universityName, value: el.universityUuid }))"
       validation="required"

@@ -262,10 +262,10 @@ const isRoleHrdi = computed(
       </Table>
       <div
         v-if="showStudent"
-        class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50"
+        class="fixed inset-0  flex items-center justify-center bg-black bg-opacity-50"
       >
         <div
-          class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px]"
+          class="bg-white ml-40 rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px]"
         >
           <div class="flex justify-between">
             <h2

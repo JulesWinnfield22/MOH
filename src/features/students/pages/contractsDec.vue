@@ -74,8 +74,8 @@ const isRoleHrdi = computed(() => auth.auth?.user?.privileges?.[0] == 'ROLE_Univ
 </script>
 <template>
   <div class="bg-[#FBFBFB] p-5 overflow-x-scroll show-scrollbar">
-    <div v-if="showRejectionReasonModal " class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50">
-            <div class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]">
+    <div v-if="showRejectionReasonModal " class="fixed inset-0  flex items-center justify-center bg-black bg-opacity-50">
+            <div class="bg-white rounded-lg shadow-lg gap-3 ml-48 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]">
               <div class=" flex justify-between">
                 <h2 class="text-left flex font-dm-sans leading-[24px] text-[14px] font-bold text-[#4E585F]">
                   Reject Reason

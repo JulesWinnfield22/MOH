@@ -5,6 +5,8 @@ import University from './views/University.vue'
 import Contract from './views/Contract.vue'
 import Login from './views/Login.vue'
 import MoHLegal from './views/MoHLegal.vue'
+import AllStudent from './features/allStudent/pages/AllStudent.vue';
+import StudentIndex from './features/allStudent/pages/StudentIndex.vue';
 import HRDI from './views/HRDI.vue'
 import SigninDocuments from './views/SigninDocuments.vue'
 import Requirements from './views/Requirements.vue'
@@ -28,8 +30,6 @@ import VerificationReset from './features/verification/pages/VerificationReset.v
 import ContractFile from './features/students/pages/ContractFile.vue'
 import EditContractForm from './views/EditContractForm.vue'
 import MainLayout from './layout/MainLayout.vue'
-import BatchesIndex from './features/students/pages/BatchesIndex.vue'
-import UniversityIndex from './features/university/UniversityIndex.vue'
 
 const routes = [
   {
@@ -54,29 +54,13 @@ const routes = [
         }
       },
       {
-        path: '/university',
-        name: 'universities',
-        component: UniversityIndex,
+        path: '/University',
+        name: 'University',
+        component: University,
         meta: {
           requiresAuth: true,
           privileges: ['HRDI',]
-        },
-        children: [
-          {
-            path: '',
-            name: 'University',
-            component: University
-          },
-          {
-            path: 'students/:uniId',
-            name: 'University Students',
-            component: Students,
-            meta: {
-              requiresAuth: true,
-              privileges: ['HRDI',]
-            }
-          },
-        ]
+        }
       },
       {
         path: '/Contract',
@@ -115,34 +99,13 @@ const routes = [
         }
       },
       {
-        path: '/hrdi',
-        name: 'HRDI',
-        component: BatchesIndex,
+        path: '/hrdi/student-batch/:batchId',
+        name: 'student batch',
+        component: Batches,
         meta: {
           requiresAuth: true,
           privileges: ['HRDI',]
-        },
-        children: [
-          {
-            path: '',
-            name: '',
-            component: HRDI,
-            meta: {
-              requiresAuth: true,
-              privileges: ['HRDI']
-            }
-          },
-          {
-            path: 'student-batch/:batchId',
-            name: 'students batch',
-            component: Batches
-          },
-          {
-            path: 'AddStudents/:batchId',
-            name: 'Add Student',
-            component: AddStudents
-          },
-        ]
+        }
       },
       
       {
@@ -173,12 +136,30 @@ const routes = [
         }
       },
       {
+        path: '/university/students/:uniId',
+        name: 'University Students',
+        component: Students,
+        meta: {
+          requiresAuth: true,
+          privileges: ['HRDI',]
+        }
+      },
+      {
         path: '/MoHLegal',
         name: 'MoHLegal',
         component: MoHLegal,
         meta: {
           requiresAuth: true,
           privileges: ['LegalOffice']
+        }
+      },
+      {
+        path: '/HRDI',
+        name: 'HRDI',
+        component: HRDI,
+        meta: {
+          requiresAuth: true,
+          privileges: ['HRDI']
         }
       },
       {
@@ -200,7 +181,13 @@ const routes = [
             name: 'Add User',
             component: AddUsers
           }
+       
         ]
+      },
+      {
+        path: '/AddStudents/:batchId',
+        name: 'Add Student',
+        component: AddStudents
       },
       {
         path: '/Status',
@@ -237,6 +224,21 @@ const routes = [
         requiresAuth: true,
         privileges: ['Student','HRDI']
       }
+    },
+    {
+      path: '/allStudents',
+      name: 'Students',
+      component: StudentIndex,
+      meta: {
+        requiresAuth: true,
+      },
+      children: [
+        {
+          path: '',
+          name: 'Students',
+          component: AllStudent,
+        },
+      ],
     },
       {
         path: '/SigninDocuments',

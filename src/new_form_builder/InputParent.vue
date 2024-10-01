@@ -1,5 +1,5 @@
 <script setup>
-import { computed, inject, nextTick, onMounted, ref, watch } from 'vue';
+import { computed, inject, onMounted, ref, watch } from 'vue';
 import { getValidators } from './util/validators';
 import { validationKeys } from './util/validationUtils';
 
@@ -42,11 +42,7 @@ const props = defineProps({
   }, // set to true if you dont want the value in the submited value
 });
 
-console.log(props.value);
-
 const initialValue = ref(props.modelValue || props.value);
-const initialAttrs = ref({ type: 'text', ...(props.attributes || {}) });
-
 const emit = defineEmits(['update:modelValue']);
 
 if (props.modelValue && props.value) {
@@ -72,26 +68,8 @@ const thisAsyncValidation = computed(() => props.asyncValidation);
 
 const thisValue = ref('');
 
-watch(
-  () => props.attributes,
-  () => {
-    const newKeys = Object.keys(props.attributes || {});
-    const oldKeys = Object.keys(initialAttrs.value || {});
-
-    const keysToRemove = oldKeys.filter((el) => !newKeys.includes(el));
-    initialAttrs.value = {
-      type: 'text',
-      ...(initialAttrs.value || {}),
-      ...props.attributes,
-    };
-
-    removeAttibutes(keysToRemove);
-    setAttributes();
-  }
-);
-
 onMounted(() => {
-  if (!booleaninputTypes.includes(initialAttrs.value?.type)) {
+  if (!booleaninputTypes.includes(props.attributes?.type)) {
     thisValue.value = props.modelValue || props.value || '';
   }
 });
@@ -111,7 +89,7 @@ function validate(setError = true) {
 
   let keys = Object.keys(validation);
   let validator =
-    validators[initialAttrs.value?.type || inputEl.value?.type || 'text'];
+    validators[props.attributes?.type || inputEl.value?.type || 'text'];
 
   error.value = '';
   for (let key of keys) {
@@ -170,14 +148,10 @@ onMounted(() => {
     inputEl.value.className += props.groupIndentifier
       ? ` ${props.groupIndentifier}`
       : ' custom-input';
-  } else {
-    inputEl.value.className += props.groupIndentifier
-      ? ` skip_${props.groupIndentifier}`
-      : ' skip_custom-input';
   }
   inputEl.value.addEventListener('blur', blurHandler);
 
-  if (booleaninputTypes.includes(initialAttrs.value?.type)) {
+  if (booleaninputTypes.includes(props.attributes?.type)) {
     inputEl.value.addEventListener('change', () => {
       if (inputEl.value.checked) {
         thisValue.value = props.value || props.modelValue;
@@ -191,7 +165,7 @@ onMounted(() => {
   ) {
     inputEl.value.addEventListener('input', () => {
       if (inputEl.value.type == 'file') {
-        if (initialAttrs.value?.multiple) {
+        if (props.attributes?.multiple) {
           thisValue.value = Array.from(inputEl.value.files);
         } else {
           thisValue.value = inputEl.value.files[0];
@@ -223,24 +197,14 @@ function changeInputValue() {
   }
 }
 
-function removeAttibutes(attrs = {}) {
-  attrs.forEach((key) => {
-    if (key != 'value') {
-      nextTick(() => {
-        inputEl.value.removeAttribute(key);
-      })
-    }
-  });
-}
-
 function setAttributes() {
-  Object.keys(initialAttrs.value || {}).forEach((key) => {
+  Object.keys(props.attributes || {}).forEach((key) => {
     if (key != 'value') {
-      inputEl.value.setAttribute(key, initialAttrs.value[key]);
+      inputEl.value.setAttribute(key, props.attributes[key]);
     }
 
-    if (booleaninputTypes.includes(initialAttrs.value?.type)) {
-      inputEl.value.checked = initialAttrs.value?.checked || '';
+    if (booleaninputTypes.includes(props.attributes?.type)) {
+      inputEl.value.checked = props.attributes?.checked || '';
       if (inputEl.value.checked) {
         thisValue.value = props.value || props.modelValue;
       } else {
@@ -251,7 +215,7 @@ function setAttributes() {
   inputEl.value.setAttribute('name', props.name);
 }
 
-watch(() => initialAttrs.value, setAttributes);
+watch(() => props.attributes, setAttributes);
 onMounted(setAttributes);
 
 onMounted(changeInputValue);
@@ -274,7 +238,7 @@ watch(
 watch(
   () => props.value,
   () => {
-    if (!booleaninputTypes.includes(initialAttrs.value?.type)) {
+    if (!booleaninputTypes.includes(props.attributes?.type)) {
       thisValue.value = props.value;
     }
   }
@@ -297,10 +261,9 @@ watch(thisValue, () => {
 });
 
 function updateEl(setError = true) {
-  if (initialAttrs.value?.type == 'file') {
-    console.log("hahaah")
+  if (props.attributes?.type == 'file') {
     inputEl.value.val = thisValue.value;
-  } else if (booleaninputTypes.includes(initialAttrs.value?.type)) {
+  } else if (booleaninputTypes.includes(props.attributes?.type)) {
     if (inputEl.value.checked) {
       thisValue.value = props.value || props.modelValue;
     } else {
@@ -331,7 +294,7 @@ watch(reset, () => {
   if (reset.value) {
     thisValue.value = initialValue.value || '';
 
-    if (booleaninputTypes.includes(initialAttrs.value?.type)) {
+    if (booleaninputTypes.includes(props.attributes?.type)) {
       if (inputEl.value.checked) {
         thisValue.value = props.value || props.modelValue;
       } else {
@@ -348,6 +311,7 @@ watch(reset, () => {
     :setRef="setRef"
     :attributes="attributes"
     :value="thisValue"
+    :validation="validation"
     :error="error"
     :dirty="dirty"
     :asyncValidating="asyncValidating"
