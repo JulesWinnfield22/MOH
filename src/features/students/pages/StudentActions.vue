@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { usePaginationTemp } from '@/composables/usePaginaionTemp';
+import { usePagination } from '@/composables/usePagination';
 import { getUniStudents } from '@/features/students/api/studentApi.js';
 import { useAuth } from '@/store/auth.js';
 import Table from '@com/Table.vue';
@@ -64,7 +65,7 @@ const filteredstatStudents = computed(() => {
     (student) => student.campusStatus === selectedStatus.value
   );
 });
-const pagination = usePaginationTemp({
+const pagination = usePagination({
   store: sudents,
   cb: (data, config) =>
     getUniStudents(uniId || auth.auth?.user?.universityProviderUuid),
@@ -607,18 +608,18 @@ const isRoleHrdi = computed(
         </div>
       </div>
 
-      <!--<div class="flex justify-end mb-4">
+      <div class="flex justify-end mb-4">
         <select
-          v-model="selectedStatus"
+          v-model="pagination.search.value"
           @change="applyFilter"
-          class="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
+          class="block w-32 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
         >
           <option value="">All</option>
           <option value="waiting">Waiting</option>
           <option value="registered">Registered</option>
           <option value="rejected">Rejected</option>
         </select>
-      </div>-->
+      </div>
 
       <Table
         :Fallback="TableRowSkeleton"
@@ -729,42 +730,7 @@ const isRoleHrdi = computed(
         </template>
       </Table>
     </div>
-    <div v-else>
-      <button
-        class="text-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 px-4 py-2 rounded-md shadow-sm transition-transform transform hover:scale-105"
-        @click="$router.push('/university')"
-      >
-        Back
-      </button>
-
-      <Table
-        :Fallback="TableRowSkeleton"
-        :headers="{
-          head: [
-            'Ernp ID',
-            'Full Name',
-            'Gender',
-            'Program',
-            'Duration',
-            'Salary',
-            'Contract Amount',
-            'Status',
-          ],
-          row: [
-            'ernpId',
-            'fullName',
-            'gender',
-            'programName',
-            'duration',
-            'salary',
-            'totalSalary',
-            'registrationStatus',
-          ],
-        }"
-        :rows="sudents.students || []"
-      >
-      </Table>
-    </div>
+ 
     <div
       v-if="showRejectionReasonModal"
       class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"

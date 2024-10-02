@@ -11,10 +11,12 @@ import HRDI from './views/HRDI.vue'
 import SigninDocuments from './views/SigninDocuments.vue'
 import Requirements from './views/Requirements.vue'
 import Requirement from './views/Requirement.vue'
+import Instruction from './views/Instruction.vue'
 import Sponsorship from './views/Sponsorship.vue'
 import Status from './views/Status.vue'
 import Students from '@/features/students/pages/Students.vue'
 import StudentActions from '@/features/students/pages/StudentActions.vue'
+import AttendingResident from '@/features/students/pages/AttendingResident.vue'
 import Contracts from '@/features/students/pages/Contracts.vue'
 import Batches from '@/features/students/pages/batchTable.vue'
 import ContractsApproved from '@/features/students/pages/contractsApp.vue'
@@ -75,6 +77,15 @@ const routes = [
         path: '/StudentActions',
         name: 'studentActions',
         component: StudentActions,
+        meta: {
+          requiresAuth: true,
+          privileges: ['University',]
+        }
+      },
+      {
+        path: '/AttendingResident',
+        name: 'AttendingResident',
+        component: AttendingResident,
         meta: {
           requiresAuth: true,
           privileges: ['University',]
@@ -202,6 +213,15 @@ const routes = [
         path: '/Requirements',
         name: 'Requirements',
         component: Requirements,
+        meta: {
+          requiresAuth: true,
+          privileges: ['Student']
+        }
+      },
+      {
+        path: '/Instruction',
+        name: 'Instruction',
+        component: Instruction,
         meta: {
           requiresAuth: true,
           privileges: ['Student']
