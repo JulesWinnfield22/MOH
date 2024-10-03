@@ -11,7 +11,7 @@ import TableRowSkeleton from '@/skeletons/TableRowSkeleton.vue';
 import { updateStudent } from '@/features/students/api/studentApi';
 import Status_row from '../components/Status_row.vue';
 import {
-  confirmStudent,
+  passStudent,
   rejectStudent,
   withdrawStud,
 } from '@/features/students/api/studentApi.js';
@@ -81,23 +81,31 @@ function handleButtonClick() {
   withdrawSelectedStudent(selectedErnpId.value);
 }
 // Computed property to filter students based on the selected status
-const filteredStudents = computed(() => {
+const filteredStudentss = computed(() => {
   if (!selectedStatus.value) return sudents.students || [];
   return (sudents.students || []).filter(
     (student) => student.academicYear === selectedStatus.value
   );
 });
-const filteredStudentss = computed(() => {
+const filteredStudents = computed(() => {
   return (sudents.students || []).filter(
     (student) => student.campusStatus === 'Attending'
   );
 });
 const sent = ref([])
 
+const academicYear = ref('');
 const pagination = usePagination({
   store: sudents,
-  cb: (data, config) => getStudentsByUniId(uniId || auth.auth?.user?.universityProviderUuid, data),
+  cb: (data, config) =>
+    getStudentsByUniId(uniId || auth.auth?.user?.universityProviderUuid, {
+      academicYear: academicYear.value,
+      ...data,
+    }),
 });
+watch(academicYear, () => {
+  pagination.send()
+})
 
 const showRejectionReasonModal = ref(false);
 const showStudent = ref(false);
@@ -144,20 +152,19 @@ function closeModal() {
   isWithdrawStudent.value = false;
   resetModalValues();
 }
-function confirmSelection() {
+function passStudents() {
   if (!selected.value?.length || request.pending.value) return;
 
   sent.value = [...selected.value]
   request.send(
-    () => confirmStudent(selected.value),
+    () => passStudent(selected.value),
     (res) => {
       sent.value = []
       if (res.success) {
-        sudents.updateStatus('registered', '', selected.value);
         selected.value = [];
         resetModalValues();
       }
-      toasted(res.success, 'Registered', res.error);
+      toasted(res.success, 'Passed To Next Year', res.error);
     }
   );
 }
@@ -374,7 +381,7 @@ const isRoleHrdi = computed(
         <button
           style="padding: 8px 16px; border-radius: 6px"
           class="mt-1.5 text-center items-center justify-center gap-2 flex h-[40px] w-[129px] font-dm-sans bg-[#36CB56] text-white font-bold rounded hover:bg-[#36CB56]"
-          @click="confirmSelection"
+          @click="passStudents"
         >
           <template v-if="!request.pending.value">
             <svg
@@ -404,7 +411,7 @@ const isRoleHrdi = computed(
     <div v-if="isRoleHrdi">
       <div class="flex justify-end mb-4">
         <select
-          v-model="selectedStatus"
+          v-model="academicYear"
           @change="applyFilter"
           class="block w-32 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
         >
