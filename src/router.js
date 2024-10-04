@@ -1,10 +1,10 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import { useAuth } from './store/auth.js'
-import Dashboard from './views/Dashboard.vue'
-import University from './views/University.vue'
-import Contract from './views/Contract.vue'
-import Login from './views/Login.vue'
-import MoHLegal from './views/MoHLegal.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import { useAuth } from './store/auth.js';
+import Dashboard from './views/Dashboard.vue';
+import University from './views/University.vue';
+import Contract from './views/Contract.vue';
+import Login from './views/Login.vue';
+import MoHLegal from './views/MoHLegal.vue';
 import AllStudent from './features/allStudent/pages/AllStudent.vue';
 import StudentIndex from './features/allStudent/pages/StudentIndex.vue';
 import HRDI from './views/HRDI.vue'
@@ -26,12 +26,20 @@ import UsersIndex from './features/users/pages/UsersIndex.vue'
 import AddUsers from './features/users/pages/AddUsers.vue'
 import AddStudents from './views/AddStudents.vue'
 
-import Profile from './views/Profile.vue'
-import Verification from './features/verification/pages/Verification.vue'
-import VerificationReset from './features/verification/pages/VerificationReset.vue'
-import ContractFile from './features/students/pages/ContractFile.vue'
-import EditContractForm from './views/EditContractForm.vue'
-import MainLayout from './layout/MainLayout.vue'
+import Profile from './views/Profile.vue';
+import Verification from './features/verification/pages/Verification.vue';
+import VerificationReset from './features/verification/pages/VerificationReset.vue';
+import Privileges from './features/privilege/pages/Privlege.vue';
+import ContractFile from './features/students/pages/ContractFile.vue';
+import EditContractForm from './views/EditContractForm.vue';
+import MainLayout from './layout/MainLayout.vue';
+import PrivilegeIndex from './features/privilege/pages/PrivilegeIndex.vue';
+import AddPrivilege from './features/privilege/pages/AddPrivilege.vue';
+import Role from './features/roles/pages/Role.vue';
+import AddRole from './features/roles/pages/AddRole.vue';
+import RoleIndex from './features/roles/pages/RoleIndex.vue';
+import UpdatePrivilege from './features/privilege/pages/UpdatePrivilege.vue';
+import UpdateRole from './features/roles/pages/UpdateRole.vue';
 
 const routes = [
   {
@@ -45,7 +53,7 @@ const routes = [
         component: Dashboard,
         meta: {
           requiresAuth: true,
-        }
+        },
       },
       {
         path: '/Profile',
@@ -53,7 +61,7 @@ const routes = [
         component: Profile,
         meta: {
           requiresAuth: true,
-        }
+        },
       },
       {
         path: '/University',
@@ -61,8 +69,8 @@ const routes = [
         component: University,
         meta: {
           requiresAuth: true,
-          privileges: ['HRDI',]
-        }
+          privileges: ['HRDI'],
+        },
       },
       {
         path: '/Contract',
@@ -70,8 +78,8 @@ const routes = [
         component: Contract,
         meta: {
           requiresAuth: true,
-          privileges: ['HRDI',]
-        }
+          privileges: ['HRDI'],
+        },
       },
       {
         path: '/StudentActions',
@@ -79,8 +87,8 @@ const routes = [
         component: StudentActions,
         meta: {
           requiresAuth: true,
-          privileges: ['University',]
-        }
+          privileges: ['University'],
+        },
       },
       {
         path: '/AttendingResident',
@@ -97,8 +105,8 @@ const routes = [
         component: Students,
         meta: {
           requiresAuth: true,
-          privileges: ['University',]
-        }
+          privileges: ['University'],
+        },
       },
       {
         path: '/contracts',
@@ -106,8 +114,8 @@ const routes = [
         component: Contracts,
         meta: {
           requiresAuth: true,
-          privileges: ['LegalOffice',]
-        }
+          privileges: ['LegalOffice'],
+        },
       },
       {
         path: '/hrdi/student-batch/:batchId',
@@ -115,18 +123,18 @@ const routes = [
         component: Batches,
         meta: {
           requiresAuth: true,
-          privileges: ['HRDI',]
-        }
+          privileges: ['HRDI'],
+        },
       },
-      
+
       {
         path: '/contractsApp',
         name: 'contractsApproved',
         component: ContractsApproved,
         meta: {
           requiresAuth: true,
-          privileges: ['LegalOffice',]
-        }
+          privileges: ['LegalOffice'],
+        },
       },
       {
         path: '/contractsDec',
@@ -134,8 +142,8 @@ const routes = [
         component: ContractsDeclined,
         meta: {
           requiresAuth: true,
-          privileges: ['LegalOffice',]
-        }
+          privileges: ['LegalOffice'],
+        },
       },
       {
         path: '/contract-file/:contractId',
@@ -143,8 +151,8 @@ const routes = [
         component: ContractFile,
         meta: {
           requiresAuth: true,
-          privileges: ['LegalOffice',]
-        }
+          privileges: ['LegalOffice'],
+        },
       },
       {
         path: '/university/students/:uniId',
@@ -152,8 +160,8 @@ const routes = [
         component: Students,
         meta: {
           requiresAuth: true,
-          privileges: ['HRDI',]
-        }
+          privileges: ['HRDI'],
+        },
       },
       {
         path: '/MoHLegal',
@@ -161,8 +169,8 @@ const routes = [
         component: MoHLegal,
         meta: {
           requiresAuth: true,
-          privileges: ['LegalOffice']
-        }
+          privileges: ['LegalOffice'],
+        },
       },
       {
         path: '/HRDI',
@@ -170,8 +178,8 @@ const routes = [
         component: HRDI,
         meta: {
           requiresAuth: true,
-          privileges: ['HRDI']
-        }
+          privileges: ['HRDI'],
+        },
       },
       {
         path: '/users',
@@ -179,26 +187,25 @@ const routes = [
         component: UsersIndex,
         meta: {
           requiresAuth: true,
-          privileges: ['HRDI']
+          privileges: ['HRDI'],
         },
         children: [
           {
             path: '',
             name: 'Users',
-            component: Users
+            component: Users,
           },
           {
             path: 'add',
             name: 'Add User',
-            component: AddUsers
-          }
-       
-        ]
+            component: AddUsers,
+          },
+        ],
       },
       {
         path: '/AddStudents/:batchId',
         name: 'Add Student',
-        component: AddStudents
+        component: AddStudents,
       },
       {
         path: '/Status',
@@ -206,8 +213,8 @@ const routes = [
         component: Status,
         meta: {
           requiresAuth: true,
-          privileges: ['Student']
-        }
+          privileges: ['Student'],
+        },
       },
       {
         path: '/Requirements',
@@ -215,8 +222,8 @@ const routes = [
         component: Requirements,
         meta: {
           requiresAuth: true,
-          privileges: ['Student']
-        }
+          privileges: ['Student'],
+        },
       },
       {
         path: '/signNow',
@@ -258,8 +265,31 @@ const routes = [
           name: 'Students',
           component: AllStudent,
         },
-      ],
-    },
+      },
+      {
+        path: '/Sponsorship',
+        name: 'Sponsorship',
+        component: Sponsorship,
+        meta: {
+          requiresAuth: true,
+          privileges: ['Student', 'HRDI'],
+        },
+      },
+      {
+        path: '/allStudents',
+        name: 'Students',
+        component: StudentIndex,
+        meta: {
+          requiresAuth: true,
+        },
+        children: [
+          {
+            path: '',
+            name: 'Students',
+            component: AllStudent,
+          },
+        ],
+      },
       {
         path: '/SigninDocuments',
         name: 'SigninDocuments',
@@ -267,9 +297,74 @@ const routes = [
         meta: {
           requiresAuth: true,
           privileges: ['Student'],
-          status: 'registered'
-        }
+          status: 'registered',
+        },
       },
+      {
+        path: '/privileges',
+        name: 'Privileges',
+        component: PrivilegeIndex,
+        meta: {
+          requiresAuth: true,
+        },
+        children: [
+          {
+            path: '',
+            name: 'Privileges',
+            component: Privileges,
+          },
+          {
+            path: 'add_privilege',
+            name: 'Add Privileges',
+            component: AddPrivilege,
+            meta: {
+              requiresAuth: true,
+            },
+          },
+          {
+            path: 'update_privilege/:privilegeUuid',
+            name: 'Update Privileges',
+            component: UpdatePrivilege,
+            meta: {
+              requiresAuth: true,
+            },
+          },
+        ],
+      },
+
+      {
+        path: '/roles',
+        name: 'Roles',
+        component: RoleIndex,
+        meta: {
+          requiresAuth: true,
+        },
+        children: [
+          {
+            path: '',
+            name: 'Roles',
+            component: Role,
+          },
+          {
+            path: 'add_role',
+            name: 'Add Role',
+            component: AddRole,
+            meta: {
+              requiresAuth: true,
+            },
+          },
+          {
+            path: '/update_role/:roleUuid',
+            name: 'Upadet Role',
+            component: UpdateRole,
+            meta: {
+              requiresAuth: true,
+              permissions: [],
+            },
+          },
+        ],
+      },
+
       {
         path: '/editsignindocuments',
         name: 'EditSigninDocuments',
@@ -277,10 +372,10 @@ const routes = [
         meta: {
           requiresAuth: true,
           privileges: ['Student'],
-          status: 'registered'
-        }
+          status: 'registered',
+        },
       },
-    ]
+    ],
   },
   {
     path: '/verification',
@@ -288,7 +383,7 @@ const routes = [
     component: Verification,
     meta: { layout: 'empty' },
   },
-    {
+  {
     path: '/',
     redirect: '/login', // Redirect from root path to /login
   },
@@ -298,7 +393,7 @@ const routes = [
     component: VerificationReset,
     meta: { layout: 'empty' },
   },
-    {
+  {
     path: '/',
     redirect: '/login', // Redirect from root path to /login
   },
@@ -308,18 +403,18 @@ const routes = [
     component: Login,
     meta: { layout: 'empty' },
   },
-]
+];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
-})
+});
 
 router.beforeEach(async (to, from) => {
   const auth = useAuth();
-  
-  if(!auth.auth?.accessToken) {
-    let detiail = localStorage.getItem("userDetail");
+
+  if (!auth.auth?.accessToken) {
+    let detiail = localStorage.getItem('userDetail');
     if (detiail) {
       detiail = JSON.parse(detiail);
       auth.setAuth({
@@ -329,7 +424,7 @@ router.beforeEach(async (to, from) => {
     }
   }
 
-  if (to.path == "/login" && auth.auth?.accessToken) {
+  if (to.path == '/login' && auth.auth?.accessToken) {
     return {
       path: from.path,
     };
@@ -337,10 +432,10 @@ router.beforeEach(async (to, from) => {
 
   if (
     !to.meta?.requiresAuth ||
-    auth.auth?.user?.privileges?.includes("All Privileges") ||
-    auth.auth?.user?.roleName === "Super Admin"
+    auth.auth?.user?.privileges?.includes('All Privileges') ||
+    auth.auth?.user?.roleName === 'Super Admin'
   ) {
-    let detiail = localStorage.getItem("userDetail");
+    let detiail = localStorage.getItem('userDetail');
     if (detiail) {
       detiail = JSON.parse(detiail);
       auth.setAuth({
@@ -361,7 +456,9 @@ router.beforeEach(async (to, from) => {
   }
 
   if (
-    (auth.auth?.user?.roleName && to.meta?.role && (auth.auth?.user?.roleName == to.meta?.role)) ||
+    (auth.auth?.user?.roleName &&
+      to.meta?.role &&
+      auth.auth?.user?.roleName == to.meta?.role) ||
     (!to.meta?.role && !to.meta?.privileges && to.meta?.requiresAuth)
   ) {
     return true;
@@ -376,7 +473,7 @@ router.beforeEach(async (to, from) => {
   if (found) return true;
 
   return {
-    path: "/forbidden",
+    path: '/forbidden',
   };
 });
-export default router
+export default router;
