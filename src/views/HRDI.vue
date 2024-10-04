@@ -519,11 +519,11 @@ const fileInput = ref(null);
       >
         <template #actions="{ row }">
           <button
-            class="text-[#21618C] text-sm hover:italic hover:underline"
-            @click="$router.push(`/hrdi/student-batch/${row?.batchNumber}`)"
-          >
-            Open
-          </button>
+  class="text-[#21618C] text-sm hover:italic hover:underline"
+  @click="$router.push(`/hrdi/student-batch/${encodeURIComponent(row?.batchNumber)}`)"
+>
+  Open
+</button>
         </template>
       </Table>
       <div

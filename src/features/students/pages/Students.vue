@@ -874,6 +874,11 @@ const isRoleHrdi = computed(
     </div>
     
     <div v-else class="my-10">
+      <input
+    class="rounded-lg border w-[50%]  p-2 focus:outline-none focus:ring-2 focus:ring-[#21618C] placeholder-gray-500"
+    v-model="pagination.search.value"
+    placeholder="Search Students"
+  />
       <Table
         :Fallback="TableRowSkeleton"
         :headers="{

@@ -1,16 +1,25 @@
 <script setup>
-	import SpecialistAggrementFormPdf from '@/features/students/components/SpecialistAgreementForm.pdf.vue'
-	import Button from '@/components/Button.vue';
+import { useRouter } from 'vue-router'; // Import useRouter
+import SpecialistAggrementFormPdf from '@/features/students/components/SpecialistAgreementForm.pdf.vue';
+import Button from '@/components/Button.vue';
 import { closeModal } from '@/modals';
 
-	const props = defineProps({
-		data: {
-			type: Object,
-			required: true
-		}
-	})
+const props = defineProps({
+	data: {
+		type: Object,
+		required: true
+	}
+});
 
-	console.log(props.data)
+const router = useRouter(); // Get the router instance
+
+console.log(props.data);
+
+// Method to navigate and close modal
+const goToNext = () => {
+	closeModal(); // Close the modal
+	router.push('/signNow'); // Navigate to the next page
+};
 </script>
 
 <template>
@@ -18,9 +27,9 @@ import { closeModal } from '@/modals';
 		<SpecialistAggrementFormPdf
 			v-bind="data"
 		/>
-		<div class='fixed z-10  bottom-2 right-2 flex items-center gap-4'>
-			<Button v-if="data?.showBtn ?? true" @click="closeModal(true)" type="primary" class="shadow-xl">
-				Submit
+		<div class='fixed z-10 bottom-2 right-2 flex items-center gap-4'>
+			<Button v-if="data?.showBtn ?? true" @click="goToNext" type="primary" class="shadow-xl">
+				Next
 			</Button>
 			<Button class="bg-red-500" @click="closeModal()">
 				Cancel

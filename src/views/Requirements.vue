@@ -35,7 +35,7 @@
   </p>
 </div>
  <div class="container  p-5">
-  <div class="font-bold text-center text-2xl">Instaractions</div>
+  <div class="font-bold text-center text-2xl">Instractions</div>
  <div class="containers  p-5">
      
       <div class="left-content p-5">

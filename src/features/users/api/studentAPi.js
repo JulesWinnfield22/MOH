@@ -18,5 +18,6 @@ export function createStudent(data) {
 }
 
 export function removeStudent(id) {
-	return api.addAuthenticationHeader().delete(`${path}/DeleteStudent/${id}`)
-}
+	const encodedId = encodeURIComponent(id); // Encode the ID
+	return api.addAuthenticationHeader().delete(`${path}/DeleteStudent/${encodedId}`);
+  }

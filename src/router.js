@@ -11,7 +11,7 @@ import HRDI from './views/HRDI.vue'
 import SigninDocuments from './views/SigninDocuments.vue'
 import Requirements from './views/Requirements.vue'
 import Requirement from './views/Requirement.vue'
-import Instruction from './views/Instruction.vue'
+import signNow from './views/SignNow.vue'
 import Sponsorship from './views/Sponsorship.vue'
 import Status from './views/Status.vue'
 import Students from '@/features/students/pages/Students.vue'
@@ -219,9 +219,9 @@ const routes = [
         }
       },
       {
-        path: '/Instruction',
-        name: 'Instruction',
-        component: Instruction,
+        path: '/signNow',
+        name: 'signNow',
+        component: signNow,
         meta: {
           requiresAuth: true,
           privileges: ['Student']
