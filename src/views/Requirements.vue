@@ -1,30 +1,50 @@
 <template>
-  <div class="container p-5">
-    <div class="left-content p-5">
-      <h2>Agency agreement Format</h2>
-      <p>Agency_document.docx</p>
-    </div>
-    <button class="download-btn" @click="$router.push('/Requirement')">Download</button>
+  <div class="container p-5  items-center justify-center">
+  <div class="font-bold text-center text-2xl">Requirements</div>
+  <div class="text-center p-5">
+    DOCUMENTS TO BE UPLOADED BY RESIDENTS
   </div>
-  <div class="containers my-8 p-5 font-sans text-[#79838C]">
-    <!-- Left Side Section -->
-    <section class="left-section my-3">
-      <h3 class="font-bold">Note for Married Students</h3>
-      <p class="my-3">I have entered into this educational contractual agreement under the sponsorship of the Ministry of Health. When I completed my studies, I shall perform my duties to the place where the Ministry assigns me and give service to period mentioned in the contract. I agree that the education and training directive issued by the Ministry of Health shall be applicable to the contract. If I fail to comply with contract, I agree to pay the amount mentioned in the contract.</p>
-      <p class="my-3">I have entered into this educational contractual agreement under the sponsorship of the Ministry of Health. When I completed my studies, I shall perform my duties to the place where the Ministry assigns me and give service to period mentioned in the contract. I agree that the education and training directive issued by the Ministry of Health shall be applicable to the contract. If I fail to comply with contract, I agree to pay the amount mentioned in the contract.</p>
-      <p class="my-3">I have entered into this educational contractual agreement under the sponsorship of the Ministry of Health. When I completed my studies, I shall perform my duties to the place where the Ministry assigns me and give service to period mentioned in the contract. I agree that the education and training directive issued by the Ministry of Health shall be applicable to the contract. If I fail to comply with contract, I agree to pay the amount mentioned in the contract.</p>
-    </section>
-
-    <!-- Right Side Section -->
-    <section class="right-section my-3">
-      <div class="right-content">
-        <h3 class="font-bold">Introduction</h3>
-        <p class="my-3">I have entered into this educational contractual agreement under the sponsorship of the Ministry of Health. When I completed my studies, I shall perform my duties to the place where the Ministry assigns me and give service to period mentioned in the contract. I agree that the education and training directive issued by the Ministry of Health shall be applicable to the contract. If I fail to comply with contract, I agree to pay the amount mentioned in the contract.</p>
-        <h3 class="font-bold">Introduction</h3>
-        <p class="my-3">I have entered into this educational contractual agreement under the sponsorship of the Ministry of Health. When I completed my studies, I shall perform my duties to the place where the Ministry assigns me and give service to period mentioned in the contract. I agree that the education and training directive issued by the Ministry of Health shall be applicable to the contract. If I fail to comply with contract, I agree to pay the amount mentioned in the contract.</p>
+ </div>
+ <div class="text-center font-bold p-5">
+  ሬዚደንት ተማሪዎች የስፖንሰርሺፕ ውል ሲስተም ላይ የሚጭኗቸው/Upload የሚያደርጓቸው ሠነዶች ዝርዝር
+</div> 
+<div class=" my-2 p-2 font-sans font-normal text-[#0c0c0c]">
+  <p class="mb-4">
+    1ኛ) የተማሪው የታደሠ የቀበሌ መታወቂያ፤ መንጃ ፈቃድ ወይም ፓስፖርት፤
+  </p>
+  <p class="mb-4">
+    2ኛ) ተማሪው ያገባ ከሆነ የባለቤቱ የታደሠ የቀበሌ መታወቂያ፤ መንጃ ፈቃድ ወይም ፓስፖርት፤
+  </p>
+  <p class="mb-4">
+    3ኛ) ተማሪው ያገባ ከሆነ የጋብቻ የምስክር ወረቀት፤
+  </p>
+  <p class="mb-4">
+    4ኛ) ተማሪው ያላገባ ከሆነ ስድስት ወር ያላለፈው ያላገባ ማስረጃ፤
+  </p>
+  <p class="mb-4">
+    5ኛ) ተማሪው ያገባ ከሆነ ባለቤቱ እንዲፈርምለት/እንዲፈርምላት የወከለበት/የወከለችብት የውክልና ሠነድ፤
+  </p>
+  <p class="mb-4">
+    6ኛ) በዚህ ሲስተም ላይ በተቀመጠው አግባብ የተሞላ እና በሚታይ መልኩ ስካን የተደረገ የስፖንሰርሺፕ የውል ሠነድ፤
+  </p>
+  <p class="reminder px-9 text-[#534646]">
+    ማሳሰቢያ: 
+  </p>
+  <p class="text-[#534646] px-9">
+    <span>ስካን ሲደረግ በማይታይ መልኩ ስካን ተደርጎ የተጫነ ማንኛውም ሠነድ ተቀባይነት የለውም፡፡</span>
+  </p>
+</div>
+ <div class="container  p-5">
+  <div class="font-bold text-center text-2xl">Instaractions</div>
+ <div class="containers  p-5">
+     
+      <div class="left-content p-5">
+       
+        <h2>Instruction video </h2>
+        <p>Instruction.mp4</p>
       </div>
-    </section>
-  </div>
+      <button class="download-btn" @click="$router.push('/Requirement')">Play</button>
+    </div> </div>
 </template>
 
 <script setup>
@@ -32,9 +52,21 @@
 </script>
 
 <style scoped>
+ .containers {
+    display: flex;
+    justify-content: space-between; /* Align items to the ends */
+    align-items: center; /* Vertically center items */
+    max-width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #e2e1e1;
+    border: 1px solid #cce5ff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
 .container {
-  display: flex;
-  justify-content: space-between; /* Align items to the ends */
+ 
+ /* Align items to the ends */
   align-items: center; /* Vertically center items */
   max-width: 100%;
   padding: 20px;

@@ -177,6 +177,7 @@ export function usePagination(options = {}) {
     send,
     page,
     search,
+    academicYear,
     perPage,
     totalPages: req.response.value?.totalPages || 0,
     data:

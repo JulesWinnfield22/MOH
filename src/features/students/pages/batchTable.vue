@@ -156,6 +156,7 @@ function remove(id) {
           'Gender',
           'Salary',
           'Contract Amount',
+          'Academic Year',
           'actions',
         ],
         row: [
@@ -166,6 +167,7 @@ function remove(id) {
           'gender',
           'salary',
           'totalTrainingCost',
+          'academicYear'
         ],
       }"
       :rows="batchs.batches || []"
@@ -549,6 +551,7 @@ function remove(id) {
               class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
             />
           </div>
+         
 
           <div class="col-span-1">
             <label
@@ -623,6 +626,18 @@ function remove(id) {
                 {{ prog.programName }}
               </option>
             </select>
+          </div>
+          <div class="col-span-1">
+            <label for="address" class="block text-sm font-medium text-gray-700"
+             style="display: none;"
+              >RegistrationStatus</label
+            >
+            <input
+              v-model="selectedRow.registrationStatus"
+              id="address"
+              class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              style="visibility: hidden;" 
+            />
           </div>
           <!-- Action Buttons -->
           <div class="flex justify-end gap-3 pt-4 col-span-3">

@@ -7,22 +7,24 @@ import Login from './views/Login.vue';
 import MoHLegal from './views/MoHLegal.vue';
 import AllStudent from './features/allStudent/pages/AllStudent.vue';
 import StudentIndex from './features/allStudent/pages/StudentIndex.vue';
-import HRDI from './views/HRDI.vue';
-import SigninDocuments from './views/SigninDocuments.vue';
-import Requirements from './views/Requirements.vue';
-import Requirement from './views/Requirement.vue';
-import Sponsorship from './views/Sponsorship.vue';
-import Status from './views/Status.vue';
-import Students from '@/features/students/pages/Students.vue';
-import StudentActions from '@/features/students/pages/StudentActions.vue';
-import Contracts from '@/features/students/pages/Contracts.vue';
-import Batches from '@/features/students/pages/batchTable.vue';
-import ContractsApproved from '@/features/students/pages/contractsApp.vue';
-import ContractsDeclined from '@/features/students/pages/contractsDec.vue';
-import Users from './features/users/pages/Users.vue';
-import UsersIndex from './features/users/pages/UsersIndex.vue';
-import AddUsers from './features/users/pages/AddUsers.vue';
-import AddStudents from './views/AddStudents.vue';
+import HRDI from './views/HRDI.vue'
+import SigninDocuments from './views/SigninDocuments.vue'
+import Requirements from './views/Requirements.vue'
+import Requirement from './views/Requirement.vue'
+import Instruction from './views/Instruction.vue'
+import Sponsorship from './views/Sponsorship.vue'
+import Status from './views/Status.vue'
+import Students from '@/features/students/pages/Students.vue'
+import StudentActions from '@/features/students/pages/StudentActions.vue'
+import AttendingResident from '@/features/students/pages/AttendingResident.vue'
+import Contracts from '@/features/students/pages/Contracts.vue'
+import Batches from '@/features/students/pages/batchTable.vue'
+import ContractsApproved from '@/features/students/pages/contractsApp.vue'
+import ContractsDeclined from '@/features/students/pages/contractsDec.vue'
+import Users from './features/users/pages/Users.vue'
+import UsersIndex from './features/users/pages/UsersIndex.vue'
+import AddUsers from './features/users/pages/AddUsers.vue'
+import AddStudents from './views/AddStudents.vue'
 
 import Profile from './views/Profile.vue';
 import Verification from './features/verification/pages/Verification.vue';
@@ -87,6 +89,15 @@ const routes = [
           requiresAuth: true,
           privileges: ['University'],
         },
+      },
+      {
+        path: '/AttendingResident',
+        name: 'AttendingResident',
+        component: AttendingResident,
+        meta: {
+          requiresAuth: true,
+          privileges: ['University',]
+        }
       },
       {
         path: '/students',
@@ -215,12 +226,44 @@ const routes = [
         },
       },
       {
-        path: '/Requirement',
-        name: 'Requirement',
-        component: Requirement,
+        path: '/Instruction',
+        name: 'Instruction',
+        component: Instruction,
         meta: {
           requiresAuth: true,
-          privileges: ['Student'],
+          privileges: ['Student']
+        }
+      },
+      {
+      path: '/Requirement',
+      name: 'Requirement',
+      component: Requirement,
+      meta: {
+        requiresAuth: true,
+        privileges: ['Student']
+      }
+    },
+    {
+      path: '/Sponsorship',
+      name: 'Sponsorship',
+      component: Sponsorship,
+      meta: {
+        requiresAuth: true,
+        privileges: ['Student','HRDI']
+      }
+    },
+    {
+      path: '/allStudents',
+      name: 'Students',
+      component: StudentIndex,
+      meta: {
+        requiresAuth: true,
+      },
+      children: [
+        {
+          path: '',
+          name: 'Students',
+          component: AllStudent,
         },
       },
       {

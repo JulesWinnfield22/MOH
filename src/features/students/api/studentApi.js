@@ -43,6 +43,10 @@ export function withdrawStud(camStatus, justificationStatus, data) {
 	export function confirmStudent(data) {
 	return api.addAuthenticationHeader().put(`${path}/updateStudentStatus?status=registered`, data)
 }
+export function passStudent(data) {
+	return api.addAuthenticationHeader().put(`${path}/passStudentsToNextYear`,data)
+	
+}
 export function updateStudent(ernpId,data) {
 	return api.addAuthenticationHeader().put(`${path}/updateStudent/${ernpId}`,data)
 }
