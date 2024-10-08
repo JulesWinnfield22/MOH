@@ -5,12 +5,19 @@
 	import { allRequest, toasted } from '@/utils/utils'
 	import {getAllUniversities} from '@/features/university/api/uniApI'
 	import {createUser} from '../api/usersAPi.js'
-
+	import { getAllRoles } from '@/features/roles/api/rolesApi';
 	const req = useApiRequest()
+	const roleReq = useApiRequest()
 	const createReq = useApiRequest()
 
 	req.send(
 		() => getAllUniversities({}),
+		res => {
+			
+		}
+	)
+	roleReq.send(
+		() => getAllRoles({}),
 		res => {
 			console.log(res, 'sdfsdf')
 		}
@@ -40,5 +47,6 @@
 		v-if="!req.pending.value"
 		:onSubmit="add"
 		:universities="req.response.value?.content || []"
+		:roles="roleReq.response.value?.content|| []"
 	/>
 </template>

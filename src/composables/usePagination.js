@@ -1,25 +1,25 @@
-import { computed, provide, ref, watch } from 'vue';
-import { useTablePagination } from './useTablePagination';
-import { useApiRequest } from './useApiRequest';
+import { computed, provide, ref, watch } from 'vue'
+import { useTablePagination } from './useTablePagination'
+import { useApiRequest } from './useApiRequest'
 
 export function usePagination(options = {}) {
   const paginationOptions = ref({
-    cb: (f) => f,
+    cb: f => f,
     store: null,
     auto: true,
     perPage: 25,
     cache: false,
     ...(options || {}),
-  });
+  })
 
-  const search = ref('');
-  const perPage = ref(paginationOptions.value.perPage);
+  const search = ref('')
+  const perPage = ref(paginationOptions.value.perPage)
 
-  const req = useApiRequest();
+  const req = useApiRequest()
 
-  const searching = ref(false);
-  const searchPagination = useTablePagination(perPage.value);
-  const pagination = useTablePagination(perPage.value);
+  const searching = ref(false)
+  const searchPagination = useTablePagination(perPage.value)
+  const pagination = useTablePagination(perPage.value)
 
   function getPaginationData(next = true, current = false) {
     if (searching.value) {
@@ -29,30 +29,32 @@ export function usePagination(options = {}) {
           search: search.value || undefined,
           page: next
             ? !current
-              ? ++searchPagination.page.value
-              : searchPagination.page.value
+                ? ++searchPagination.page.value
+                : searchPagination.page.value
             : --searchPagination.page.value,
           limit: searchPagination.limit.value || 25,
-        })
-      );
-    } else {
+        }),
+      )
+    }
+    else {
       return JSON.parse(
         JSON.stringify({
           searchKey: search.value || undefined,
           search: search.value || undefined,
           page: next
             ? !current
-              ? ++pagination.page.value
-              : pagination.page.value
+                ? ++pagination.page.value
+                : pagination.page.value
             : --pagination.page.value,
           limit: pagination.limit.value || 25,
-        })
-      );
+        }),
+      )
     }
   }
 
   function fetch(next = true, current = false, cache = false) {
-    if (req.pending.value || (next && pagination.done.value)) return;
+    if (req.pending.value || (next && pagination.done.value))
+      return
 
     // if(cache && paginationOptions.value.store && paginationOptions.value.store.getAll()?.length) return
 
@@ -60,29 +62,35 @@ export function usePagination(options = {}) {
       () => paginationOptions.value.cb(getPaginationData(next, current)),
       (res) => {
         if (paginationOptions.value.store && res.success) {
-          paginationOptions.value.store.set(res.data?.content || []);
+          paginationOptions.value.store.set(res.data?.content || [])
         }
 
-        console.log(res.data?.content?.length, pagination.limit.value);
-        pagination.totalPages.value = res.data?.page?.totalPages || 1;
-        if (res.success && res.data?.content?.length < pagination.limit.value)
-          pagination.done.value = true;
+       
+        pagination.totalPages.value = res.data?.page?.totalPages || 1
+        if (
+          res.success
+          && res.data?.content?.length < pagination.limit.value
+        )
+          pagination.done.value = true
       },
-      true
-    );
+      true,
+    )
   }
 
-  let controller;
-  let timeout;
+  let controller
+  let timeout
   function fetchSearch(next = true, current = false) {
-    if (next && searchPagination.done.value) return;
+    if (next && searchPagination.done.value)
+      return
 
-    if (controller) controller.abort();
-    if (timeout) clearTimeout(timeout);
-    controller = new AbortController();
+    if (controller)
+      controller.abort()
+    if (timeout)
+      clearTimeout(timeout)
+    controller = new AbortController()
 
     if (paginationOptions.value.store) {
-      paginationOptions.value.store?.reset();
+      paginationOptions.value.store?.reset()
     }
     timeout = setTimeout(() => {
       req.send(
@@ -92,86 +100,93 @@ export function usePagination(options = {}) {
           }),
         (res) => {
           if (paginationOptions.value.store && res.success) {
-            paginationOptions.value.store.set(res.data?.content || []);
-            searchPagination.totalPages.value = res.data?.page?.totalPages || 1;
+            paginationOptions.value.store.set(res.data?.content || []) 
+            searchPagination.totalPages.value = res.data?.page?.totalPages || 1
           }
           if (
-            res?.success &&
-            res.data?.response?.length < searchPagination.limit.value
+            res?.success
+            && res.data?.response?.length < searchPagination.limit.value
           )
-            searchPagination.done.value = true;
+            searchPagination.done.value = true
         },
-        true
-      );
-    }, 20);
+        true,
+      )
+    }, 20)
   }
 
   function next() {
-    if (searching.value) fetchSearch();
-    else fetch(true, false, paginationOptions.value.cache);
+    if (searching.value)
+      fetchSearch()
+    else
+      fetch(true, false, paginationOptions.value.cache)
   }
 
   function previous() {
-    if (searching.value && searchPagination.page.value == 1) return;
-    if (!searching.value && pagination.page.value == 1) return;
+    if (searching.value && searchPagination.page.value == 1)
+      return
+    if (!searching.value && pagination.page.value == 1)
+      return
 
     if (searching.value) {
-      fetchSearch(false);
-      searchPagination.done.value = false;
-    } else {
-      pagination.done.value = false;
-      fetch(false, false, paginationOptions.value.cache);
+      fetchSearch(false)
+      searchPagination.done.value = false
+    }
+    else {
+      pagination.done.value = false
+      fetch(false, false, paginationOptions.value.cache)
     }
   }
 
   watch(search, () => {
-    searchPagination.done.value = false;
-    searchPagination.page.value = 0;
+    searchPagination.done.value = false
+    searchPagination.page.value = 0
     if (search.value) {
-      searching.value = true;
-      fetchSearch(true, false);
-    } else if (!search.value && paginationOptions.value.auto) {
-      searching.value = false;
-      pagination.done.value = false;
-      fetch(true, true, paginationOptions.value.cache);
+      searching.value = true
+      fetchSearch(true, false)
     }
-  });
+    else if (!search.value && paginationOptions.value.auto) {
+      searching.value = false
+      pagination.done.value = false
+      fetch(true, true, paginationOptions.value.cache)
+    }
+  })
 
-  const auto = computed(() => paginationOptions.value.auto);
+  const auto = computed(() => paginationOptions.value.auto)
   watch(auto, fetch, {
     immediate: paginationOptions.value.auto,
-  });
+  })
 
   watch(perPage, () => {
-    pagination.reset(perPage.value);
-    searchPagination.reset(perPage.value);
+    pagination.reset(perPage.value)
+    searchPagination.reset(perPage.value)
     if (search.value) {
-      searching.value = true;
-      fetchSearch(true, true);
-    } else {
-      searching.value = false;
-      fetch(true, true, paginationOptions.value.cache);
+      searching.value = true
+      fetchSearch(true, true)
     }
-  });
+    else {
+      searching.value = false
+      fetch(true, true, paginationOptions.value.cache)
+    }
+  })
 
-  provide('next', next);
-  provide('previous', previous);
-  provide('searchPage', searchPagination.page);
-  provide('searchTotalPages', searchPagination.totalPages);
-  provide('page', pagination.page);
-  provide('totalPages', pagination.totalPages);
-  provide('searching', searching);
+  provide('next', next)
+  provide('previous', previous)
+  provide('searchPage', searchPagination.page)
+  provide('searchTotalPages', searchPagination.totalPages)
+  provide('page', pagination.page)
+  provide('totalPages', pagination.totalPages)
+  provide('searching', searching)
 
   const page = computed(() => {
     return searching.value
       ? searchPagination.page.value
-      : pagination.page.value;
-  });
+      : pagination.page.value
+  })
 
   function send() {
     pagination.done.value = false;
     pagination.page.value = 0;
-    fetch();
+    fetch()
   }
   return {
     send,
@@ -189,5 +204,5 @@ export function usePagination(options = {}) {
     dirty: req.dirty,
     next,
     previous,
-  };
+  }
 }

@@ -5,9 +5,7 @@ export const usePrivileges = defineStore('privilegesssStore', () => {
   const privileges = ref([]);
 
   function set(data) {
-    console.log(data);
-
-    privileges.value = data.response;
+    privileges.value = data;
   }
 
   function getAll() {

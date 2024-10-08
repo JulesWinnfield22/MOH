@@ -27,7 +27,7 @@ function create({ values }) {
 </script>
 <template>
   <NewFormParent class="!p-0" size="xl" title="Add Role">
-    <PrivilegeDataProvider v-slot="{ privileges, pending }">
+    <PrivilegeDataProvider :prePage="500" v-slot="{ privileges, pending }">
       <Roleform v-if="!pending" :privileges="privileges" />
       <p v-else>Loading...</p>
     </PrivilegeDataProvider>

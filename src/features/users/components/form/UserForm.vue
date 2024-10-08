@@ -2,25 +2,30 @@
 import { Form, Select, Input } from '@com/new_form_elements';
 import Button from '@com/Button.vue';
 import { ref, computed, watch } from 'vue';
+import { log } from 'pdfmake/build/pdfmake';
 
 const props = defineProps({
   pending: {
     type: Boolean,
     default: false,
   },
-  user: {
+  user: { 
     type: Object,
     default: () => ({}), // Correctly initialize user to an empty object
   },
   universities: {
     type: Array,
-    default: () => [], // Use a function to return an empty array
+    default: [], // Use a function to return an empty array
+  },
+  roles: {
+    type: Array,
+    default: [], // Use a function to return an empty array
   },
   onSubmit: {
     type: Function,
   },
 });
-console.log(props.user)
+console.log(props.roles)
 const user = ref({})
 if(Object.keys((props.user || {})).length > 0) {
   const [title, firstName, fathersName, grandFathersName] = props.user.fullName.split(" ")
@@ -33,7 +38,7 @@ if(Object.keys((props.user || {})).length > 0) {
   };
 }
 
-const type = ref(props.user?.userType || '');
+const type = ref(props.user?.roleUuid || '');
 const selectedOption = ref([]);
 const isOtherSelected = ref(false);
 const InputNewUniversity = ref('');
@@ -45,8 +50,12 @@ const combinedOptions = computed(() => {
     label: el.universityName,
     value: el.universityName,
   }));
+  const rolesOptions = props.roles.map((el) => ({
+    label: el.roleName,
+    value: el.roleName,
+  }));
 
-  return [...otherOption, ...universityOptions];
+  return [...otherOption, ...universityOptions,...rolesOptions];
 });
 
 // Watch the selected option to detect when "Other" is selected
@@ -61,7 +70,7 @@ function submitForm({ values, reset }) {
   props.onSubmit(values, reset);
 }
 
-console.log(props.universities);
+console.log(props.roles);
 </script>
 
 <template>
@@ -140,17 +149,18 @@ console.log(props.universities);
   </div>
   
   <div class="grid grid-cols-2 gap-6">
+    {{ console.log(roles) }}
     <Select
+      :obj="true"
       v-model="type"
       label="User Role"
-      name="userType"
-      :options="['HRDI', 'University', 'LegalOffice']"
+      name="roleUuid"
+      :options="roles.map(el => ({ label: el.roleName, value: el.roleName }))"
       validation="required"
       :attributes="{ type: 'text', placeholder: 'Select User Type' }"
     />
-    
     <Select
-      v-if="type === 'University'"
+      v-if="type === 'university'"
       :obj="true"
       label="University"
       name="universityUuid"

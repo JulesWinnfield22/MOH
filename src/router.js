@@ -69,7 +69,7 @@ const routes = [
         component: University,
         meta: {
           requiresAuth: true,
-          privileges: ['HRDI'],
+          // privileges: ['HRDI'],
         },
       },
       {
@@ -78,7 +78,7 @@ const routes = [
         component: Contract,
         meta: {
           requiresAuth: true,
-          privileges: ['HRDI'],
+          // privileges: ['HRDI'],
         },
       },
       {
@@ -87,7 +87,7 @@ const routes = [
         component: StudentActions,
         meta: {
           requiresAuth: true,
-          privileges: ['University'],
+          // privileges: ['University'],
         },
       },
       {
@@ -96,7 +96,7 @@ const routes = [
         component: AttendingResident,
         meta: {
           requiresAuth: true,
-          privileges: ['University',]
+          // privileges: ['University'],
         }
       },
       {
@@ -105,7 +105,7 @@ const routes = [
         component: Students,
         meta: {
           requiresAuth: true,
-          privileges: ['University'],
+          // privileges: ['University'],
         },
       },
       {
@@ -123,7 +123,7 @@ const routes = [
         component: Batches,
         meta: {
           requiresAuth: true,
-          privileges: ['HRDI'],
+           privilage: ['create_student','create_program','read_program','upate_program',],
         },
       },
 
@@ -160,7 +160,7 @@ const routes = [
         component: Students,
         meta: {
           requiresAuth: true,
-          privileges: ['HRDI'],
+          // privileges: ['HRDI'],
         },
       },
       {
@@ -178,7 +178,7 @@ const routes = [
         component: HRDI,
         meta: {
           requiresAuth: true,
-          privileges: ['HRDI'],
+         // privileges: ['HRDI'],
         },
       },
       {
@@ -187,7 +187,7 @@ const routes = [
         component: UsersIndex,
         meta: {
           requiresAuth: true,
-          privileges: ['HRDI'],
+          // privileges: ['HRDI'],
         },
         children: [
           {
@@ -265,6 +265,7 @@ const routes = [
           name: 'Students',
           component: AllStudent,
         },
+      ]
       },
       {
         path: '/Sponsorship',
