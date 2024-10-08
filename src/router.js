@@ -7,39 +7,39 @@ import Login from './views/Login.vue';
 import MoHLegal from './views/MoHLegal.vue';
 import AllStudent from './features/allStudent/pages/AllStudent.vue';
 import StudentIndex from './features/allStudent/pages/StudentIndex.vue';
-import HRDI from './views/HRDI.vue'
-import SigninDocuments from './views/SigninDocuments.vue'
-import Requirements from './views/Requirements.vue'
-import Requirement from './views/Requirement.vue'
-import Instruction from './views/Instruction.vue'
-import Sponsorship from './views/Sponsorship.vue'
-import Status from './views/Status.vue'
-import Students from '@/features/students/pages/Students.vue'
-import StudentActions from '@/features/students/pages/StudentActions.vue'
-import AttendingResident from '@/features/students/pages/AttendingResident.vue'
-import Contracts from '@/features/students/pages/Contracts.vue'
-import Batches from '@/features/students/pages/batchTable.vue'
-import ContractsApproved from '@/features/students/pages/contractsApp.vue'
-import ContractsDeclined from '@/features/students/pages/contractsDec.vue'
-import Users from './features/users/pages/Users.vue'
-import UsersIndex from './features/users/pages/UsersIndex.vue'
-import AddUsers from './features/users/pages/AddUsers.vue'
-import AddStudents from './views/AddStudents.vue'
+import HRDI from './views/HRDI.vue';
+import SigninDocuments from './views/SigninDocuments.vue';
+import Requirements from './views/Requirements.vue';
+import Requirement from './views/Requirement.vue';
+import Instruction from './views/Instruction.vue';
+import Sponsorship from './views/Sponsorship.vue';
+import Status from './views/Status.vue';
+import Students from '@/features/students/pages/Students.vue';
+import StudentActions from '@/features/students/pages/StudentActions.vue';
+import AttendingResident from '@/features/students/pages/AttendingResident.vue';
+import Contracts from '@/features/students/pages/Contracts.vue';
+import Batches from '@/features/students/pages/batchTable.vue';
+import ContractsApproved from '@/features/students/pages/contractsApp.vue';
+import ContractsDeclined from '@/features/students/pages/contractsDec.vue';
+import Users from './features/users/pages/Users.vue';
+import UsersIndex from './features/users/pages/UsersIndex.vue';
+import AddUsers from './features/users/pages/AddUsers.vue';
+import AddStudents from './views/AddStudents.vue';
 
 import Profile from './views/Profile.vue';
 import Verification from './features/verification/pages/Verification.vue';
 import VerificationReset from './features/verification/pages/VerificationReset.vue';
-import Privileges from './features/privilege/pages/Privlege.vue';
 import ContractFile from './features/students/pages/ContractFile.vue';
 import EditContractForm from './views/EditContractForm.vue';
 import MainLayout from './layout/MainLayout.vue';
-import PrivilegeIndex from './features/privilege/pages/PrivilegeIndex.vue';
-import AddPrivilege from './features/privilege/pages/AddPrivilege.vue';
-import Role from './features/roles/pages/Role.vue';
-import AddRole from './features/roles/pages/AddRole.vue';
+import PrivilegeIndex from './features/privilages/pages/PrivilegeIndex.vue';
+import AddPrivilege from './features/privilages/pages/AddPrivilege.vue';
+import UpdatePrivilege from './features/privilages/pages/UpdatePrivilege.vue';
 import RoleIndex from './features/roles/pages/RoleIndex.vue';
-import UpdatePrivilege from './features/privilege/pages/UpdatePrivilege.vue';
+import Roles from './features/roles/pages/Roles.vue';
+import AddRole from './features/roles/pages/AddRole.vue';
 import UpdateRole from './features/roles/pages/UpdateRole.vue';
+import Privileges from './features/privilages/pages/Privileges.vue';
 
 const routes = [
   {
@@ -96,8 +96,8 @@ const routes = [
         component: AttendingResident,
         meta: {
           requiresAuth: true,
-          privileges: ['University',]
-        }
+          privileges: ['University'],
+        },
       },
       {
         path: '/students',
@@ -231,40 +231,41 @@ const routes = [
         component: Instruction,
         meta: {
           requiresAuth: true,
-          privileges: ['Student']
-        }
+          privileges: ['Student'],
+        },
       },
       {
-      path: '/Requirement',
-      name: 'Requirement',
-      component: Requirement,
-      meta: {
-        requiresAuth: true,
-        privileges: ['Student']
-      }
-    },
-    {
-      path: '/Sponsorship',
-      name: 'Sponsorship',
-      component: Sponsorship,
-      meta: {
-        requiresAuth: true,
-        privileges: ['Student','HRDI']
-      }
-    },
-    {
-      path: '/allStudents',
-      name: 'Students',
-      component: StudentIndex,
-      meta: {
-        requiresAuth: true,
-      },
-      children: [
-        {
-          path: '',
-          name: 'Students',
-          component: AllStudent,
+        path: '/Requirement',
+        name: 'Requirement',
+        component: Requirement,
+        meta: {
+          requiresAuth: true,
+          privileges: ['Student'],
         },
+      },
+      {
+        path: '/Sponsorship',
+        name: 'Sponsorship',
+        component: Sponsorship,
+        meta: {
+          requiresAuth: true,
+          privileges: ['Student', 'HRDI'],
+        },
+      },
+      {
+        path: '/allStudents',
+        name: 'Students',
+        component: StudentIndex,
+        meta: {
+          requiresAuth: true,
+        },
+        children: [
+          {
+            path: '',
+            name: 'Students',
+            component: AllStudent,
+          },
+        ],
       },
       {
         path: '/Sponsorship',
@@ -322,7 +323,7 @@ const routes = [
             },
           },
           {
-            path: 'update_privilege/:privilegeUuid',
+            path: '/update_privilege/:privilegeUuid',
             name: 'Update Privileges',
             component: UpdatePrivilege,
             meta: {
@@ -343,10 +344,10 @@ const routes = [
           {
             path: '',
             name: 'Roles',
-            component: Role,
+            component: Roles,
           },
           {
-            path: 'add_role',
+            path: '/add_role',
             name: 'Add Role',
             component: AddRole,
             meta: {
@@ -355,7 +356,7 @@ const routes = [
           },
           {
             path: '/update_role/:roleUuid',
-            name: 'Upadet Role',
+            name: 'Update Role',
             component: UpdateRole,
             meta: {
               requiresAuth: true,

@@ -1,7 +1,7 @@
 <script setup>
-import InputError from '@/components/new_form_elements/InputError.vue';
 import InputParent from '@/new_form_builder/InputParent.vue';
-import { computed, ref } from 'vue';
+import InputError from '@/components/new_form_elements/InputError.vue';
+import { computed, ref, watch } from 'vue';
 
 const props = defineProps({
   label: String,
@@ -10,12 +10,17 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+  selectedPrivilege: {
+    type: Array,
+  },
   validation: String,
 });
 const selected = ref([]);
 
+const obj = {};
+
 const group = computed(() => {
-  return props.options.reduce((state, el) => {
+  return props?.options.reduce((state, el) => {
     if (state[el.category]) {
       state[el.category].push(el);
     } else {
@@ -25,6 +30,21 @@ const group = computed(() => {
   }, {});
 });
 
+watch(
+  () => props.selectedPrivilege,
+  (newPrivileges) => {
+    if (!Array.isArray(newPrivileges)) {
+      selected.value = [];
+      return;
+    }
+    newPrivileges.forEach((el) => {
+      if (el.privilegeUuid) {
+        selected.value.push(el.privilegeUuid);
+      }
+    });
+  },
+  { immediate: true }
+);
 function toggle(id) {
   if (!selected.value.includes(id)) {
     selected.value.push(id);
@@ -67,7 +87,7 @@ function selectAll(checked, category) {
             `${validation}`.includes('required') ? 'true' : 'false'
           "
           :title="label"
-          class="text-sm text-secondary font-bold capitalize px-1 truncate"
+          class="text-sm capitalize px-1 truncate"
           v-if="label"
           >{{ label }}</span
         >
@@ -82,7 +102,7 @@ function selectAll(checked, category) {
               class="size-5"
               type="checkbox"
             />
-            <p class="font-bold text-primary">{{ category }}</p>
+            <p class="font-bold">{{ category }}</p>
           </div>
           <div
             class="flex items-center py-2 gap-2"
@@ -95,9 +115,7 @@ function selectAll(checked, category) {
               class="size-4"
               type="checkbox"
             />
-            <p class="font-medium text-secondary">
-              {{ privilege.privilegeName }}
-            </p>
+            <p class="font-medium">{{ privilege.privilegeName }}</p>
           </div>
         </div>
       </div>

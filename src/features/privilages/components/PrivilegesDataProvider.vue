@@ -1,11 +1,12 @@
 <script setup>
-import { usePagination } from '@/composables/usePagination';
-import { getAllPermissions } from '../api/PrivilegesApi';
-import { usePrivileges } from '../store/PrivilegeStore';
+import { usePagination } from "@/composables/usePagination";
+import { usePrivileges } from "../store/privilegesStore";
+import { getAllPermissions } from "../api/permissionsApi";
 
 const privilegesStore = usePrivileges();
 
 const pagination = usePagination({
+  store: privilegesStore,
   cb: getAllPermissions,
 });
 
@@ -14,10 +15,9 @@ if (privilegesStore.privileges.length == 0) {
 }
 </script>
 <template>
-  {{ console.log(pagination.data.value) }}
   <slot
     :pending="pagination.pending.value"
     :error="pagination.error.value"
-    :privileges="pagination.data.value"
+    :privileges="privilegesStore.privileges"
   />
 </template>

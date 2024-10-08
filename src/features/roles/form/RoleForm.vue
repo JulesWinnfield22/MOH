@@ -1,14 +1,20 @@
 <script setup>
-import Form from '@/new_form_builder/Form.vue';
-import SelectPrivilegeInput from '../SelectPrivilegeInput.vue';
+import { Form } from '@/components/new_form_elements';
+import SelectPrivilegeInput from '../components/SelectPrivilegeInput.vue';
+import { watch } from 'vue';
 import Input from '@/components/new_form_elements/Input.vue';
 import Textarea from '@/components/new_form_elements/Textarea.vue';
 
 const props = defineProps({
-  roles: Object,
+  roles: {
+    type: Object,
+  },
   privileges: {
     type: Array,
     required: true,
+  },
+  selectedPrivilege: {
+    type: Array,
   },
 });
 </script>
@@ -38,6 +44,7 @@ const props = defineProps({
         name="privilegeUuid"
         :options="privileges"
         validation="privilegRequired"
+        :selectedPrivilege="selectedPrivilege"
       />
     </div>
   </Form>

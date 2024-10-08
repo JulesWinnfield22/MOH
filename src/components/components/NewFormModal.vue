@@ -1,5 +1,5 @@
 <script setup>
-import { ModalParent, closeModal } from "@/modal";
+import { ModalParent, closeModal } from '@/modals';
 
 const props = defineProps({
   name: {

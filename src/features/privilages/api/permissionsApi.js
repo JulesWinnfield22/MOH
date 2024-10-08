@@ -1,7 +1,7 @@
 import ApiService from '@/services/ApiService';
 import { getQueryFormObject } from '@/utils/utils';
 
-const api = new ApiService(import.meta.env?.v_API_URL);
+const api = new ApiService(import.meta.env?.v_API_URL_PERMISSIONS);
 
 const path = '/users/privilege';
 
@@ -25,5 +25,5 @@ export function getPermissionById(id) {
 export function updatePermission(id, data) {
   return api
     .addAuthenticationHeader()
-    .put(`${path}/privilege/updatePrivilege/${id}`, data);
+    .put(`${path}/updatePrivilege/${id}`, data);
 }

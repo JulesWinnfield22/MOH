@@ -1,15 +1,16 @@
 <script setup>
 import Button from '@/components/Button.vue';
+import DefaultPage from '@/components/DefaultPage.vue';
 import Table from '@/components/Table.vue';
-import { useApiRequest } from '@/composables/useApiRequest';
-import { removePermission } from '../api/PrivilegesApi';
-import { toasted } from '@/utils/utils';
-import PrivilegeDataProvider from '../components/PrevilegeDataProvider.vue';
 import TableRowSkeleton from '@/skeletons/TableRowSkeleton.vue';
+import { useApiRequest } from '@/composables/useApiRequest';
+import PrivilegesDataProvider from '../components/PrivilegesDataProvider.vue';
 import icons from '@/utils/icons';
-import { usePrivileges } from '../store/PrivilegeStore';
+import { removePermission } from '../api/permissionsApi';
+import { toasted } from '@/utils/utils';
+
 const removeReq = useApiRequest();
-const privilegeStore = usePrivileges;
+
 function remove(id) {
   removeReq.send(
     () => removePermission(id),
@@ -24,14 +25,13 @@ function remove(id) {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 p-4">
-    <div class="flex justify-end">
-      <Button @click="$router.push('privileges/add_privilege')" type="primary"
+  <DefaultPage>
+    <template #more>
+      <Button @click="$router.push('/add_privilege')" type="primary"
         >Add New Privilages</Button
       >
-    </div>
-    <PrivilegeDataProvider v-slot="{ privileges, pending }">
-      {{ console.log(privileges) }}
+    </template>
+    <PrivilegesDataProvider v-slot="{ privileges, pending }">
       <Table
         :pending="pending"
         :headers="{
@@ -49,13 +49,8 @@ function remove(id) {
         <template #actions="{ row }">
           <div class="flex gap-4 items-center">
             <button
-              v-ripple
               class="size-8 shadow-md rounded-full bg-accent flex justify-center items-center"
-              @click="
-                $router.push(
-                  `/privileges/update_privilege/${row?.privilegeUuid}`
-                )
-              "
+              @click="$router.push(`/update_privilege/${row?.privilegeUuid}`)"
             >
               <i v-html="icons.edit" />
             </button>
@@ -63,6 +58,6 @@ function remove(id) {
           </div>
         </template>
       </Table>
-    </PrivilegeDataProvider>
-  </div>
+    </PrivilegesDataProvider>
+  </DefaultPage>
 </template>

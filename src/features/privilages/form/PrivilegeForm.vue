@@ -36,7 +36,7 @@ const props = defineProps({
     />
     <Input
       :value="privilege?.category || ''"
-      name="category"
+      name="privilegeCategory"
       label="Privilege Category"
       validation="required"
       :attributes="{

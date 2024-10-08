@@ -1,28 +1,26 @@
 <script setup>
-import { useForm } from '@/new_form_builder/useForm';
 import { useRoute } from 'vue-router';
-import { ref } from 'vue';
+import { usePrivileges } from '../store/privilegesStore';
+import { computed, ref } from 'vue';
 import { useApiRequest } from '@/composables/useApiRequest';
-import { getPermissionById, updatePermission } from '../api/PrivilegesApi';
-import { toasted } from '@/utils/utils';
-import NewFormParent from '@/components/components/NewFormParent.vue';
-import PrivilegeForm from '../components/form/PrivilegeForm.vue';
+import { getPermissionById, updatePermission } from '../api/permissionsApi';
+import PrivilegeForm from '@/features/privilages/form/PrivilegeForm.vue';
 import Button from '@/components/Button.vue';
+import NewFormParent from '@/components/components/NewFormParent.vue';
 import icons from '@/utils/icons';
-import { usePrivileges } from '../store/PrivilegeStore';
+import { useForm } from '@/new_form_builder/useForm';
+import { toasted } from '@/utils/utils';
 
 const { submit } = useForm('privilegeForm');
 const privilegeStore = usePrivileges();
 
 const route = useRoute();
 const privilegeUuid = route.params.privilegeUuid;
-console.log(privilegeStore.privileges.find);
 
 const privilege = ref(
   privilegeStore.privileges.find((el) => el.privilegeUuid == privilegeUuid) ||
     {}
 );
-// const privilege = ref('');
 
 const req = useApiRequest();
 const updateReq = useApiRequest();
@@ -61,7 +59,7 @@ function update({ values }) {
           type="primary"
           @click.prevent="submit(update)"
         >
-          <i v-html="icons.edit" />
+          <i class="pb-[3px]" v-html="icons.edit" />
           Update Privilege
         </Button>
       </div>
