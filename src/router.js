@@ -7,39 +7,39 @@ import Login from './views/Login.vue';
 import MoHLegal from './views/MoHLegal.vue';
 import AllStudent from './features/allStudent/pages/AllStudent.vue';
 import StudentIndex from './features/allStudent/pages/StudentIndex.vue';
-import HRDI from './views/HRDI.vue'
-import SigninDocuments from './views/SigninDocuments.vue'
-import Requirements from './views/Requirements.vue'
-import Requirement from './views/Requirement.vue'
-import signNow from './views/SignNow.vue'
-import Sponsorship from './views/Sponsorship.vue'
-import Status from './views/Status.vue'
-import Students from '@/features/students/pages/Students.vue'
-import StudentActions from '@/features/students/pages/StudentActions.vue'
-import AttendingResident from '@/features/students/pages/AttendingResident.vue'
-import Contracts from '@/features/students/pages/Contracts.vue'
-import Batches from '@/features/students/pages/batchTable.vue'
-import ContractsApproved from '@/features/students/pages/contractsApp.vue'
-import ContractsDeclined from '@/features/students/pages/contractsDec.vue'
-import Users from './features/users/pages/Users.vue'
-import UsersIndex from './features/users/pages/UsersIndex.vue'
-import AddUsers from './features/users/pages/AddUsers.vue'
-import AddStudents from './views/AddStudents.vue'
-
+import HRDI from './views/HRDI.vue';
+import SigninDocuments from './views/SigninDocuments.vue';
+import Requirements from './views/Requirements.vue';
+import Requirement from './views/Requirement.vue';
+import Sponsorship from './views/Sponsorship.vue';
+import Status from './views/Status.vue';
+import Students from '@/features/students/pages/Students.vue';
+import uniStudent from '@/features/students/pages/uniStudent.vue';
+import StudentActions from '@/features/students/pages/StudentActions.vue';
+import AttendingResident from '@/features/students/pages/AttendingResident.vue';
+import Contracts from '@/features/students/pages/Contracts.vue';
+import Batches from '@/features/students/pages/batchTable.vue';
+import ContractsApproved from '@/features/students/pages/contractsApp.vue';
+import ContractsDeclined from '@/features/students/pages/contractsDec.vue';
+import Users from './features/users/pages/Users.vue';
+import UsersIndex from './features/users/pages/UsersIndex.vue';
+import AddUsers from './features/users/pages/AddUsers.vue';
+import AddStudents from './views/AddStudents.vue';
+import signNow from './views/signNow.vue';
 import Profile from './views/Profile.vue';
 import Verification from './features/verification/pages/Verification.vue';
 import VerificationReset from './features/verification/pages/VerificationReset.vue';
-import Privileges from './features/privilege/pages/Privlege.vue';
 import ContractFile from './features/students/pages/ContractFile.vue';
 import EditContractForm from './views/EditContractForm.vue';
 import MainLayout from './layout/MainLayout.vue';
-import PrivilegeIndex from './features/privilege/pages/PrivilegeIndex.vue';
-import AddPrivilege from './features/privilege/pages/AddPrivilege.vue';
-import Role from './features/roles/pages/Role.vue';
-import AddRole from './features/roles/pages/AddRole.vue';
+import PrivilegeIndex from './features/privilages/pages/PrivilegeIndex.vue';
+import AddPrivilege from './features/privilages/pages/AddPrivilege.vue';
+import UpdatePrivilege from './features/privilages/pages/UpdatePrivilege.vue';
 import RoleIndex from './features/roles/pages/RoleIndex.vue';
-import UpdatePrivilege from './features/privilege/pages/UpdatePrivilege.vue';
+import Roles from './features/roles/pages/Roles.vue';
+import AddRole from './features/roles/pages/AddRole.vue';
 import UpdateRole from './features/roles/pages/UpdateRole.vue';
+import Privileges from './features/privilages/pages/Privileges.vue';
 
 const routes = [
   {
@@ -53,6 +53,7 @@ const routes = [
         component: Dashboard,
         meta: {
           requiresAuth: true,
+          privilage: ['read_batches'],
         },
       },
       {
@@ -69,7 +70,7 @@ const routes = [
         component: University,
         meta: {
           requiresAuth: true,
-          // privileges: ['HRDI'],
+          privilage: ['read_batches '],
         },
       },
       {
@@ -78,7 +79,7 @@ const routes = [
         component: Contract,
         meta: {
           requiresAuth: true,
-          // privileges: ['HRDI'],
+          privilage: ['read_batches'],
         },
       },
       {
@@ -87,7 +88,7 @@ const routes = [
         component: StudentActions,
         meta: {
           requiresAuth: true,
-          // privileges: ['University'],
+          privilage: ['update_pass_to_next_year'],
         },
       },
       {
@@ -96,16 +97,16 @@ const routes = [
         component: AttendingResident,
         meta: {
           requiresAuth: true,
-          // privileges: ['University'],
+          privilage: ['update_pass_to_next_year'],
         }
       },
       {
-        path: '/students',
-        name: 'students',
-        component: Students,
+        path: '/uniStudent',
+        name: 'uniStudent',
+        component: uniStudent,
         meta: {
           requiresAuth: true,
-          // privileges: ['University'],
+          privilage: ['update_pass_to_next_year'],
         },
       },
       {
@@ -114,7 +115,7 @@ const routes = [
         component: Contracts,
         meta: {
           requiresAuth: true,
-          privileges: ['LegalOffice'],
+          privileges: ['read_document'],
         },
       },
       {
@@ -123,7 +124,7 @@ const routes = [
         component: Batches,
         meta: {
           requiresAuth: true,
-           privilage: ['create_student','create_program','read_program','upate_program',],
+          privilage: ['read_batches'],
         },
       },
 
@@ -133,7 +134,7 @@ const routes = [
         component: ContractsApproved,
         meta: {
           requiresAuth: true,
-          privileges: ['LegalOffice'],
+          privileges: ['read_document'],
         },
       },
       {
@@ -142,7 +143,7 @@ const routes = [
         component: ContractsDeclined,
         meta: {
           requiresAuth: true,
-          privileges: ['LegalOffice'],
+          privileges: ['read_document'],
         },
       },
       {
@@ -151,7 +152,7 @@ const routes = [
         component: ContractFile,
         meta: {
           requiresAuth: true,
-          privileges: ['LegalOffice'],
+          privileges: ['read_document'],
         },
       },
       {
@@ -160,7 +161,7 @@ const routes = [
         component: Students,
         meta: {
           requiresAuth: true,
-          // privileges: ['HRDI'],
+          privilage: ['read_batches'],
         },
       },
       {
@@ -169,7 +170,7 @@ const routes = [
         component: MoHLegal,
         meta: {
           requiresAuth: true,
-          privileges: ['LegalOffice'],
+          privileges: ['read_document'],
         },
       },
       {
@@ -178,7 +179,7 @@ const routes = [
         component: HRDI,
         meta: {
           requiresAuth: true,
-         // privileges: ['HRDI'],
+          privilage: ['read_batches'],
         },
       },
       {
@@ -187,7 +188,7 @@ const routes = [
         component: UsersIndex,
         meta: {
           requiresAuth: true,
-          // privileges: ['HRDI'],
+          privilage: ['delete_user'],
         },
         children: [
           {
@@ -206,6 +207,10 @@ const routes = [
         path: '/AddStudents/:batchId',
         name: 'Add Student',
         component: AddStudents,
+        meta: {
+          requiresAuth: true,
+          privilage: ['create_contract'],
+        },
       },
       {
         path: '/Status',
@@ -213,7 +218,7 @@ const routes = [
         component: Status,
         meta: {
           requiresAuth: true,
-          privileges: ['Student'],
+          privileges: ['create_contract'],
         },
       },
       {
@@ -222,50 +227,27 @@ const routes = [
         component: Requirements,
         meta: {
           requiresAuth: true,
-          privileges: ['Student'],
+          privileges: ['create_contract'],
         },
       },
       {
-        path: '/signNow',
+        path: '/SigninDocuments',
         name: 'signNow',
         component: signNow,
         meta: {
           requiresAuth: true,
-          privileges: ['Student']
-        }
+          privileges: ['create_contract'],
+        },
       },
       {
-      path: '/Requirement',
-      name: 'Requirement',
-      component: Requirement,
-      meta: {
-        requiresAuth: true,
-        privileges: ['Student']
-      }
-    },
-    {
-      path: '/Sponsorship',
-      name: 'Sponsorship',
-      component: Sponsorship,
-      meta: {
-        requiresAuth: true,
-        privileges: ['Student','HRDI']
-      }
-    },
-    {
-      path: '/allStudents',
-      name: 'Students',
-      component: StudentIndex,
-      meta: {
-        requiresAuth: true,
-      },
-      children: [
-        {
-          path: '',
-          name: 'Students',
-          component: AllStudent,
+        path: '/Requirement',
+        name: 'Requirement',
+        component: Requirement,
+        meta: {
+          requiresAuth: true,
+          privileges: ['create_contract'],
         },
-      ]
+      
       },
       {
         path: '/Sponsorship',
@@ -273,7 +255,7 @@ const routes = [
         component: Sponsorship,
         meta: {
           requiresAuth: true,
-          privileges: ['Student', 'HRDI'],
+          privileges: ['create_contract', 'read_batches'],
         },
       },
       {
@@ -282,6 +264,32 @@ const routes = [
         component: StudentIndex,
         meta: {
           requiresAuth: true,
+          privilage: ['read_batches'],
+        },
+        children: [
+          {
+            path: '',
+            name: 'Students',
+            component: AllStudent,
+          },
+        ],
+      },
+      {
+        path: '/Sponsorship',
+        name: 'Sponsorship',
+        component: Sponsorship,
+        meta: {
+          requiresAuth: true,
+          privileges: ['create_contract', 'read_batches'],
+        },
+      },
+      {
+        path: '/allStudents',
+        name: 'Students',
+        component: StudentIndex,
+        meta: {
+          requiresAuth: true,
+          privileges: ['read_batches'],
         },
         children: [
           {
@@ -307,27 +315,34 @@ const routes = [
         component: PrivilegeIndex,
         meta: {
           requiresAuth: true,
+          privilage: ['read_batches'],
         },
         children: [
           {
             path: '',
             name: 'Privileges',
             component: Privileges,
+            meta: {
+              requiresAuth: true,
+              privilage: ['read_batches'],
+            },
           },
           {
-            path: 'add_privilege',
+            path: '/add_privilege',
             name: 'Add Privileges',
             component: AddPrivilege,
             meta: {
               requiresAuth: true,
+              privilage: ['read_batches'],
             },
           },
           {
-            path: 'update_privilege/:privilegeUuid',
+            path: '/update_privilege/:privilegeUuid',
             name: 'Update Privileges',
             component: UpdatePrivilege,
             meta: {
               requiresAuth: true,
+              privilage: ['read_batches'],
             },
           },
         ],
@@ -339,28 +354,31 @@ const routes = [
         component: RoleIndex,
         meta: {
           requiresAuth: true,
+          privilage: ['read_batches'],
         },
         children: [
           {
             path: '',
             name: 'Roles',
-            component: Role,
+            component: Roles,
           },
           {
-            path: 'add_role',
+            path: '/add_role',
             name: 'Add Role',
             component: AddRole,
             meta: {
               requiresAuth: true,
+              privilage: ['read_batches'],
             },
           },
           {
             path: '/update_role/:roleUuid',
-            name: 'Upadet Role',
+            name: 'Update Role',
             component: UpdateRole,
             meta: {
               requiresAuth: true,
               permissions: [],
+              privilage: ['read_batches'],
             },
           },
         ],

@@ -2,9 +2,9 @@
 import Table from '@/components/Table.vue';
 import TableRowSkeleton from '@/skeletons/TableRowSkeleton.vue';
 import { ref } from 'vue';
-import RoleDataProvider from '../components/RoleDataProvider.vue';
 import Button from '@/components/Button.vue';
 import icons from '@/utils/icons';
+import RolesDataProvider from '../components/RolesDataProvider.vue';
 const serachKey = ref('');
 </script>
 <template>
@@ -22,7 +22,7 @@ const serachKey = ref('');
       >
     </div>
 
-    <RoleDataProvider :search="serachKey" v-slot="{ roles, pending }">
+    <RolesDataProvider :search="serachKey" v-slot="{ roles, pending }">
       
       <Table
         :pending="pending"
@@ -42,6 +42,6 @@ const serachKey = ref('');
           </button>
         </template>
       </Table>
-    </RoleDataProvider>
+    </RolesDataProvider>
   </div>
 </template>

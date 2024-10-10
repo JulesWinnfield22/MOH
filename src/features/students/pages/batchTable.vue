@@ -715,7 +715,7 @@ function remove(id) {
       </button>
       <button
         type="button"
-        @click="remove(selectedRow.ernpId)"
+        @click="remove(selectedRow.userUuid)"
         class="bg-red-500 text-white px-5 py-2 rounded-md hover:bg-red-600 transition"
       >
         Yes, Delete

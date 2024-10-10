@@ -65,7 +65,7 @@ export function usePagination(options = {}) {
           paginationOptions.value.store.set(res.data?.content || [])
         }
 
-       
+        console.log(req.response.value.content, pagination.limit.value)
         pagination.totalPages.value = res.data?.page?.totalPages || 1
         if (
           res.success

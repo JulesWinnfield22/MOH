@@ -1,12 +1,14 @@
 <script setup>
-import { useApiRequest } from '@/composables/useApiRequest';
-import { usePrivileges } from '../store/PrivilegeStore';
 import { useForm } from '@/new_form_builder/useForm';
-import { createPermission } from '../api/PrivilegesApi';
-import { toasted } from '@/utils/utils';
+import NewFormModal from '@/components/components/NewFormModal.vue';
 import NewFormParent from '@/components/components/NewFormParent.vue';
+import PrivilegeForm from '../form/PrivilegeForm.vue';
+import { useApiRequest } from '@/composables/useApiRequest';
+import { createPermission } from '../api/PrivilegesApi';
+import { usePrivileges } from '../store/privilegesStore';
 import Button from '@/components/Button.vue';
-import PrivilegeForm from '../components/form/PrivilegeForm.vue';
+import { toasted } from '@/utils/utils';
+import icons from '@/utils/icons';
 
 const req = useApiRequest();
 const privilegesStore = usePrivileges();
@@ -36,6 +38,7 @@ function create({ values, reset }) {
           type="primary"
           @click.prevent="submit(create)"
         >
+          <i class="pb-[3px]" v-html="icons.plus" />
           Add Privilege
         </Button>
       </div>

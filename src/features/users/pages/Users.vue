@@ -68,7 +68,7 @@ const fileInput = ref(null);
       :Fallback="TableRowSkeleton"
       :headers="{
         head: ['Full Name', 'Gender', 'phone','Email', 'User Role', 'actions'],
-        row: ['fullName', 'gender', 'phone','email' ,'userType'],
+        row: ['fullName', 'gender', 'phone','email' ,'roleName'],
       }"
       :rows="paginations.data.value || []"
     >

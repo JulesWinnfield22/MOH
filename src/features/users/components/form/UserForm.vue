@@ -154,7 +154,7 @@ console.log(props.roles);
       :obj="true"
       v-model="type"
       label="User Role"
-      name="roleUuid"
+      name="roleName"
       :options="roles.map(el => ({ label: el.roleName, value: el.roleName }))"
       validation="required"
       :attributes="{ type: 'text', placeholder: 'Select User Type' }"

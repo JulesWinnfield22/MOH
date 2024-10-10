@@ -2,7 +2,6 @@
 import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { usePaginationTemp } from '@/composables/usePaginaionTemp';
-import { usePagination } from '@/composables/usePagination'; 
 import { getUniStudents } from '@/features/students/api/studentApi.js';
 import { useAuth } from '@/store/auth.js';
 import Table from '@com/Table.vue';
@@ -15,7 +14,6 @@ import {
 } from '@/features/students/api/studentApi.js';
 import { useApiRequest } from '@/composables/useApiRequest';
 import { toasted } from '@/utils/utils';
-
 const sudents = useStudents();
 const auth = useAuth();
 const isRoleUniversity = computed(() =>
@@ -34,7 +32,6 @@ const selectedErnpId = ref(null);
 const route = useRoute();
 const uniId = route.params.uniId;
 const request = useApiRequest();
-
 const selectedStatus = ref(''); // To hold the selected status filter
 const buttonClass = computed(() => {
   switch (camStatus.value) {
@@ -46,6 +43,8 @@ const buttonClass = computed(() => {
       return 'bg-[#FF0700]'; // Example color for Dismissed
     case 'Graduated':
       return 'bg-[#32CD32]'; // Example color for Graduated
+      case 'Attending':
+      return 'bg-[#320D32]'; // Example color for Graduated
     default:
       return 'bg-[#FF4040]'; // Default color
   }
@@ -65,7 +64,7 @@ const filteredstatStudents = computed(() => {
     (student) => student.campusStatus === selectedStatus.value
   );
 });
-const pagination = usePagination({
+const pagination = usePaginationTemp({
   store: sudents,
   cb: (data, config) =>
     getUniStudents(uniId || auth.auth?.user?.universityProviderUuid),
@@ -97,7 +96,6 @@ function withdrawStudent(ernpId) {
   showStudent.value = false; // Show the reject modal
   reasons.value = '';
 }
-
 function showModal() {
   isModalVisible.value = true; // Show the reject modal
   reason.value = '';
@@ -116,7 +114,6 @@ function closeModal() {
 }
 function confirmSelection() {
   if (!selected.value?.length || request.pending.value) return;
-
   request.send(
     () => confirmStudent(selected.value),
     (res) => {
@@ -129,10 +126,8 @@ function confirmSelection() {
     }
   );
 }
-
 function confirmeachSelection(ernpId) {
   if (request.pending.value) return; // Prevent action if request is pending
-
   request.send(
     () => confirmStudent([ernpId]), // Pass the row inside an array to maintain the structure
     (res) => {
@@ -146,14 +141,10 @@ function confirmeachSelection(ernpId) {
     }
   );
 }
-
 function rejectEachSelection(ernpId) {
   if (request.pending.value) return; // Prevent action if request is pending
-
   const status = 'rejected'; // Define the status for rejection
-
   console.log(reason.value);
-
   request.send(
     () =>
       rejectStudent(
@@ -173,12 +164,9 @@ function rejectEachSelection(ernpId) {
     }
   );
 }
-
 function rejectSelection() {
   if (!selected.value?.length || request.pending.value) return;
-
   const status = 'rejected'; // or any other status you need
-
   request.send(
     () =>
       rejectStudent(
@@ -196,12 +184,9 @@ function rejectSelection() {
     }
   );
 }
-
 function withdrawSelectedStudent(ernpId) {
   if (request.pending.value) return; // Prevent action if request is pending
-
   console.log('Reason:', reasons.value);
-
   request.send(
     () =>
       withdrawStud(
@@ -209,7 +194,6 @@ function withdrawSelectedStudent(ernpId) {
         reasons.value != 'Other' ? reasons.value : discription.value,
         [ernpId]
       ), // Pass the ernpId in an array to keep the structure consistent
-
     (res) => {
       if (res.success) {
         sudents.updateCampusStatus(camStatus.value, reasons.value, [ernpId]);
@@ -217,33 +201,26 @@ function withdrawSelectedStudent(ernpId) {
         reasons.value = ''; // Update the status of the specific row
         resetModalValues();
       }
-
       isWithdrawStudent.value = !isWithdrawStudent.value;
-
       // Normalize and log the campus status for debugging
       const normalizedStatus = camStatus.value.trim().toLowerCase();
       console.log('Normalized Campus Status:', normalizedStatus);
-
       // Determine the toast message based on the normalized status
       let toastMessage = 'Action Completed'; // Default message
-      if (normalizedStatus === 'withdrawn') {
+      if (normalizedStatus === 'Withdrawn') {
         toastMessage = 'Withdrawn';
-      } else if (normalizedStatus === 'graduated') {
+      } else if (normalizedStatus === 'Graduated') {
         toastMessage = 'Graduated';
-      } else if (normalizedStatus === 'dismissed') {
+      } else if (normalizedStatus === 'Dismissed') {
         toastMessage = 'Dismissed';
-      } else if (normalizedStatus === 'suspended') {
+      } else if (normalizedStatus === 'Suspended') {
         toastMessage = 'Suspended';
       }
-
       console.log('Toast Message:', toastMessage); // Log the toast message for debugging
-
       toasted(res.success, toastMessage, res.error); // Show a toast notification with the correct message
     }
   );
 }
-
-
 function selectUser(item) {
   const idx = selected.value.findIndex((el) => {
     return item == el;
@@ -254,7 +231,6 @@ function selectUser(item) {
     selected.value.splice(idx, 1);
   }
 }
-
 function selectAll(select) {
   console.log(select);
   if (select) {
@@ -274,20 +250,25 @@ const allSelected = computed(() => {
   const len = (sudents.students || []).length;
   return len != 0 && len == selected.value?.length;
 });
-
 const isRoleHrdi = computed(
   () => auth.auth?.user?.privileges?.[0] == 'ROLE_University'
 );
 </script>
-
 <template>
   <div class="bg-[#FBFBFB] p-5 ">
-    <!-- <div v-if="isRoleHrdi" class="flex justify-between items-center">
+    <div >
+      <div class="flex justify-between items-center">
+      
       <div
         class="p-4 text-[#4E585F] font-dm-sans text-[16px] font-bold leading-[24px] text-left"
       >
         Students
       </div>
+      <input
+    class="rounded-lg border w-[50%]  p-2 focus:outline-none focus:ring-2 focus:ring-[#21618C] placeholder-gray-500"
+    v-model="pagination.search.value"
+    placeholder="Search Students"
+  />
       <div class="p-4 gap-2.5 flex">
         <p
           class="p-4 text-[#4E585F] font-dm-sans text-[14px] font-normal leading-[24px] text-left"
@@ -296,69 +277,15 @@ const isRoleHrdi = computed(
           {{ (sudents.students || []).length }} Students
         </p>
 
-        <button
-          style="padding: 8px 16px; border-radius: 6px"
-          class="mt-1.5 h-[40px] w-[129px] flex font-dm-sans bg-[#FF4040] text-white font-bold rounded hover:bg-[#FF4040]"
-          @click="showModal()"
-        >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M2.54497 8.73005C2 9.79961 2 11.1997 2 14C2 16.8003 2 18.2004 2.54497 19.27C3.02433 20.2108 3.78924 20.9757 4.73005 21.455C5.79961 22 7.19974 22 10 22H14C16.8003 22 18.2004 22 19.27 21.455C20.2108 20.9757 20.9757 20.2108 21.455 19.27C22 18.2004 22 16.8003 22 14C22 11.1997 22 9.79961 21.455 8.73005C20.9757 7.78924 20.2108 7.02433 19.27 6.54497C18.2004 6 16.8003 6 14 6H10C7.19974 6 5.79961 6 4.73005 6.54497C3.78924 7.02433 3.02433 7.78924 2.54497 8.73005ZM15.0595 12.4995C15.3353 12.1905 15.3085 11.7164 14.9995 11.4406C14.6905 11.1647 14.2164 11.1915 13.9406 11.5005L10.9286 14.8739L10.0595 13.9005C9.78359 13.5915 9.30947 13.5647 9.0005 13.8406C8.69152 14.1164 8.66468 14.5905 8.94055 14.8995L10.3691 16.4995C10.5114 16.6589 10.7149 16.75 10.9286 16.75C11.1422 16.75 11.3457 16.6589 11.488 16.4995L15.0595 12.4995Z"
-              fill="white"
-            />
-            <path
-              d="M20.5348 3.46447C19.0704 2 16.7133 2 11.9993 2C7.28525 2 4.92823 2 3.46377 3.46447C2.70628 4.22195 2.3406 5.21824 2.16406 6.65598C2.69473 6.06532 3.33236 5.57328 4.04836 5.20846C4.82984 4.81027 5.66664 4.6488 6.59316 4.5731C7.48829 4.49997 8.58971 4.49998 9.93646 4.5H14.0621C15.4089 4.49998 16.5103 4.49997 17.4054 4.5731C18.332 4.6488 19.1688 4.81027 19.9502 5.20846C20.6662 5.57328 21.3039 6.06532 21.8345 6.65598C21.658 5.21824 21.2923 4.22195 20.5348 3.46447Z"
-              fill="white"
-            />
-          </svg>
-          Reject
-        </button>
-        <button
-          style="padding: 8px 16px; border-radius: 6px"
-          class="mt-1.5 flex h-[40px] w-[129px] font-dm-sans bg-[#36CB56] text-white font-bold rounded hover:bg-[#36CB56]"
-          @click="confirmSelection"
-        >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M2.54497 8.73005C2 9.79961 2 11.1997 2 14C2 16.8003 2 18.2004 2.54497 19.27C3.02433 20.2108 3.78924 20.9757 4.73005 21.455C5.79961 22 7.19974 22 10 22H14C16.8003 22 18.2004 22 19.27 21.455C20.2108 20.9757 20.9757 20.2108 21.455 19.27C22 18.2004 22 16.8003 22 14C22 11.1997 22 9.79961 21.455 8.73005C20.9757 7.78924 20.2108 7.02433 19.27 6.54497C18.2004 6 16.8003 6 14 6H10C7.19974 6 5.79961 6 4.73005 6.54497C3.78924 7.02433 3.02433 7.78924 2.54497 8.73005ZM15.0595 12.4995C15.3353 12.1905 15.3085 11.7164 14.9995 11.4406C14.6905 11.1647 14.2164 11.1915 13.9406 11.5005L10.9286 14.8739L10.0595 13.9005C9.78359 13.5915 9.30947 13.5647 9.0005 13.8406C8.69152 14.1164 8.66468 14.5905 8.94055 14.8995L10.3691 16.4995C10.5114 16.6589 10.7149 16.75 10.9286 16.75C11.1422 16.75 11.3457 16.6589 11.488 16.4995L15.0595 12.4995Z"
-              fill="white"
-            />
-            <path
-              d="M20.5348 3.46447C19.0704 2 16.7133 2 11.9993 2C7.28525 2 4.92823 2 3.46377 3.46447C2.70628 4.22195 2.3406 5.21824 2.16406 6.65598C2.69473 6.06532 3.33236 5.57328 4.04836 5.20846C4.82984 4.81027 5.66664 4.6488 6.59316 4.5731C7.48829 4.49997 8.58971 4.49998 9.93646 4.5H14.0621C15.4089 4.49998 16.5103 4.49997 17.4054 4.5731C18.332 4.6488 19.1688 4.81027 19.9502 5.20846C20.6662 5.57328 21.3039 6.06532 21.8345 6.65598C21.658 5.21824 21.2923 4.22195 20.5348 3.46447Z"
-              fill="white"
-            />
-          </svg>
-          Confirm
-        </button>
+       
       </div>
     </div>
-    <p class="font-bold pb-8" v-if="!pagination.pending.value">
-      {{ sudents.students.universityName }}
-    </p>
-    -->
-    <div v-if="isRoleHrdi">
       <div
         v-if="isWithdrawStudent"
-        class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50"
+        class="fixed inset-0  flex items-center justify-center bg-black bg-opacity-50"
       >
         <div
-          class="bg-white ml-48 rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px]"
+          class="bg-white ml-40 rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px]"
         >
           <div class="flex justify-between">
             <h2
@@ -395,6 +322,7 @@ const isRoleHrdi = computed(
             <option value="Suspended">Suspended</option>
             <option value="Dismissed">Dismissed</option>
             <option value="Graduated">Graduated</option>
+            <option value="Attending">Attending</option>
           </select>
           <select
           v-if="camStatus === 'Withdrawn'"
@@ -462,10 +390,10 @@ const isRoleHrdi = computed(
       </div>
       <div
         v-if="isEachModalVisible"
-        class="fixed inset-0  flex items-center justify-center bg-black bg-opacity-50"
+        class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50"
       >
         <div
-          class="bg-white ml-48  rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]"
+          class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]"
         >
           <div class="flex justify-between">
             <h2
@@ -508,7 +436,6 @@ const isRoleHrdi = computed(
             <option value="Invalid Information">Invalid Information</option>
             <option value="">Other</option>
           </select>
-
           <!-- Textarea displayed only when "Other" is selected -->
           <textarea
             v-if="reason === 'Other'"
@@ -534,10 +461,10 @@ const isRoleHrdi = computed(
       </div>
       <div
         v-if="isModalVisible && selected?.length > 0"
-        class="fixed inset-0  flex items-center justify-center bg-black bg-opacity-50"
+        class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50"
       >
         <div
-          class="bg-white ml-48 rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]"
+          class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]"
         >
           <div class="flex justify-between">
             <h2
@@ -577,13 +504,13 @@ const isRoleHrdi = computed(
               University is currently full
             </option>
             <option value="Incomplete Documents">
+              Program is currently Unuvailable
               Program is currently unavailable
             </option>
             <option value="Incomplete Documents">Incomplete Documents</option>
             <option value="Invalid Information">Invalid Information</option>
             <option value="Other">Other</option>
           </select>
-
           <!-- Textarea displayed only when "Other" is selected -->
           <textarea
             v-if="reason === 'Other'"
@@ -607,20 +534,18 @@ const isRoleHrdi = computed(
           </div>
         </div>
       </div>
-
-      <div class="flex justify-end mb-4">
+      <!--<div class="flex justify-end mb-4">
         <select
-          v-model="pagination.search.value"
+          v-model="selectedStatus"
           @change="applyFilter"
-          class="block w-32 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
+          class="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
         >
           <option value="">All</option>
           <option value="waiting">Waiting</option>
           <option value="registered">Registered</option>
           <option value="rejected">Rejected</option>
         </select>
-      </div>
-
+      </div>-->
       <Table
         :Fallback="TableRowSkeleton"
         :headers="{
@@ -650,7 +575,7 @@ const isRoleHrdi = computed(
       >
         <template #actions="{ row }">
           <div
-            v-if="isRoleHrdi && row?.registrationStatus == 'waiting'"
+            v-if="row?.registrationStatus == 'waiting'"
             class="flex gap-2"
           >
             <button @click="showEachModal(row.ernpId)">
@@ -707,11 +632,10 @@ const isRoleHrdi = computed(
               @click="openStudent(row)"
               class="text-[#21618C] text-sm hover:italic hover:underline"
             >
-            Change Campus Status
+              Take Action
             </button>
           </div>
         </template>
-
         <template #headerFirst>
           <div class="px-1">
             <input
@@ -730,68 +654,20 @@ const isRoleHrdi = computed(
         </template>
       </Table>
     </div>
- 
-    <div
-      v-if="showRejectionReasonModal"
-      class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
-    >
-      <div
-        class="bg-white ml-48 rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px] h-[302px]"
-      >
-        <div class="flex justify-between">
-          <h2
-            class="text-left flex font-dm-sans leading-[24px] text-[14px] font-bold text-[#4E585F]"
-          >
-            Reject Reason
-          </h2>
-          <button
-            class="h-[13px] w-[13px] px-4 py-2 rounded"
-            @click="closeRejectionReasonModal"
-          >
-            <svg
-              width="17"
-              height="17"
-              viewBox="0 0 17 17"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M15 2L2.00005 14.9999M2 1.99995L14.9999 14.9999"
-                stroke="#FF4040"
-                stroke-width="3.5"
-                stroke-linecap="round"
-              />
-            </svg>
-          </button>
-        </div>
-
-        <p
-          class="border w-[829px] h-[158px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4 overflow-auto"
-        >
-          {{ currentRow?.rejectionReason }}
-        </p>
-        <div class="flex justify-end">
-          <button
-            class="bg-[#FF4040] h-[40px] w-[82px] text-white px-4 py-2 rounded mr-2"
-            @click="closeRejectionReasonModal"
-          >
-            Close
-          </button>
-        </div>
-      </div>
-    </div>
+   
+   
     <div
       v-if="showStudent"
-      class="fixed inset-0 ml-92 flex items-center justify-center bg-black bg-opacity-50"
+      class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50"
     >
       <div
-        class="bg-white ml-48 rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 "
+        class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px]"
       >
         <div class="flex justify-between">
           <h2
             class="text-left flex font-dm-sans leading-[24px] text-[14px] font-bold text-[#4E585F]"
           >
-            Student Information
+            Student Informations
           </h2>
           <button
             class="h-[13px] w-[13px] px-4 py-2 rounded"
@@ -829,7 +705,6 @@ const isRoleHrdi = computed(
               class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
             />
           </div>
-
           <!-- Full Name -->
           <div class="col-span-1">
             <label
@@ -844,7 +719,6 @@ const isRoleHrdi = computed(
               class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
             />
           </div>
-
           <!-- Email -->
           <div class="col-span-1">
             <label for="email" class="block text-sm font-medium text-gray-700"
@@ -857,7 +731,6 @@ const isRoleHrdi = computed(
               class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
             />
           </div>
-
           <!-- Phone -->
           <div class="col-span-1">
             <label for="phone" class="block text-sm font-medium text-gray-700"
@@ -870,7 +743,6 @@ const isRoleHrdi = computed(
               class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
             />
           </div>
-
           <!-- Gender -->
           <div class="col-span-1">
             <label for="gender" class="block text-sm font-medium text-gray-700"
@@ -883,7 +755,6 @@ const isRoleHrdi = computed(
               class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
             />
           </div>
-
           <!-- Date of Birth -->
           <div class="col-span-1">
             <label
@@ -898,7 +769,6 @@ const isRoleHrdi = computed(
               class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
             />
           </div>
-
           <!-- Address -->
           <div class="col-span-1">
             <label for="address" class="block text-sm font-medium text-gray-700"
@@ -911,7 +781,6 @@ const isRoleHrdi = computed(
               class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
             />
           </div>
-
           <!-- Duration -->
           <div class="col-span-1">
             <label
@@ -926,7 +795,6 @@ const isRoleHrdi = computed(
               class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
             />
           </div>
-
           <!-- Salary -->
           <div class="col-span-1">
             <label for="salary" class="block text-sm font-medium text-gray-700"
@@ -939,7 +807,6 @@ const isRoleHrdi = computed(
               class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
             />
           </div>
-
           <!-- Contract Amount -->
           <div class="col-span-1">
             <label
@@ -954,9 +821,7 @@ const isRoleHrdi = computed(
               class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
             />
           </div>
-
           <!-- University Name -->
-
           <!-- Program Name -->
           <div class="col-span-1">
             <label
@@ -991,7 +856,7 @@ const isRoleHrdi = computed(
               @click="withdrawStudent(currentRow.ernpId)"
               class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-[#ee1919] transition"
             >
-               Change Campus Status
+              Take Actions
             </button>
           </div>
         </form>
@@ -999,16 +864,13 @@ const isRoleHrdi = computed(
     </div>
   </div>
 </template>
-
 <style scoped>
 .container {
   max-width: 1200px;
 }
-
 .bg-gray-200 {
   background-color: #e2e8f0;
 }
-
 .bg-gray-100 {
   background-color: #f7fafc;
 }
@@ -1018,7 +880,6 @@ const isRoleHrdi = computed(
   max-width: 1200px;
 }
 </style>
-
 <style scope>
 .modal {
   transition: opacity 0.25s ease;
@@ -1034,7 +895,6 @@ const isRoleHrdi = computed(
   font-weight: bold;
   color: #4e585f;
 }
-
 .Table-contents {
   font-family: 'DM Sans';
   text-align: start;

@@ -1,6 +1,7 @@
 <script setup>
+import RoleForm from '../form/RoleForm.vue';
 import { useForm } from '@/new_form_builder/useForm';
-import { useRoles } from '../store/rolestore';
+import { useRoles } from '../store/rolesStore';
 import { useRoute } from 'vue-router';
 import { useApiRequest } from '@/composables/useApiRequest';
 import { getRoleById, updateByRoleId } from '../api/rolesApi';
@@ -8,8 +9,9 @@ import { toasted } from '@/utils/utils';
 import NewFormParent from '@/components/components/NewFormParent.vue';
 import { ref } from 'vue';
 import icons from '@/utils/icons';
+import RolesDataProvider from '../components/RolesDataProvider.vue';
 import Button from '@/components/Button.vue';
-import Roleform from '../components/form/Roleform.vue';
+import PrivilegesDataProvider from '@/features/privilages/components/PrivilegesDataProvider.vue';
 
 const { submit } = useForm('roleForm');
 const roleStore = useRoles();
@@ -20,7 +22,7 @@ const roleUuid = route.params.roleUuid;
 const role = ref(roleStore.roles.find((el) => el.roleUuid == roleUuid) || {});
 const req = useApiRequest();
 const updateReq = useApiRequest();
-console.log(role);
+
 if (!Object.keys(role.value).length) {
   req.send(
     () => getRoleById(roleUuid),
@@ -34,6 +36,7 @@ if (!Object.keys(role.value).length) {
 }
 
 function update({ values }) {
+  console.log(values);
   updateReq.send(
     () => updateByRoleId(roleUuid, values),
     (res) => {
@@ -46,9 +49,14 @@ function update({ values }) {
 }
 </script>
 <template>
-  <NewFormParent size="xl" title="Update Roles"
-    >{{ console.log(role) }}
-    <Roleform :privileges="role?.privileges" :roles="role" />
+  <NewFormParent size="xl" title="Update Roles">
+    <PrivilegesDataProvider :pre-page="500"  v-slot="{ privileges }">
+      <RoleForm
+        :selectedPrivilege="role?.privileges"
+        :privileges="privileges"
+        :roles="role"
+      />
+    </PrivilegesDataProvider>
 
     <template #bottom>
       <div class="flex justify-end p-2 px-4">

@@ -328,14 +328,14 @@ const allSelected = computed(() => {
 });
 
 const isRoleHrdi = computed(
-  () => auth.auth?.user?.privileges?.[0] == 'ROLE_University'
+  () => auth.auth?.user
 );
 </script>
 
 
 <template>
   <div class="bg-[#FBFBFB] p-5 ">
-    <div v-if="isRoleHrdi" class="flex justify-between items-center">
+    <div class="flex justify-between items-center">
       
       <div
         class="p-4 text-[#4E585F] font-dm-sans text-[16px] font-bold leading-[24px] text-left"
@@ -408,14 +408,14 @@ const isRoleHrdi = computed(
         </button>
       </div>
     </div>
-    <div v-if="isRoleHrdi">
+    <div>
       <div class="flex justify-end mb-4">
         <select
           v-model="academicYear"
           @change="applyFilter"
           class="block w-32 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
         >
-        <option value="">All</option>
+        <option value="0">All</option>
           <option value="1">1 Year</option>
           <option value="2">2 Year</option>
           <option value="3">3 Year</option>
@@ -455,7 +455,7 @@ const isRoleHrdi = computed(
       >
         <template #actions="{ row }">
           <div
-            v-if="isRoleHrdi && row?.registrationStatus == 'waiting'"
+            v-if="row?.registrationStatus == 'waiting'"
             class="flex gap-2"
           >
             <button @click="showEachModal(row.ernpId)">
@@ -502,7 +502,7 @@ const isRoleHrdi = computed(
             </button>
           </div>
           <div
-            v-else-if="isRoleHrdi && row?.registrationStatus == 'transfered' "
+            v-else-if="row?.registrationStatus == 'transfered' "
             class="flex gap-2"
           >
             <button @click="showEachModal(row.ernpId)">

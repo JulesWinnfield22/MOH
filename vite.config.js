@@ -1,6 +1,6 @@
-import { fileURLToPath, URL } from 'node:url'
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { fileURLToPath, URL } from 'node:url';
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -10,15 +10,25 @@ export default defineConfig({
     alias: {
       alias: {
         'sockjs-client': 'sockjs-client/dist/sockjs.min.js',
-          'stompjs': 'stompjs/lib/stomp.js'
+        stompjs: 'stompjs/lib/stomp.js',
       },
       '@': fileURLToPath(new URL('./src', import.meta.url)),
       '@com': fileURLToPath(new URL('./src/components', import.meta.url)),
-      '@agencies': fileURLToPath(new URL('./src/features/agencies', import.meta.url)),
-      '@users': fileURLToPath(new URL('./src/features/user_management', import.meta.url)),
-      '@roles': fileURLToPath(new URL('./src/features/role_management', import.meta.url)),
-      '@privilege': fileURLToPath(new URL('./src/features/privileges', import.meta.url)),
-      '@directives': fileURLToPath(new URL('./src/directives', import.meta.url)),
+      '@agencies': fileURLToPath(
+        new URL('./src/features/agencies', import.meta.url)
+      ),
+      '@users': fileURLToPath(
+        new URL('./src/features/user_management', import.meta.url)
+      ),
+      '@roles': fileURLToPath(
+        new URL('./src/features/role_management', import.meta.url)
+      ),
+      '@privilege': fileURLToPath(
+        new URL('./src/features/privileges', import.meta.url)
+      ),
+      '@directives': fileURLToPath(
+        new URL('./src/directives', import.meta.url)
+      ),
       '@auth': fileURLToPath(new URL('./src/features/auth', import.meta.url)),
       '@service': fileURLToPath(new URL('./src/service', import.meta.url)),
       '@assets': fileURLToPath(new URL('./src/assets', import.meta.url)),
@@ -28,7 +38,9 @@ export default defineConfig({
       '@store': fileURLToPath(new URL('./src/stores', import.meta.url)),
       '@modals': fileURLToPath(new URL('./src/modals', import.meta.url)),
       '@toast': fileURLToPath(new URL('./src/toast', import.meta.url)),
-      '@composable': fileURLToPath(new URL('./src/composables', import.meta.url))
-    }
-  }
-})
+      '@composable': fileURLToPath(
+        new URL('./src/composables', import.meta.url)
+      ),
+    },
+  },
+});

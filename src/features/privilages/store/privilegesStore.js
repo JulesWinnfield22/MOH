@@ -1,7 +1,7 @@
-import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { defineStore } from "pinia";
+import { ref } from "vue";
 
-export const usePrivileges = defineStore('privilegesssStore', () => {
+export const usePrivileges = defineStore("privilegesStore", () => {
   const privileges = ref([]);
 
   function set(data) {

@@ -2,7 +2,7 @@
 import { usePagination } from '@/composables/usePagination';
 import { watch } from 'vue';
 import { getAllPermissions } from '../api/PrivilegesApi';
-import { usePrivileges } from '../store/PrivilegeStore';
+import { usePrivileges } from '../store/privilegesStore';
 
 const props = defineProps({
   prePage: {
@@ -15,7 +15,6 @@ const privilegesStore = usePrivileges();
 const pagination = usePagination({
   perPage: props.prePage,
   store: privilegesStore,
-  auto: false,
   cb: getAllPermissions,
 });
 
