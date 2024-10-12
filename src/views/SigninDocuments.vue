@@ -33,57 +33,51 @@ watch(isSingle, () => {
 function submit(values) {
   if (req.pending.value) return;
 
-  openModal(
-    'SpecialistAggrementForm',
-    {
-      data: values,
-      student: student.student,
-      contract: student.contract,
-      maritalStatus: values?.martialStatus,
-    },
-    (res) => {
-      if (!res) return;
-      const agent_file = values.married != "Single"
-        ? { agent_file: values['agent_file'] }
-        : {};
+  const agent_file = values.married != "Single"
+    ? { agent_file: values['agent_file'] }
+    : {};
 
-      const fd = getFormData({
-        identity_file: values.identity_file,
-        marriage_file: values.marriage_file,
-        spouseIdentity_file:values.spouseIdentity_file,
-        ...agent_file,
-      });
+  const fd = getFormData({
+    identity_file: values.identity_file,
+    marriage_file: values.marriage_file,
+    spouseIdentity_file: values.spouseIdentity_file,
+    ...agent_file,
+  });
 
-      delete values.identity_file,
-        delete values.marriage_file,
-        delete values.agent_file,
-        delete values.spouseIdentity_file,
-        req.send(
-          () => createContract(values, fd),
-          (res) => {
-            console.log(res);
-            toasted(res.success, 'Created', res.error);
-          }
-        );
-    }
-  );
+  delete values.identity_file,
+    delete values.marriage_file,
+    delete values.agent_file,
+    delete values.spouseIdentity_file,
+    req.send(
+      () => createContract(values, fd),
+      (res) => {
+        console.log(res);
+        toasted(res.success, 'Created', res.error);
+
+        if (res.success) {
+          openModal(
+            'SpecialistAggrementForm',
+            {
+              data: values,
+              student: student.student,
+              contract: student.contract,
+              maritalStatus: values?.martialStatus,
+            })
+        }
+      }
+    );
 }
 </script>
 <template>
   <div class="flex flex-col p-5 gap-2">
     <StudentDataProvider v-slot="{ contract, pending, isRegistered }">
-      <div
-        class="p-2 border-l-4 border-red-500 bg-orange-200"
-        v-if="!pending && !isRegistered"
-      >
-        you need to be registered
+      <div class="p-2 border-l-4 border-red-500 bg-orange-200" v-if="!pending && !isRegistered">
+        you need to be registered.
       </div>
-      <ResidentForm
-        v-if="!contract"
-        :disabled="!isRegistered"
-        :filter="filter"
-        :on-submit="submit"
-      />
+      <ResidentForm v-if="!contract" :disabled="!isRegistered" :filter="filter" :on-submit="submit" />
+      <p v-else-if="contract.contractStatus == 'Inprogress'" class="capitalize font-bold text-lg">
+        You Have already submitted the documents required. go to <RouterLink to="/signNow" class="text-primary italic" > Upload Contract </RouterLink>
+      </p>
       <p v-else class="capitalize font-bold text-lg">
         You Have already submitted the documents required.
       </p>
@@ -93,6 +87,7 @@ function submit(values) {
 
 <style scoped>
 .bg-blue-200 {
-  background-color: #bfdbfe; /* Tailwind CSS color class for bg-blue-200 */
+  background-color: #bfdbfe;
+  /* Tailwind CSS color class for bg-blue-200 */
 }
 </style>

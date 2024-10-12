@@ -1,8 +1,8 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { usePaginationTemp } from '@/composables/usePaginaionTemp';
-import { getUniStudents } from '@/features/students/api/studentApi.js';
+import { getStudentsByCampusStatus, getStudentsByCampusStatusSearch, getUniStudents } from '@/features/students/api/studentApi.js';
 import { useAuth } from '@/store/auth.js';
 import Table from '@com/Table.vue';
 import { useStudents } from '../store/studentsStore';
@@ -12,6 +12,7 @@ import {
   rejectStudent,
   withdrawStud,
 } from '@/features/students/api/studentApi.js';
+import { usePagination } from '@/composables/usePagination';
 import { useApiRequest } from '@/composables/useApiRequest';
 import { toasted } from '@/utils/utils';
 const sudents = useStudents();
@@ -54,9 +55,30 @@ function handleButtonClick() {
 }
 // Computed property to filter students based on the selected status
 const filteredStudents = computed(() => {
-  return (sudents.students || []).filter(
+  const studentsList = sudents.students || [];
+  
+  // Filter by registration status and status filter
+  let filtered = studentsList.filter(
     (student) => student.registrationStatus === 'registered'
   );
+
+  // Apply the selected status filter if any
+  if (selectedStatus.value && selectedStatus.value !== 'all') {
+    filtered = filtered.filter(
+      (student) => student.campusStatus === selectedStatus.value
+    );
+  }
+
+  // Apply the search filter
+  if (pagination.search.value) {
+    const searchTerm = pagination.search.value.toLowerCase();
+    filtered = filtered.filter(
+      (student) => 
+        student.fullName.toLowerCase().includes(searchTerm)
+    );
+  }
+
+  return filtered;
 });
 const filteredstatStudents = computed(() => {
   if (!selectedStatus.value) return sudents.students || [];
@@ -64,11 +86,22 @@ const filteredstatStudents = computed(() => {
     (student) => student.campusStatus === selectedStatus.value
   );
 });
-const pagination = usePaginationTemp({
+const pagination = usePagination({
   store: sudents,
   cb: (data, config) =>
-    getUniStudents(uniId || auth.auth?.user?.universityProviderUuid),
+  getStudentsByCampusStatus(uniId || auth.auth?.user?.universityProviderUuid, data),
 });
+const status = ref('all');
+const paginationed = usePagination({
+  store: sudents,
+  cb: (data, config) => 
+  getStudentsByCampusStatus(uniId || auth.auth?.user?.universityProviderUuid,{ status: status.value,
+    ...data, }),
+});
+watch(status, () => {
+  paginationed.send()
+})
+
 const showRejectionReasonModal = ref(false);
 const showStudent = ref(false);
 function applyFilter() {
@@ -265,20 +298,23 @@ const isRoleHrdi = computed(
         Students
       </div>
       <input
-    class="rounded-lg border w-[50%]  p-2 focus:outline-none focus:ring-2 focus:ring-[#21618C] placeholder-gray-500"
-    v-model="pagination.search.value"
-    placeholder="Search Students"
-  />
-      <div class="p-4 gap-2.5 flex">
-        <p
-          class="p-4 text-[#4E585F] font-dm-sans text-[14px] font-normal leading-[24px] text-left"
-        >
-          Selected {{ selected?.length || 0 }} of
-          {{ (sudents.students || []).length }} Students
-        </p>
-
-       
-      </div>
+  class="rounded-lg border w-[50%] p-2 focus:outline-none focus:ring-2 focus:ring-[#21618C] placeholder-gray-500"
+  v-model="pagination.search.value"
+  placeholder="Search Students"
+/>
+<div class="flex justify-end mb-4">
+  <select
+    v-model="status"
+    @change="applyFilter"
+    class="block w-32 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
+  >
+    <option value="all">All</option>
+    <option value="Dismissed">Dismissed</option>
+    <option value="Suspended">Suspended</option>
+    <option value="Withdrawn">Withdrawn</option>
+    <option value="Attending">Attending</option>
+  </select>
+</div>
     </div>
       <div
         v-if="isWithdrawStudent"
@@ -534,18 +570,7 @@ const isRoleHrdi = computed(
           </div>
         </div>
       </div>
-      <!--<div class="flex justify-end mb-4">
-        <select
-          v-model="selectedStatus"
-          @change="applyFilter"
-          class="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
-        >
-          <option value="">All</option>
-          <option value="waiting">Waiting</option>
-          <option value="registered">Registered</option>
-          <option value="rejected">Rejected</option>
-        </select>
-      </div>-->
+
       <Table
         :Fallback="TableRowSkeleton"
         :headers="{
@@ -658,10 +683,10 @@ const isRoleHrdi = computed(
    
     <div
       v-if="showStudent"
-      class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50"
+      class="fixed inset-0  flex items-center justify-center bg-black bg-opacity-50"
     >
       <div
-        class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px]"
+        class="bg-white ml-40 rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px]"
       >
         <div class="flex justify-between">
           <h2

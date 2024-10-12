@@ -9,6 +9,7 @@ import AllStudent from './features/allStudent/pages/AllStudent.vue';
 import StudentIndex from './features/allStudent/pages/StudentIndex.vue';
 import HRDI from './views/HRDI.vue';
 import SigninDocuments from './views/SigninDocuments.vue';
+import signNow from './views/signNow.vue'
 import Requirements from './views/Requirements.vue';
 import Requirement from './views/Requirement.vue';
 import Sponsorship from './views/Sponsorship.vue';
@@ -25,7 +26,7 @@ import Users from './features/users/pages/Users.vue';
 import UsersIndex from './features/users/pages/UsersIndex.vue';
 import AddUsers from './features/users/pages/AddUsers.vue';
 import AddStudents from './views/AddStudents.vue';
-import signNow from './views/signNow.vue';
+
 import Profile from './views/Profile.vue';
 import Verification from './features/verification/pages/Verification.vue';
 import VerificationReset from './features/verification/pages/VerificationReset.vue';
@@ -231,7 +232,7 @@ const routes = [
         },
       },
       {
-        path: '/SigninDocuments',
+        path: '/signNow',
         name: 'signNow',
         component: signNow,
         meta: {
@@ -305,7 +306,7 @@ const routes = [
         component: SigninDocuments,
         meta: {
           requiresAuth: true,
-          privileges: ['Student'],
+          privileges: ['create_contract'],
           status: 'registered',
         },
       },

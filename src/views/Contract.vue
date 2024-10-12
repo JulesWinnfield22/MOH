@@ -2,7 +2,7 @@
 import { ref, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { usePaginationTemp } from '@/composables/usePaginaionTemp';
-import { findAllByContrac } from '@/features/students/api/contractApi';
+import { findAllByContrac, findAllByContract } from '@/features/students/api/contractApi';
 import { useAuth } from '@/store/auth.js';
 import Table from '@com/Table.vue';
 import { useContracts } from '@/features/students/store/contractStore';
@@ -50,7 +50,7 @@ const request = useApiRequest();
 
 let pagination = usePagination({
   store: contract,
-  cb: (data, config) => findAllByContrac(selectedTable.value),
+  cb: (data, config) => findAllByContract(selectedTable.value),
 });
 
 watch(selectedTable, () => {

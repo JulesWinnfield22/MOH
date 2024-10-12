@@ -13,6 +13,25 @@ export function getStudentsByUniId(id, query = {}) {
 	const qr = getQueryFormObject(query)
 	return api.addAuthenticationHeader().get(`${path}/findMYUniversityStudents/${id}${qr}`)
 }
+export function getStudentsByRegistrationStatus(id, query = {}) {
+	const qr = getQueryFormObject(query)
+	return api.addAuthenticationHeader().get(`${path}/findMYUniversityStudentsByRegistrationStatus/${id}${qr}`)
+}
+export function getStudentsByCampusStatusSearch(id, query = {}, status = 'all') {
+	const qr = getQueryFormObject(query);
+	const statusParam = `status=${status}`; // Create status parameter without trailing &
+	const queryString = qr ? `${statusParam}&${qr}` : statusParam; // Append qr if exists
+	return api.addAuthenticationHeader().get(`${path}/findMYUniversityStudentsByCampusStatus/${id}?${queryString}`);
+}
+export function getStudentsByCampusStatus(id, query = {}) {
+	const qr = getQueryFormObject(query)
+	return api.addAuthenticationHeader().get(`${path}/findMYUniversityStudentsByCampusStatus/${id}${qr}`)
+}
+
+export function getStudentsByStatusUniId(id, query = {}) {
+	const qr = getQueryFormObject(query)
+	return api.addAuthenticationHeader().get(`${path}/findMYUniversityStudentsByStatus/${id}${qr}`)
+}
 
 export function getStudentbyId(uuid) {
 	return api.addAuthenticationHeader().get(`${path}/${uuid}`)

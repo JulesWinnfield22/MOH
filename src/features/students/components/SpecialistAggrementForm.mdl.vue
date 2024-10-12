@@ -17,8 +17,7 @@ console.log(props.data);
 
 // Method to navigate and close modal
 const goToNext = () => {
-	// @click="closeModal(true)"
-	closeModal(); // Close the modal
+	closeModal(true); // Close the modal
 	router.push('/signNow'); // Navigate to the next page
 };
 </script>

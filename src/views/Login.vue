@@ -32,8 +32,10 @@ async function loginUser() {
       });
       localStorage.setItem('userDetail', JSON.stringify(res.data));
 
-      if (auth.auth.user?.userType != 'Student') {
+      if (Array.isArray(auth.auth.user?.privileges) && auth.auth.user?.privileges.includes('ROLE_read_batches')) {
         router.push('/');
+      } else if(Array.isArray(auth.auth.user?.privileges) && auth.auth.user?.privileges.includes('ROLE_update_campus_status')) {
+        router.push('/uniStudent');
       } else {
         router.push('/Status');
       }
@@ -163,7 +165,7 @@ async function loginUser() {
               <span class="ml-2 text-gray-700 font-dm-sans"></span>
             </label>
             <a
-              class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 font-dm-sans"
+              class="inline-block align-baseline font-bold text-sm text-[#21618C] hover:text-[#21618C] font-dm-sans"
               href="/verificationReset"
             >
               Forgot Password?
@@ -171,7 +173,7 @@ async function loginUser() {
           </div>
           <div class="flex items-center justify-between font-dm-sans">
             <button
-              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 rounded focus:outline-none focus:shadow-outline w-full"
+              class="bg-[#21618C] hover:bg-[#21639f] text-white font-bold py-2 px-8 rounded focus:outline-none focus:shadow-outline w-full"
               type="submit"
             >
               Log in
@@ -185,7 +187,7 @@ async function loginUser() {
               href="/verification"
               class="whitespace-nowrap mx-2 text-blue-500 hover:text-blue-700 text-sm font-bold"
             >
-              Verify now
+              Create Password
             </a>
             <span class="whitespace-nowrap mx-1 text-gray-700"
               >now to join our community.</span

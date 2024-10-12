@@ -3,7 +3,7 @@ import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { usePaginationTemp } from '@/composables/usePaginaionTemp';
 import { useStudents } from '@/features/students/store/studentsStore';
-import { findAllByContractStatusApproved } from '@/features/students/api/contractApi';
+import { findByContractStatusApproved } from '@/features/students/api/contractApi';
 import { useAuth } from '@/store/auth.js';
 import Table from '@com/Table.vue';
 import { useContracts } from '@/features/students/store/contractStore';
@@ -33,7 +33,7 @@ const paginatione = usePagination({
   cb: (data, config) => getAllStudent(uniId, data),
 });
 const paginationed = usePagination({
-  cb: (data, config) => findAllByContractStatusApproved(uniId, data),
+  cb: (data, config) => findByContractStatusApproved(uniId, data),
 });
 
 function openStudent(row) {
@@ -52,7 +52,7 @@ const request = useApiRequest();
 
 const pagination = usePagination({
   store: contract,
-  cb: (data, config) => findAllByContractStatusApproved(),
+  cb: (data, config) => findByContractStatusApproved(),
 });
 
 function confirmSelection() {

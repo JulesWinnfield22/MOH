@@ -110,7 +110,7 @@ watch(
           />
           Married
         </div>
-        <!-- <div
+        <div
           :class="[married == 'Divorced' && 'bg-primary text-white']"
           class="rounded px-2 flex items-center gap-2 flex-1 h-10 border"
         >
@@ -135,7 +135,7 @@ watch(
             type="checkbox"
           />
           Widow(er)
-        </div> -->
+        </div>
       </div>
     </div>
     <Form v-slot="{ submit }" id="contract" class="grid grid-cols-3 gap-4">
@@ -208,10 +208,10 @@ watch(
         <InputFile
           v-if="_filter.marriage_file"
           :value="martialCertName"
-          :label="isSingle ? 'certificate of non-marriage' : 'Marriage Certificate'"
+          :label="isSingle ? 'UnMarriage File' : 'Marriage'"
           name="marriage_file"
           :attributes="{
-            placeholder: isSingle ? 'Certificate of Non-Marriage' : 'Marriage',
+            placeholder: isSingle ? 'UnMarriage File' : 'Marriage',
             ...dis,
           }"
           validation="required"
@@ -260,11 +260,11 @@ watch(
       </div>
       <Button
         :pending="pending"
-        @click="closeModal(true)"
+        @click.prevent="submit(submitForm)"
         class="col-span-3"
         type="primary"
       >
-        Next
+        Submit
       </Button>
     </Form>
   </div>

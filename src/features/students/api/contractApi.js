@@ -20,11 +20,21 @@ export function findAllByContractStatusApproved() {
     .addAuthenticationHeader()
     .get(`${path}/findAllByContractStatus?contractStatus=Approved`);
 }
+export function findByContractStatusApproved() {
+  return api
+    .addAuthenticationHeader()
+    .get(`${path}/findByContractStatus?contractStatus=Approved`);
+}
 
 export function findAllByContrac(status) {
   return api
     .addAuthenticationHeader()
     .get(`${path}/findAllByContractStatus?contractStatus=${status}`);
+}
+export function findAllByContract(status) {
+  return api
+    .addAuthenticationHeader()
+    .get(`${path}/findByContractStatus?contractStatus=${status}`);
 }
 export async function rejectContract(id, status, rejectionReason) {
   try {

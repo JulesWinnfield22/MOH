@@ -64,7 +64,7 @@ function confirmeachSelection() {
 
   console.log(selectedRow.value);
   request.send(
-    () => updateStudent(selectedRow.value.ernpId, selectedRow.value), // Pass the row inside an array to maintain the structure
+    () => updateStudent(selectedRow.value.userUuid, selectedRow.value), // Pass the row inside an array to maintain the structure
     (res) => {
       if (res.success) {
         // Update only the status of this specific row

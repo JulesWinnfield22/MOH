@@ -3,12 +3,10 @@ import Button from '@/components/Button.vue';
 import { computed, ref, shallowRef } from 'vue';
 import VerifyEmail from '@/features/verification/components/VerifyEmail.vue';
 import RestPassword from '../components/RestPassword.vue';
-import VerificationCode from '@/features/verification/components/VerificationCode.vue';
 import { useApiRequest } from '@/composables/useApiRequest';
 import {
   resetPasswordApi,
   sendEmailVerification,
-  sendVerificationCode,
 } from '../api/VerifyEmailApi';
 import { toasted } from '@/utils/utils';
 import { useRouter } from 'vue-router';
@@ -22,8 +20,8 @@ function verifyEmail(values) {
     (res) => {
       if (res.success) {
         email.value = values.email;
-        setActive('verify');
-        toasted(res.success, 'Confirmation code sent to your email', res.error);
+        setActive('reset');
+        toasted(res.success, 'Create Password Now', res.error);
       } else {
         toasted(false, '', res.error);
       }
@@ -31,23 +29,6 @@ function verifyEmail(values) {
   );
 }
 
-function verifyCode(values) {
-  verifyEmailRequest.send(
-    () => sendVerificationCode({ email: email.value, code: values.code }),
-    (res) => {
-      if (res.success) {
-        setActive('reset');
-        toasted(res.success, 'Successfully submit', res.error);
-      } else {
-        toasted(
-          false,
-          '',
-          'You have entered wrong varification code please try again'
-        );
-      }
-    }
-  );
-}
 
 function resetPassword(values) {
   verifyEmailRequest.send(
@@ -65,7 +46,7 @@ function resetPassword(values) {
 
 const components = shallowRef([
   { name: 'email', component: VerifyEmail },
-  { name: 'verify', component: VerificationCode },
+
   { name: 'reset', component: RestPassword },
 ]);
 
@@ -85,7 +66,7 @@ function goBack() {
   if (active.value == 'verify') {
     active.value = 'email';
   } else if (active.value == 'reset') {
-    active.value = 'verify';
+    active.value = 'email';
   }
 }
 </script>
@@ -136,7 +117,7 @@ function goBack() {
         <component
           :pending="verifyEmailRequest.pending.value"
           :verifyEmail="verifyEmail"
-          :verifyCode="verifyCode"
+         
           :resetPassword="resetPassword"
           :is="activeCom"
         />

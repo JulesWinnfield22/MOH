@@ -1,98 +1,114 @@
 <script setup>
-import { useApiRequest } from '@/composables/useApiRequest';
-import { createContract } from '@/features/resident/components/form/api/contractApi';
-import ResidentForm from '@/features/resident/components/form/ResidentForm.vue';
-import { getFormData, toasted } from '@/utils/utils';
+import { Form, Select, Input, InputFile } from '@/components/new_form_elements';
+import Button from '@/components/Button.vue';
 import { computed, ref, watch } from 'vue';
-
+import { useApiRequest } from '@/composables/useApiRequest';
+import { saveSignedContract } from '@/features/resident/components/form/api/contractApi';
 import StudentDataProvider from '@/features/students/components/StudentDataProvider.vue';
-import { useAuth } from '@/store/auth';
+import { getFormData, toasted } from '@/utils/utils';
 import { openModal } from '@/modals';
+import { useAuth } from '@/store/auth';
 import { useStudent } from '@/features/students/store/studentStore';
+import { useRouter } from 'vue-router';
 
 const auth = useAuth();
 const student = useStudent();
-
-const married = ref('Single');
 const req = useApiRequest();
+const router = useRouter()
 
-const isSingle = computed(() => {
-  return married.value != 'Married';
+const married = ref('Single'); // Default marital status
+const _filter = ref({
+  identity_file: true,
 });
 
-const filter = ref({
-  agent_file: !isSingle.value,
+// Props
+const props = defineProps({
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
+  martialCertName: Blob,
+  identityCertName: Blob,
+  filter: {
+    type: Object,
+    default: {},
+  },
+  contract: Object,
+  pending: {
+    type: Boolean,
+    default: false,
+  },
+  onSubmit: {
+    type: Function,
+  },
 });
 
-watch(isSingle, () => {
-  filter.value = {
+// Computed properties
+const isSingle = computed(() => married.value !== 'Married');
+
+// Watchers
+watch(married, () => {
+  _filter.value = {
+    ..._filter.value,
     agent_file: !isSingle.value,
   };
-});
+}, { immediate: true });
 
-function submit(values) {
+// Handle submission
+async function submitForm(id, values) {
   if (req.pending.value) return;
 
-  openModal(
-    'SpecialistAggrementForm',
-    {
-      data: values,
-      student: student.student,
-      contract: student.contract,
-      maritalStatus: values?.martialStatus,
-    },
-    (res) => {
-      if (!res) return;
-      const agent_file = values.married != "Single"
-        ? { agent_file: values['agent_file'] }
-        : {};
+  const fd = new FormData();
+  fd.append('signed_contract', values.signed_contract_file); // Assuming this is a file input
 
-      const fd = getFormData({
-        identity_file: values.identity_file,
-        marriage_file: values.marriage_file,
-        spouseIdentity_file:values.spouseIdentity_file,
-        ...agent_file,
-      });
-
-      delete values.identity_file,
-        delete values.marriage_file,
-        delete values.agent_file,
-        delete values.spouseIdentity_file,
-        req.send(
-          () => createContract(values, fd),
-          (res) => {
-            console.log(res);
-            toasted(res.success, 'Created', res.error);
-          }
-        );
+  // Use the student ID from the student object
+  req.send(() => saveSignedContract(id, fd), res => {
+    if(res.success) {
+      router.replace('/SigninDocuments')
     }
-  );
+    toasted(res.success, 'Created', res.error);
+  });
+
 }
+
+// Handle disabled state
+const dis = ref(props.disabled ? { disabled: true } : {});
+watch(() => props.disabled, () => {
+  dis.value = props.disabled ? { disabled: true } : {};
+});
 </script>
+
 <template>
   <div class="flex flex-col p-5 gap-2">
     <StudentDataProvider v-slot="{ contract, pending, isRegistered }">
-      <div
-        class="p-2 border-l-4 border-red-500 bg-orange-200"
-        v-if="!pending && !isRegistered"
-      >
-        you need to be registered
+      {{ console.log(contract) }}
+      <div class="p-2 border-l-4 border-red-500 bg-orange-200" v-if="!pending && !isRegistered">
+        You need to be registered
       </div>
-      <ResidentForm
-        v-if="!contract"
-        :disabled="!isRegistered"
-        :filter="filter"
-        :on-submit="submit"
-      />
-      <p v-else class="capitalize font-bold text-lg">
-        You Have already submitted the documents required.
-      </p>
+      <Form v-slot="{ submit }" id="contract" class="grid grid-cols-3 gap-4">
+        <div class="col-span-2 border-t py-2 grid grid-cols-4 gap-4">
+          <InputFile v-if="_filter.identity_file" label="Signed Contract File" :value="identityCertName"
+            name="signed_contract_file" :attributes="{
+              placeholder: 'Signed Contract File',
+              ...dis,
+            }" validation="required" />
+          <InputFile v-if="_filter.agent_file" label="Agent File" name="agent_file" :attributes="{
+            placeholder: 'Agent File',
+            ...dis,
+          }" validation="required" />
+        </div>
+        <Button :pending="req.pending.value" @click.prevent="submit(({ values }) => submitForm(contract.id, values))"
+          class="col-span-3" type="primary">
+          Submit
+        </Button>
+      </Form>
     </StudentDataProvider>
   </div>
 </template>
 
 <style scoped>
 .bg-blue-200 {
-  background-color: #bfdbfe; /* Tailwind CSS color class for bg-blue-200 */
+  background-color: #bfdbfe;
+  /* Tailwind CSS color class for bg-blue-200 */
 }
 </style>

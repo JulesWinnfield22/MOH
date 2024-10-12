@@ -3,7 +3,7 @@ import { ref, computed, watch } from 'vue';
 
 import { useRoute } from 'vue-router';
 import { usePaginationTemp } from '@/composables/usePaginaionTemp';
-import { getStudentsByUniId, getUniStudents } from '@/features/students/api/studentApi.js';
+import { getStudentsByRegistrationStatus, getStudentsByStatusUniId, getUniStudents } from '@/features/students/api/studentApi.js';
 import { useAuth } from '@/store/auth.js';
 import Table from '@com/Table.vue';
 import { useStudents } from '../store/studentsStore';
@@ -88,10 +88,19 @@ const filteredStudents = computed(() => {
   );
 });
 const sent = ref([])
-
+const status = ref(null);
+const paginationed = usePagination({
+  store: sudents,
+  cb: (data, config) => 
+  getStudentsByRegistrationStatus(uniId || auth.auth?.user?.universityProviderUuid,{ status: status.value,
+    ...data, }),
+});
+watch(status, () => {
+  paginationed.send()
+})
 const pagination = usePagination({
   store: sudents,
-  cb: (data, config) => getStudentsByUniId(uniId || auth.auth?.user?.universityProviderUuid, data),
+  cb: (data, config) => getStudentsByRegistrationStatus(uniId || auth.auth?.user?.universityProviderUuid, data),
 });
 
 const showRejectionReasonModal = ref(false);
@@ -316,8 +325,32 @@ const allSelected = computed(() => {
 });
 
 const isRoleHrdi = computed(
-  () => auth.auth?.user?.privileges?.[0] == 'ROLE_University'
+  () => auth.auth?.user
 );
+const applyFilters = () => {
+  const baseUrl = 'http://192.168.100.57:8990/api/osrcs/student/findMYUniversityStudentsByRegistrationStatus/a1159f90-3000-409e-8dfc-2a95c778d6c2';
+  
+  let url = baseUrl;
+
+  if (status.value) {
+    url += `?status=${status.value}`;
+  }
+  
+  url += `&page=1&limit=25`;
+
+  fetchData(url);
+};
+
+const fetchData = (url) => {
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      console.log(data); // Handle the fetched data
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
+};
 </script>
 
 <template>
@@ -330,17 +363,17 @@ const isRoleHrdi = computed(
       {{ sudents.students?.[0]?.universityName}}
     </p>
     <div class="flex justify-end mb-4">
-        <select
-          v-model="pagination.search.value"
-          @change="applyFilter"
-          class="block w-32 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
-        >
-          <option value="">All</option>
-          <option value="waiting">Waiting</option>
-          <option value="registered">Registered</option>
-          <option value="rejected">Rejected</option>
-          <option value="transfered">Transfered</option>
-        </select>
+      <select
+    v-model="status"
+    @change="applyFilters"
+    class="block w-32 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
+  >
+    <option value=null>All</option>
+    <option value="waiting">Waiting</option>
+    <option value="registered">Registered</option>
+    <option value="rejected">Rejected</option>
+    <option value="transfered">Transfered</option>
+  </select>
       </div>
    
 </div>
@@ -674,6 +707,7 @@ const isRoleHrdi = computed(
 
       <Table
         :Fallback="TableRowSkeleton"
+         :firstCol="!!isRoleHrdi"
         :headers="{
           head: [
             'Ernp ID',

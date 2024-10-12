@@ -3,7 +3,7 @@ import { ref, computed, watch } from 'vue';
 
 import { useRoute } from 'vue-router';
 import { usePaginationTemp } from '@/composables/usePaginaionTemp';
-import { getStudentsByUniId, getUniStudents } from '@/features/students/api/studentApi.js';
+import { getStudentsByUniId, getUniStudents, getStudentsByStatusUniId } from '@/features/students/api/studentApi.js';
 import { useAuth } from '@/store/auth.js';
 import Table from '@com/Table.vue';
 import { useStudents } from '../store/studentsStore';
@@ -88,6 +88,16 @@ const filteredStudents = computed(() => {
   );
 });
 const sent = ref([])
+const status = ref('waiting');
+const paginationed = usePagination({
+  store: sudents,
+  cb: (data, config) => 
+  getStudentsByStatusUniId(uniId || auth.auth?.user?.universityProviderUuid,{ status: status.value,
+    ...data, }),
+});
+watch(status, () => {
+  paginationed.send()
+})
 
 const pagination = usePagination({
   store: sudents,
@@ -172,7 +182,7 @@ function changeEachSelection() {
 
   console.log(selectedRow.value);
   request.send(
-    () => updateStudent(selectedRow.value.ernpId, selectedRow.value), // Pass the row inside an array to maintain the structure
+    () => updateStudent(selectedRow.value.userUuid, selectedRow.value), // Pass the row inside an array to maintain the structure
     (res) => {
       if (res.success) {
         // Update only the status of this specific row
@@ -337,7 +347,7 @@ const isRoleHrdi = computed(
     </p>
     <div class="flex justify-end mb-4">
         <select
-          v-model="pagination.search.value"
+          v-model="status"
           @change="applyFilter"
           class="block w-32 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
         >
