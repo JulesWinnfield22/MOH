@@ -1,6 +1,7 @@
 <script setup>
   import { ref } from 'vue';
   import Input from './Input.vue'
+import icons from '@/utils/icons';
 
   const props = defineProps({
     attributes: {
@@ -23,6 +24,7 @@
   }" >
     <template #left>
       <div class="h-full w-12 grid place-items-center border-r">
+        <i v-html="icons.eye"/>
         <!--<Icon
           @click="toggleType"
           :name="text ? 'solar:eye-linear' : 'solar:eye-closed-outline'"

@@ -11,7 +11,7 @@ export function getUniStudents(id) {
 
 export function getStudentsByUniId(id, query = {}) {
 	const qr = getQueryFormObject(query)
-	return api.addAuthenticationHeader().get(`${path}/findMYUniversityStudents/${id}${qr}`)
+	return api.addAuthenticationHeader().get(`${path}/findMYUniversityStudentsByAcademicYear/${id}${qr}`)
 }
 export function getStudentsByRegistrationStatus(id, query = {}) {
 	const qr = getQueryFormObject(query)
@@ -64,6 +64,10 @@ export function withdrawStud(camStatus, justificationStatus, data) {
 }
 export function passStudent(data) {
 	return api.addAuthenticationHeader().put(`${path}/passStudentsToNextYear`,data)
+	
+}
+export function UndopassStudent(data) {
+	return api.addAuthenticationHeader().put(`${path}/undoPassedStudentsToNextYear`,data)
 	
 }
 export function updateStudent(ernpId,data) {

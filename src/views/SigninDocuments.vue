@@ -2,7 +2,7 @@
 import { useApiRequest } from '@/composables/useApiRequest';
 import { createContract } from '@/features/resident/components/form/api/contractApi';
 import ResidentForm from '@/features/resident/components/form/ResidentForm.vue';
-import { getFormData, toasted } from '@/utils/utils';
+import { getFormData, removeUndefined, toasted } from '@/utils/utils';
 import { computed, ref, watch } from 'vue';
 
 import StudentDataProvider from '@/features/students/components/StudentDataProvider.vue';

@@ -28,7 +28,7 @@ import AddUsers from './features/users/pages/AddUsers.vue';
 import AddStudents from './views/AddStudents.vue';
 
 import Profile from './views/Profile.vue';
-import Verification from './features/verification/pages/Verification.vue';
+import Verification from './features/verification/pages/createPassword.vue';
 import VerificationReset from './features/verification/pages/VerificationReset.vue';
 import ContractFile from './features/students/pages/ContractFile.vue';
 import EditContractForm from './views/EditContractForm.vue';
@@ -39,8 +39,10 @@ import UpdatePrivilege from './features/privilages/pages/UpdatePrivilege.vue';
 import RoleIndex from './features/roles/pages/RoleIndex.vue';
 import Roles from './features/roles/pages/Roles.vue';
 import AddRole from './features/roles/pages/AddRole.vue';
+import AddUniversity from './features/university/pages/AddUniverstiy.vue';
 import UpdateRole from './features/roles/pages/UpdateRole.vue';
 import Privileges from './features/privilages/pages/Privileges.vue';
+import HrdiIndex from './views/HrdiIndex.vue';
 
 const routes = [
   {
@@ -119,15 +121,7 @@ const routes = [
           privileges: ['read_document'],
         },
       },
-      {
-        path: '/hrdi/student-batch/:batchId',
-        name: 'student batch',
-        component: Batches,
-        meta: {
-          requiresAuth: true,
-          privilage: ['read_batches'],
-        },
-      },
+
 
       {
         path: '/contractsApp',
@@ -177,11 +171,26 @@ const routes = [
       {
         path: '/HRDI',
         name: 'HRDI',
-        component: HRDI,
+        component: HrdiIndex,
         meta: {
           requiresAuth: true,
           privilage: ['read_batches'],
         },
+        children: [
+          {
+            path: '',
+            component: HRDI,
+          },
+          {
+            path: 'student-batch/:batchId',
+            name: 'student batch',
+            component: Batches,
+            meta: {
+              requiresAuth: true,
+              privilage: ['read_batches'],
+            },
+          },
+        ]
       },
       {
         path: '/users',
@@ -248,11 +257,11 @@ const routes = [
           requiresAuth: true,
           privileges: ['create_contract'],
         },
-      
+
       },
       {
-        path: '/Sponsorship',
-        name: 'Sponsorship',
+        path: '/Sponsorship/:contractId',
+        name: 'Sponso rship',
         component: Sponsorship,
         meta: {
           requiresAuth: true,
@@ -373,6 +382,15 @@ const routes = [
             },
           },
           {
+            path: '/add_university',
+            name: 'Add University',
+            component: AddUniversity,
+            meta: {
+              requiresAuth: true,
+              privilage: ['read_batches'],
+            },
+          },
+          {
             path: '/update_role/:roleUuid',
             name: 'Update Role',
             component: UpdateRole,
@@ -391,14 +409,13 @@ const routes = [
         component: EditContractForm,
         meta: {
           requiresAuth: true,
-          privileges: ['Student'],
           status: 'registered',
         },
       },
     ],
   },
   {
-    path: '/verification',
+    path: '/createPassword/:Uuid',
     name: 'verification',
     component: Verification,
     meta: { layout: 'empty' },

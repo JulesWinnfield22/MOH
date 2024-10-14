@@ -122,9 +122,9 @@ export function usePagination(options = {}) {
   }
 
   function previous() {
-    if (searching.value && searchPagination.page.value == 1)
+    if (searching.value && searchPagination.page.value <= 1)
       return
-    if (!searching.value && pagination.page.value == 1)
+    if (!searching.value && pagination.page.value <= 1)
       return
 
     if (searching.value) {

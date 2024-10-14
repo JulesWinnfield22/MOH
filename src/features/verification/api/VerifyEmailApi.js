@@ -21,9 +21,10 @@ export function sendVerificationCode(query={}) {
       .post(`${path}/EnterVerificationCode${qr}`)
   }
 
-  export function resetPasswordApi(query={}) {
+  export function resetPasswordApi(query={}, data) {
     const qr = getQueryFormObject(query);
+ 
     return api
       .addAuthenticationHeader()
-      .post(`${path}/Createpassword${qr}`)
+      .post(`${path}/Createpassword${qr}`,data)
   }

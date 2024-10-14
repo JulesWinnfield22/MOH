@@ -14,7 +14,9 @@ import {
 } from '@/features/students/api/studentApi.js';
 import { usePagination } from '@/composables/usePagination';
 import { useApiRequest } from '@/composables/useApiRequest';
-import { toasted } from '@/utils/utils';
+import { removeUndefined, toasted } from '@/utils/utils';
+import camStatus_row from '../components/camStatus_row.vue';
+
 const sudents = useStudents();
 const auth = useAuth();
 const isRoleUniversity = computed(() =>
@@ -86,20 +88,14 @@ const filteredstatStudents = computed(() => {
     (student) => student.campusStatus === selectedStatus.value
   );
 });
+const status = ref('all');
 const pagination = usePagination({
   store: sudents,
   cb: (data, config) =>
-  getStudentsByCampusStatus(uniId || auth.auth?.user?.universityProviderUuid, data),
-});
-const status = ref('all');
-const paginationed = usePagination({
-  store: sudents,
-  cb: (data, config) => 
-  getStudentsByCampusStatus(uniId || auth.auth?.user?.universityProviderUuid,{ status: status.value,
-    ...data, }),
+  getStudentsByCampusStatus(uniId || auth.auth?.user?.universityProviderUuid, removeUndefined({...data, status: status.value}))
 });
 watch(status, () => {
-  paginationed.send()
+  pagination.send()
 })
 
 const showRejectionReasonModal = ref(false);
@@ -595,7 +591,12 @@ const isRoleHrdi = computed(
             'totalSalary',
             'campusStatus',
           ],
+          
         }"
+         :cells="{
+       
+        campusStatus: camStatus_row
+      }"
         :rows="filteredStudents"
       >
         <template #actions="{ row }">

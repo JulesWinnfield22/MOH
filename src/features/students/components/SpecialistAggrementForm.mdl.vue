@@ -24,8 +24,9 @@ const goToNext = () => {
 
 <template>
 	<div class="w-full h-full bg-black/50">
+		<p class="fixed top-4 left-4 text-white bg-primary p-4  rounded-md shadow-lg">Dont Forget to Download this PDF</p>
 		<SpecialistAggrementFormPdf
-			v-bind="data"
+		v-bind="data"
 		/>
 		<div class='fixed z-10 bottom-2 right-2 flex items-center gap-4'>
 			<Button v-if="data?.showBtn ?? true" @click="goToNext" type="primary" class="shadow-xl">

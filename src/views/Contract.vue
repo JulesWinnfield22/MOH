@@ -493,7 +493,7 @@ const isRoleHrdi = computed(
                 type="button"
                 @click="
                   $router.push(
-                    `/Sponsorship?rep=${auth.auth?.user?.name}&name=${currentRow?.fullName}`
+                    `/Sponsorship/${currentRow.id}?rep=${auth.auth?.user?.name}&name=${currentRow?.fullName}`
                   )
                 "
                 class="bg-[#092537] text-white px-4 py-2 rounded-md  transition"

@@ -112,12 +112,13 @@ async function getFile(fileName) {
 }
 
 const address = [
-  { name: 'region', value: 'region' },
-  { name: 'city', value: 'city' },
+  { name: 'Region', value: 'region' },
+  { name: 'City', value: 'city' },
   { name: 'Sub City', value: 'subCity' },
-  { name: 'woreda', value: 'woreda' },
-  { name: 'house Number', value: 'houseNumber' },
-  { name: 'Status', value: 'contractStatus' }
+  { name: 'Woreda', value: 'woreda' },
+  { name: 'House Number', value: 'houseNumber' },
+  { name: 'Status', value: 'contractStatus' },
+  { name: 'Submitted Date', value: 'submittedDate' }
 ];
 
 // Watch the "reasons" value and reset customReason if "Other" is not selected
@@ -152,6 +153,10 @@ watch(reasons, (newVal) => {
 					<p v-if="req.response.value">
 						{{ req.response.value?.['martialStatus'] || '' }}
 					</p>
+          <p class="text-gray-500">submittedDate</p>
+					<p v-if="req.response.value">
+						{{ req.response.value?.['submittedDate'] || '' }}
+					</p>
 					<p v-else class="h-4 w-full rounded-full bg-gray-300"></p>
 				</div>
         
@@ -184,6 +189,21 @@ watch(reasons, (newVal) => {
       Open
     </button>
   </div>
+  
+				</div>
+        <div v-if="req.response.value?.contractName" class="border-b-2 border-dark/50 pb-2">
+					<p class="text-gray-500 font-semibold">Contract File</p>
+					
+            <div class="flex items-center justify-between gap-2">
+    <p>{{ req.response.value?.contractName }}</p>
+    <button 
+      @click="getFile(req.response.value?.contractName)" 
+      class="px-4 py-1 rounded text-white bg-secondary"
+    >
+      Open
+    </button>
+  </div>
+  <p class="text-gray-500 font-semibold">Contract File</p>
 				</div>
 				<div v-if="req.response.value?.agentCertName" class="border-b border-2 pb-2">
 					<p class="text-gray-500 capitalize">agent Name</p>
@@ -195,6 +215,9 @@ watch(reasons, (newVal) => {
         
 			</div>
 		</div>
+   
+    
+
 		<div class="flex   justify-end items-center p-4  text-[#4E585F] font-dm-sans text-[16px] font-bold leading-[24px] text-left">
       <div class="flex justify-end items-center p-4 space-x-4">
   <button @click="showModalReject(contractId)" class="btn-reject">

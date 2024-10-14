@@ -13,3 +13,6 @@ export function getAllStudents(data) {
 	const qr = getQueryFormObject(data)
 	return api.addAuthenticationHeader().get(`/student/batches${qr}`)
 }
+export function crateUniversity(data) {
+	return api.addAuthenticationHeader().post(`${path}/create`, data);
+  }

@@ -16,7 +16,7 @@ import {
   withdrawStud,
 } from '@/features/students/api/studentApi.js';
 import { useApiRequest } from '@/composables/useApiRequest';
-import { toasted } from '@/utils/utils';
+import { removeUndefined, toasted } from '@/utils/utils';
 import { usePagination } from '@/composables/usePagination';
 import { getAllUniversities } from '@/features/university/api/uniApI';
 import Form from '@/new_form_builder/Form.vue';
@@ -69,7 +69,7 @@ const isModalVisibles = ref(false);
 const selectedRow = ref({});
 
 function openEditModal(row) {
-  selectedRow.value = {...row, registrationStatus: 'transfered'}; // Clone the row data
+  selectedRow.value = {...row, registrationStatus: 'transferred'}; // Clone the row data
   console.log(selectedRow.value);
   isModalVisibles.value = true;
 }
@@ -88,20 +88,16 @@ const filteredStudents = computed(() => {
   );
 });
 const sent = ref([])
-const status = ref(null);
-const paginationed = usePagination({
-  store: sudents,
-  cb: (data, config) => 
-  getStudentsByRegistrationStatus(uniId || auth.auth?.user?.universityProviderUuid,{ status: status.value,
-    ...data, }),
-});
-watch(status, () => {
-  paginationed.send()
-})
+const status = ref('all')
+
 const pagination = usePagination({
   store: sudents,
-  cb: (data, config) => getStudentsByRegistrationStatus(uniId || auth.auth?.user?.universityProviderUuid, data),
+  cb: (data, config) => getStudentsByRegistrationStatus(uniId || auth.auth?.user?.universityProviderUuid, removeUndefined({...data, status: status.value})),
 });
+
+watch(status, () => {
+  pagination.send()
+})
 
 const showRejectionReasonModal = ref(false);
 const showStudent = ref(false);
@@ -327,19 +323,7 @@ const allSelected = computed(() => {
 const isRoleHrdi = computed(
   () => auth.auth?.user
 );
-const applyFilters = () => {
-  const baseUrl = 'http://192.168.100.57:8990/api/osrcs/student/findMYUniversityStudentsByRegistrationStatus/a1159f90-3000-409e-8dfc-2a95c778d6c2';
-  
-  let url = baseUrl;
 
-  if (status.value) {
-    url += `?status=${status.value}`;
-  }
-  
-  url += `&page=1&limit=25`;
-
-  fetchData(url);
-};
 
 const fetchData = (url) => {
   fetch(url)
@@ -368,11 +352,11 @@ const fetchData = (url) => {
     @change="applyFilters"
     class="block w-32 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
   >
-    <option value=null>All</option>
+    <option value='all'>All</option>
     <option value="waiting">Waiting</option>
     <option value="registered">Registered</option>
     <option value="rejected">Rejected</option>
-    <option value="transfered">Transfered</option>
+    <option value="transferred" class="hover:bg-red-300">Transferred</option>
   </select>
       </div>
    
@@ -713,10 +697,9 @@ const fetchData = (url) => {
             'Ernp ID',
             'Full Name',
             'Gender',
+            'Phone Number',
             'Program',
             'Duration',
-            'Salary',
-            'Contract Amount',
             'Status',
             'Academic Year',
             'Actions' 
@@ -725,14 +708,17 @@ const fetchData = (url) => {
             'ernpId',
             'fullName',
             'gender',
+            'phone',
             'programName',
             'duration',
-            'salary',
-            'totalSalary',
             'registrationStatus',
             'academicYear'
           ],
         }"
+         :cells="{
+        registrationStatus: Status_row,
+        
+      }"
         :rows="filteredStudents"
       >
         <template #actions="{ row }">
@@ -784,7 +770,7 @@ const fetchData = (url) => {
             </button>
           </div>
           <div
-            v-else-if="row?.registrationStatus == 'transfered' && row?.academicYear <= '1'"
+            v-else-if="row?.registrationStatus == 'transferred' "
             class="flex gap-2"
           >
             <button @click="showEachModal(row.ernpId)">

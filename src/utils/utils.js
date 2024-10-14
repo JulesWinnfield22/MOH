@@ -232,7 +232,9 @@ export async function aggregateFunctionResponse(req) {
 export function getFormData(data) {
   const fd = new FormData()
   Object.keys(data).forEach((key) => {
-    fd.append(key, data[key])
+    if(data[key]) {
+      fd.append(key, data[key])
+    }
   })
   return fd
 }

@@ -11,7 +11,7 @@ import RolesDataProvider from '../components/RolesDataProvider.vue';
 <template>
   <DefaultPage placeholder="Search Roles">
     <template #more>
-      <div class="flex gap-2 justify-end items-center">
+  <div class="flex gap-2 justify-end items-center">
         <Button
           @click="$router.push('/add_role')"
           type="primary"

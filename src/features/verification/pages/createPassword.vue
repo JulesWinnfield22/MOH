@@ -9,9 +9,9 @@ import {
   sendEmailVerification,
 } from '../api/VerifyEmailApi';
 import { toasted } from '@/utils/utils';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 const router = useRouter();
-
+const route=useRoute();
 const verifyEmailRequest = useApiRequest();
 const email = ref('');
 function verifyEmail(values) {
@@ -31,8 +31,10 @@ function verifyEmail(values) {
 
 
 function resetPassword(values) {
+  console.log(values)
+
   verifyEmailRequest.send(
-    () => resetPasswordApi({ email: email.value, password: values.password }),
+    () => resetPasswordApi({ userUuid: route.params.Uuid},values.password ),
     (res) => {
       if (res.success) {
         toasted(res.success, 'Password created successfuly', res.error);
@@ -91,7 +93,7 @@ function goBack() {
           email to continue.
         </p>
       </div>
-      <div class="inline-flex items-center justify-center gap-2">
+      <!-- <div class="inline-flex items-center justify-center gap-2">
         <div class="__active __circle">1</div>
         <template
           v-for="(com, idx) in components.concat().slice(1)"
@@ -105,7 +107,7 @@ function goBack() {
             {{ idx + 2 }}
           </div>
         </template>
-      </div>
+      </div> -->
       <div>
         <button
           @click="goBack"
@@ -114,13 +116,14 @@ function goBack() {
         >
           &lt; go back
         </button>
-        <component
+        <RestPassword  :resetPassword="resetPassword"/>
+        <!-- <component
           :pending="verifyEmailRequest.pending.value"
           :verifyEmail="verifyEmail"
          
           :resetPassword="resetPassword"
           :is="activeCom"
-        />
+        /> -->
       </div>
     </div>
   </div>

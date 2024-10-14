@@ -10,12 +10,13 @@ const auth = useAuth();
       {{ console.log(student) }}
       <div v-if="!pending" class="message text-center">
         <h1 v-if="isRegistered && contract.contractStatus == 'Approved'">
-          <p class="font-bold text-2xl text-center text-green-600 mt-4">
-  You have been approved by Legal
-</p>
-
-          Go to <RouterLink class="text-primary italic" :to='`/Sponsorship?name=${auth.auth?.user?.name}`'> Download Your sponsership letter </RouterLink>
-        </h1>
+          <div class="font-bold text-2xl container py-4 text-center text-black-600 mt-4 animated-message">
+    Congratulation <span class="text-gray-600 px-1">{{ auth.auth?.user?.name }}</span>
+    You have been approved by Legal
+</div>
+<div class="font-bold text-2xl container py-4 text-center text-black-600 mt-4 animated-message">
+          Please <RouterLink class="text-primary italic px-1" :to='`/Sponsorship?name=${auth.auth?.user?.name}`'> Download Your sponsership letter </RouterLink>Now 
+      </div>  </h1>
         <h1 v-else-if="isRegistered && [ 'Declined'].includes(contract.contractStatus)">
          <p>
             You have been declined due to 
@@ -161,5 +162,22 @@ p {
 .icon {
   margin-top: 20px;
   font-size: 40px;
+}
+
+
+
+@keyframes fadeInSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(-40px); /* Slide up */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0); /* Slide to original position */
+  }
+}
+
+.animated-message {
+  animation: fadeInSlide 0.5s ease-in-out forwards; /* Animation duration and easing */
 }
 </style>

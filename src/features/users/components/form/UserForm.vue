@@ -151,14 +151,17 @@ console.log(props.roles);
   <div class="grid grid-cols-2 gap-6">
     {{ console.log(roles) }}
     <Select
-      :obj="true"
-      v-model="type"
-      label="User Role"
-      name="roleName"
-      :options="roles.map(el => ({ label: el.roleName, value: el.roleName }))"
-      validation="required"
-      :attributes="{ type: 'text', placeholder: 'Select User Type' }"
-    />
+  :obj="true"
+  v-model="type"
+  label="User Role"
+  name="roleName"
+  :options="roles
+    .filter(el => el.roleName !== 'student') // Filter out 'student'
+    .map(el => ({ label: el.roleName, value: el.roleName }))"
+  validation="required"
+  :attributes="{ type: 'text', placeholder: 'Select User Type' }"
+/>
+
     <Select
       v-if="type === 'university'"
       :obj="true"

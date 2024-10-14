@@ -9,12 +9,15 @@
       Go Back
     </Button>
 	</div>
-    <RequirementsPdf />
+  <SponsershipDataProvider v-slot="{ contract, pending }">
+    <RequirementsPdf v-if="!pending" :contract="contract" />
+    </SponsershipDataProvider>
   </div>
 </template>
 
 <script setup>
 import RequirementsPdf from '@/features/requiremnts/SponsershipLetter.pdf.vue'
+import SponsershipDataProvider from '@/features/sponsership/components/SponsershipDataProvider.vue';
 
 // Script logic if needed
 </script>

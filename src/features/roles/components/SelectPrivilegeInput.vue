@@ -115,7 +115,7 @@ function selectAll(checked, category) {
               class="size-4"
               type="checkbox"
             />
-            <p class="font-medium">{{ privilege.privilegeName }}</p>
+            <p class="text-xs truncate">{{ privilege.privilegeName }}</p>
           </div>
         </div>
       </div>

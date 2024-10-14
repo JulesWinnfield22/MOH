@@ -64,6 +64,7 @@ async function submitForm(id, values) {
   // Use the student ID from the student object
   req.send(() => saveSignedContract(id, fd), res => {
     if(res.success) {
+      student.reset()
       router.replace('/SigninDocuments')
     }
     toasted(res.success, 'Created', res.error);
@@ -80,6 +81,7 @@ watch(() => props.disabled, () => {
 
 <template>
   <div class="flex flex-col p-5 gap-2">
+    <RouterLink class="p-2 bg-primary self-start text-white rounded-md" to="/editsignindocuments">Go to Edit Contract</RouterLink>
     <StudentDataProvider v-slot="{ contract, pending, isRegistered }">
       {{ console.log(contract) }}
       <div class="p-2 border-l-4 border-red-500 bg-orange-200" v-if="!pending && !isRegistered">
