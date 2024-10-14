@@ -6,6 +6,17 @@ import { formatCurrency, getBgbase64Url, secondDateFormat } from '@/utils/utils'
 import { ref } from 'vue';
 
 const auth = useAuth();
+function getDayNameFromDate(dateString) {
+    if (!dateString) return ''; // Return an empty string if dateString is falsy
+    const dateParts = dateString.split('-'); // Split the string into parts
+    const year = parseInt(dateParts[0], 10);
+    const month = parseInt(dateParts[1], 10) - 1; // Month is 0-indexed
+    const day = parseInt(dateParts[2], 10);
+    
+    const date = new Date(year, month, day);
+    const options = { weekday: 'long' }; // Get the full name of the day
+    return date.toLocaleDateString('en-US', options); // Return the day name
+}
 
 const props = defineProps({
   data: {
@@ -99,11 +110,14 @@ async function getPdf() {
             width: 'auto',
             marginLeft: 5,
             stack: [
-              {
-                fontSize: 10,
-                bold: true,
-                text: DAYS[new Date().getDay() - 1],
-              },
+            {
+        fontSize: 10,
+        bold: true,
+        text: !auth.auth?.user?.privileges.includes('ROLE_create_contract') 
+            ? getDayNameFromDate(props.student?.approvedDate || props.data?.approvedDate || props.contract?.approvedDate)
+            : getDayNameFromDate(auth.auth?.user?.approvedDate ||  props.contract?.approvedDate),
+    },
+
               {
                 canvas: [
                   {
@@ -130,7 +144,7 @@ async function getPdf() {
               {
                 fontSize: 10,
                 bold: true,
-                text: !auth.auth?.user?.privileges.includes('ROLE_create_contract') ? (props.student?.approvedDate || props.data?.approvedDate || props.contract?.approvedDate) : auth.auth?.user?.approvedDate,
+                text: !auth.auth?.user?.privileges.includes('ROLE_create_contract') ? (props.student?.approvedDate || props.data?.approvedDate || props.contract?.approvedDate) : auth.auth?.user?.approvedDate ||  props.contract?.approvedDate,
               },
               {
                 canvas: [
@@ -171,42 +185,17 @@ async function getPdf() {
         columns: [
           {
             width: 'auto',
-            text: 'በሚኒስቴሩ የትምህርት እና ሥልጠና መመሪያ ቁጥር',
+            text: 'በሚኒስቴሩ የትምህርት እና ሥልጠና መመሪያ መሠረት ውል ተቀባይ የሕክምና ስፔሻሊቲ ሥልጠና ዕድል ተጠቃሚ',
           },
-          {
-            width: 'auto',
-            stack: [
-              {
-                text: '  ',
-              },
-              {
-                canvas: [
-                  {
-                    type: 'line',
-                    x1: 0,
-                    y1: 3,
-                    x2: 50,
-                    y2: 2,
-                    lineWidth: 0.1,
-                  },
-                ],
-              },
-            ],
-          },
-          {
-            width: 'auto',
-            text: `${new Date().getFullYear()} መሠረት ውል ተቀባይ የሕክምና`,
-          },
+         
+         
         ],
       },
       {
         marginTop: 5,
-        text: 'ስፔሻሊቲ ሥልጠና ዕድል ተጠቃሚ እንዲሆንና ትምህርቱን ወይም ሥልጠናዉን ካጠናቀቀ በኋላ ሚኒስቴሩ',
+        text: 'እንዲሆንና ትምህርቱን ወይም ሥልጠናዉን ካጠናቀቀ በኋላ ሚኒስቴሩ በሚመድበው ቦታ እንዲያገለግል ማስቻል ነዉ፡፡',
       },
-      {
-        marginTop: 5,
-        text: ' በሚመድበው ቦታ እንዲያገለግል ማስቻል ነዉ፡፡',
-      },
+    
       {
         marginTop: 20,
         decoration: 'underline',
@@ -282,20 +271,20 @@ async function getPdf() {
         columns: [
           {
             text: 'ከተማ',
-            value: !auth.auth?.user?.privileges.includes('ROLE_create_contract') ? (props.student?.city || props.data?.city || props.contract?.city)||' ' : auth.auth?.user?.city||' ',
+            value: !auth.auth?.user?.privileges.includes('ROLE_create_contract') ? (props.student?.city || props.data?.city || props.contract?.city)||' ' : auth.auth?.user?.city||props.contract?.city || ' ',
           },
           {
             text: 'ክ/ከተማ',
-            value: !auth.auth?.user?.privileges.includes('ROLE_create_contract') ? (props.student?.subCity || props.data?.subCity || props.contract?.subCity)||' ' : auth.auth?.user?.subCity||' ',
+            value: !auth.auth?.user?.privileges.includes('ROLE_create_contract') ? (props.student?.subCity || props.data?.subCity || props.contract?.subCity)||' ' : auth.auth?.user?.subCity || props.contract?.subCity || ' ',
           },
           {
             text: 'ወረዳ',
-            value: !auth.auth?.user?.privileges.includes('ROLE_create_contract') ? (props.student?.woreda || props.data?.subCity || props.contract?.woreda)||' ' : auth.auth?.user?.woreda||' ',
+            value: !auth.auth?.user?.privileges.includes('ROLE_create_contract') ? (props.student?.woreda || props.data?.subCity || props.contract?.woreda)||' ' : auth.auth?.user?.woreda|| props.contract?.woreda ||' ',
           
           },
           {
             text: 'የቤት ቁጥር',
-            value: !auth.auth?.user?.privileges.includes('ROLE_create_contract') ? (props.student?.houseNumber || props.data?.houseNumber || props.contract?.houseNumber)||' ' : auth.auth?.user?.houseNumber||' ',
+            value: !auth.auth?.user?.privileges.includes('ROLE_create_contract') ? (props.student?.houseNumber || props.data?.houseNumber || props.contract?.houseNumber)||' ' : auth.auth?.user?.houseNumber|| props.contract?.houseNumber || ' ',
 
           },
         ].reduce((state, el) => {
@@ -343,12 +332,12 @@ async function getPdf() {
           },
           {
             text: 'ሞባይል፡',
-            value: !auth.auth?.user?.privileges.includes('ROLE_create_contract') ? (props.student?.phone || props.data?.phone || props.contract?.phone)||' ' : auth.auth?.user?.phone|| ' ',
+            value: !auth.auth?.user?.privileges.includes('ROLE_create_contract') ? (props.student?.phone || props.data?.phone || props.contract?.phone)||' ' : auth.auth?.user?.phone || props.contract?.phone || ' ',
           
           },
           {
             text: 'የጋብቻ ሁኔታ፡',
-            value: !auth.auth?.user?.privileges.includes('ROLE_create_contract') ? (props.student?.martialStatus || props.data?.martialStatus || props.contract?.martialStatus) ||' ': auth.auth?.user?.martialStatus||' ',
+            value: !auth.auth?.user?.privileges.includes('ROLE_create_contract') ? (props.student?.martialStatus || props.data?.martialStatus || props.contract?.martialStatus) ||' ': auth.auth?.user?.martialStatus|| props.contract?.martialStatus ||' ',
 
            
           }
@@ -445,11 +434,11 @@ async function getPdf() {
         columns: [
           {
             text: 'ስልጠናው የሚፈጀው ጊዜ፡',
-            value: !auth.auth?.user?.privileges.includes('ROLE_create_contract') ? (props.student?.duration || props.data?.duration || props.contract?.duration) ||' ': auth.auth?.user?.duration||' ',
+            value: !auth.auth?.user?.privileges.includes('ROLE_create_contract') ? (props.student?.duration || props.data?.duration || props.contract?.duration) ||' ': auth.auth?.user?.duration||  props.contract?.duration ||' ',
               },
           {
             text: 'ወርሃዊ የገቢ:-',
-            value: formatCurrency(!auth.auth?.user?.privileges.includes('ROLE_create_contract') ? (props.student?.salary || props.data?.salary || props.contract?.salary) ||' ': auth.auth?.user?.duration||' ',)
+            value: formatCurrency(!auth.auth?.user?.privileges.includes('ROLE_create_contract') ? (props.student?.salary || props.data?.salary || props.contract?.salary) ||' ': auth.auth?.user?.duration || props.contract?.salary ||' ',)
            },
         ].reduce((state, el) => {
           state.push({
@@ -574,7 +563,7 @@ async function getPdf() {
               {
                 bold: true,
                 fontSize: 10,
-            text: !auth.auth?.user?.privileges.includes('ROLE_create_contract') ? (props.student?.duration || props.data?.duration || props.contract?.duration) ||' ': auth.auth?.user?.duration||' ',
+            text: !auth.auth?.user?.privileges.includes('ROLE_create_contract') ? (props.student?.duration || props.data?.duration || props.contract?.duration) ||' ': auth.auth?.user?.duration || props.contract?.duration ||' ',
                     },
               {
                 stack: [
@@ -620,7 +609,7 @@ async function getPdf() {
                       {
                         marginLeft: 5,
           
-                        text: formatCurrency(!auth.auth?.user?.privileges.includes('ROLE_create_contract') ? (props.student?.totalTrainingCost || props.data?.totalTrainingCost || props.contract?.totalTrainingCost) ||' ': auth.auth?.user?.totalTrainingCost||' ',)
+                        text: formatCurrency(!auth.auth?.user?.privileges.includes('ROLE_create_contract') ? (props.student?.totalTrainingCost || props.data?.totalTrainingCost || props.contract?.totalTrainingCost) ||' ': auth.auth?.user?.totalTrainingCost||props.contract?.totalTrainingCost||' ',)
                       
                       },
                       {
@@ -639,7 +628,7 @@ async function getPdf() {
                   },
                   {
                     marginLeft: 5,
-                    text: 'ብር ለዉል ሰጪ የመክፈል ግዴታ አለበት፡፡',
+                    text: 'ለዉል ሰጪ የመክፈል ግዴታ አለበት፡፡',
                     pageBreak: 'after'
                   }
                 ]
@@ -826,7 +815,7 @@ async function getPdf() {
         columns: [
           {
             width: 'auto',
-            text: '  ስም    ፊርማ    ከተማ    ክ/ከተማ   ወረዳ   የቤት    ቁጥር',
+            text: ' .       ስም                                ፊርማ        ከተማ         ክ/ከተማ      ወረዳ      የቤትቁጥር',
           },
 
         ],
@@ -836,8 +825,8 @@ async function getPdf() {
         columns: [
           {
             width: 'auto',
-            text: ' 1) ----------------፣-----------------፤------------------፤-------------፤ -------------፤----------- ',
-          },
+            text: ' 1) _______________________  ________  _________  _________ ________ ____________  '
+                },
 
         ],
       },
@@ -846,8 +835,8 @@ async function getPdf() {
         columns: [
           {
             width: 'auto',
-            text: ' 2) ----------------፣-----------------፤------------------፤-------------፤ -------------፤----------- ',
-          },
+            text: ' 2) _______________________  ________  _________  _________ ________ ____________  '
+                },
 
         ],
       },
@@ -856,11 +845,12 @@ async function getPdf() {
         columns: [
           {
             width: 'auto',
-            text: ' 3) ----------------፣-----------------፤------------------፤-------------፤ -------------፤----------- ',
-          },
+            text: ' 3) _______________________  ________  _________  _________ ________ ____________  '
+                },
 
         ],
       },
+   
       {
         marginTop: 20,
         columns: [

@@ -31,6 +31,7 @@ import Profile from './views/Profile.vue';
 import Verification from './features/verification/pages/createPassword.vue';
 import VerificationReset from './features/verification/pages/VerificationReset.vue';
 import ContractFile from './features/students/pages/ContractFile.vue';
+import ContractFiles from './features/students/pages/ContractFiles.vue';
 import EditContractForm from './views/EditContractForm.vue';
 import MainLayout from './layout/MainLayout.vue';
 import PrivilegeIndex from './features/privilages/pages/PrivilegeIndex.vue';
@@ -118,7 +119,7 @@ const routes = [
         component: Contracts,
         meta: {
           requiresAuth: true,
-          privileges: ['read_document'],
+          privileges: ['update_contract_status'],
         },
       },
 
@@ -129,7 +130,7 @@ const routes = [
         component: ContractsApproved,
         meta: {
           requiresAuth: true,
-          privileges: ['read_document'],
+          privileges: ['update_contract_status'],
         },
       },
       {
@@ -138,13 +139,22 @@ const routes = [
         component: ContractsDeclined,
         meta: {
           requiresAuth: true,
-          privileges: ['read_document'],
+          privileges: ['update_contract_status'],
         },
       },
       {
         path: '/contract-file/:contractId',
         name: 'contracts file',
         component: ContractFile,
+        meta: {
+          requiresAuth: true,
+          privileges: ['read_document'],
+        },
+      },
+      {
+        path: '/contracts-file/:contractId',
+        name: 'contract file',
+        component: ContractFiles,
         meta: {
           requiresAuth: true,
           privileges: ['read_document'],
@@ -290,7 +300,7 @@ const routes = [
         component: Sponsorship,
         meta: {
           requiresAuth: true,
-          privileges: ['create_contract', 'read_batches'],
+          privileges: ['create_contract', 'read_batches','ROLE_read_contract_by_status'],
         },
       },
       {

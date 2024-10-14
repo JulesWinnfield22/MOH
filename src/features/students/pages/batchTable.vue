@@ -562,6 +562,7 @@ function remove(id) {
             <input
               v-model="selectedRow.duration"
               id="duration"
+              type="number"
               class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
             />
           </div>

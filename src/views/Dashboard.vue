@@ -236,7 +236,7 @@ const users = ref([...Array(10).keys()].map(() => testUser));
       <h2 class="text-lg font-bold mb-2" style="margin-bottom: 30px">
         Activities
       </h2>
-      <ul class="space-y-2">
+      <!-- <ul class="space-y-2">
         <li class="flex items-center justify-between mb-4">
           <div class="bg-[#FFFFFF]" style="margin-bottom: 30px">
             <h3 class="text-[#4E585F] leading-[21px] text-[14px] font-bold">
@@ -279,7 +279,7 @@ const users = ref([...Array(10).keys()].map(() => testUser));
             </p>
           </div>
         </li>
-      </ul>
+      </ul> -->
     </div>
   </div>
   <div class="bg-[#FBFBFB]  col-span-3 p-4 rounded-md mb-4 text-[#4E585F] w-full">
@@ -362,10 +362,10 @@ const users = ref([...Array(10).keys()].map(() => testUser));
       </Table>
       <div
         v-if="showStudent"
-        class="fixed inset-0 ml-40 flex items-center justify-center bg-black bg-opacity-50"
+        class="fixed inset-0  flex items-center justify-center bg-black bg-opacity-50"
       >
         <div
-          class="bg-white rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px]"
+          class="bg-white ml-40 rounded-lg shadow-lg gap-3 flex flex-col space-between-[24px] p-6 w-[877px]"
         >
           <div class="flex justify-between">
             <h2
@@ -522,83 +522,19 @@ const users = ref([...Array(10).keys()].map(() => testUser));
             </div>
 
             <!-- University Name -->
-            <div class="col-span-1">
-              <label
-                for="totalSalary"
-                class="block text-sm font-medium text-gray-700"
-                >Region</label
-              >
-              <input
-                v-model="currentRow.region"
-                id="totalSalary"
-                readonly
-                class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-              />
-            </div>
-            <div class="col-span-1">
-              <label
-                for="totalSalary"
-                class="block text-sm font-medium text-gray-700"
-                >Woreda</label
-              >
-              <input
-                v-model="currentRow.woreda"
-                id="totalSalary"
-                readonly
-                class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-              />
-            </div>
-            <div class="col-span-1">
-              <label
-                for="totalSalary"
-                class="block text-sm font-medium text-gray-700"
-                >City</label
-              >
-              <input
-                v-model="currentRow.city"
-                id="totalSalary"
-                readonly
-                class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-              />
-            </div>
-            <div class="col-span-1">
-              <label
-                for="totalSalary"
-                class="block text-sm font-medium text-gray-700"
-                >Subcity</label
-              >
-              <input
-                v-model="currentRow.subCity"
-                id="totalSalary"
-                readonly
-                class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-              />
-            </div>
-            <div class="col-span-1">
-              <label
-                for="totalSalary"
-                class="block text-sm font-medium text-gray-700"
-                >House Number</label
-              >
-              <input
-                v-model="currentRow.houseNumber"
-                id="totalSalary"
-                readonly
-                class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-              />
-            </div>
+          
             <!-- Action Buttons -->
             <div class="flex justify-end gap-3 pt-4 col-span-3">
               <button
                 type="button"
                 @click="
                   $router.push(
-                    `/Sponsorship?rep=${auth.auth?.user?.name}&name=${currentRow?.fullName}`
+                    `/Sponsorship/${currentRow.id}?rep=${auth.auth?.user?.name}&name=${currentRow?.fullName}`
                   )
                 "
                 class="bg-[#092537] text-white px-4 py-2 rounded-md  transition"
               >
-                See Sponsorship Letter
+                See Contract Approval Letter
               </button>
             </div>
           </form>

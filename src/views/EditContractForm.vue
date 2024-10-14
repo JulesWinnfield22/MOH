@@ -52,7 +52,7 @@ function submit(id, values) {
 <template>
   <div class="p-4">
     <StudentDataProvider v-slot="{ contract, martialCertName, identityCertName, pending, isRegistered }">
-      <ResidentForm :identityCertName="identityCertName" :martialCertName="martialCertName" :contract="contract"
+      <ResidentForm :pending="req.pending.value" :identityCertName="identityCertName" :martialCertName="martialCertName" :contract="contract"
         :onSubmit="(values) => submit(contract?.id, values)" />
     </StudentDataProvider>
   </div>

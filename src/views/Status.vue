@@ -10,12 +10,13 @@ const auth = useAuth();
       {{ console.log(student) }}
       <div v-if="!pending" class="message text-center">
         <h1 v-if="isRegistered && contract.contractStatus == 'Approved'">
-          <div class="font-bold text-2xl container py-4 text-center text-black-600 mt-4 animated-message">
-    Congratulation <span class="text-gray-600 px-1">{{ auth.auth?.user?.name }}</span>
-    You have been approved by Legal
-</div>
-<div class="font-bold text-2xl container py-4 text-center text-black-600 mt-4 animated-message">
-          Please <RouterLink class="text-primary italic px-1" :to='`/Sponsorship?name=${auth.auth?.user?.name}`'> Download Your sponsership letter </RouterLink>Now 
+          <div class="font-bold text-2xl container  text-center text-black-600 mt-16 animated-message">
+    <span class="color-changing congratulation">Congratulation</span>
+    <span class="text-gray-600 px-1  color-changing user-name">{{ auth.auth?.user?.name }}</span>
+    ! The documents for your contract have been approved 
+  </div> <p class="">by legal department of Ministry of Health.</p>
+<div class="font-bold text-2xl container  text-center text-black-600 mt-4 animated-message">
+          Please <RouterLink class="text-primary italic px-1" :to='`/Sponsorship/${contract?.id}?name=${auth.auth?.user?.name}`'> Download Your Contract File </RouterLink>Now 
       </div>  </h1>
         <h1 v-else-if="isRegistered && [ 'Declined'].includes(contract.contractStatus)">
          <p>
@@ -30,12 +31,12 @@ const auth = useAuth();
         </h1>
         <h1 v-else-if="isRegistered && [ 'Submitted'].includes(contract.contractStatus)">
          <p>
-            You contract have been Succesfully Submitted so wait until <p>legal reviews your contract
+          You have successfully submitted the document for your contract. Please wait while the legal department of the Ministry of Health reviews it. You will be notified via email with the review results.
            </p>
-           </p>
+          
            <p>
-           If you Input your Document wrongly click here to 
-           <button @click="$router.push('/editsignindocuments')" class="italic underline text-primary">Edit your Contract</button>
+            If you wish to change any details of the document you submitted, you can 
+           <button @click="$router.push('/editsignindocuments')" class="italic underline text-primary">click here.</button>
           </p>
         
         </h1>
@@ -164,20 +165,4 @@ p {
   font-size: 40px;
 }
 
-
-
-@keyframes fadeInSlide {
-  0% {
-    opacity: 0;
-    transform: translateY(-40px); /* Slide up */
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0); /* Slide to original position */
-  }
-}
-
-.animated-message {
-  animation: fadeInSlide 0.5s ease-in-out forwards; /* Animation duration and easing */
-}
 </style>

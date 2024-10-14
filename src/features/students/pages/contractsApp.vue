@@ -156,7 +156,9 @@ function openPdf(data) {
     :rows="filteredRowsApproved"
   >
     <template #actions="{ row }">
-      <button @click='openPdf(row)' class='bg-secondary px-4 py-1 rounded text-white'>PDF</button>
+      <button @click="$router.push('/contracts-file/' + row?.id)" class="bg-secondary text-white rounded px-4 py-1">
+          open
+        </button>
     </template>
   </Table>
     <div class="flex justify-center items-center">

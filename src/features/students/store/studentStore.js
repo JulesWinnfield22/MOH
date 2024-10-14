@@ -16,7 +16,6 @@ export const useStudent = defineStore('studentStore', () => {
   function reset() {
     student.value = {}
     contract.value = {}
-    done.value = false
   }
 
   function add(student) {

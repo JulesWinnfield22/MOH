@@ -18,8 +18,6 @@ const customReason = ref(''); // Custom reason if "Other" is selected
 const selectedId = ref(null);
 const sudents = useContracts();
 const documentName = 'example.pdf'; // Replace this with the actual document name
-const isLoadingApprove = ref(false); // Loading state for the Approve button
-const isLoadingReject = ref(false); // Loading state for the Reject button
 
 // Fetch contract and file details
 req.send(() => getContractById(contractId));
@@ -43,22 +41,19 @@ async function confirmEachSelection(id) {
 
   const status = 'Approved';
   try {
-    isLoadingApprove.value = true; // Set loading to true for approval
     const response = await confirmContract(id, status, customReason.value);
     if (response.success) {
       sudents.updateStatus(status, [id]); // Update the status of the specific row
       closeModal();
+
       toasted(true, 'Confirmed', 'Contract has been confirmed.');
-      router.replace('/contracts');
     } else {
       toasted(false, 'Confirmed', 'Failed to confirm the contract.');
     }
   } catch (error) {
     console.error('Error confirming contract:', error);
-    router.replace('/contracts');
+    router.replace('/contracts')
     toasted(false, 'Confirmed', 'An error occurred.');
-  } finally {
-    isLoadingApprove.value = false; // Reset loading state
   }
 }
 
@@ -67,12 +62,11 @@ async function rejectEachSelection(id) {
 
   const status = 'Declined';
   try {
-    isLoadingReject.value = true; // Set loading to true for rejection
     const response = await rejectContract(id, status, reasons.value === 'Other' ? customReason.value : reasons.value);
     if (response.success) {
       sudents.updateStatus(status, [id]); // Update the status of the specific row
       closeModal();
-      router.replace('/contracts');
+      router.replace('/contracts')
       toasted(true, 'Declined', 'Contract has been declined.');
     } else {
       toasted(false, 'Declined', 'Failed to reject the contract.');
@@ -80,21 +74,7 @@ async function rejectEachSelection(id) {
   } catch (error) {
     console.error('Error rejecting contract:', error);
     toasted(false, 'Declined', 'An error occurred.');
-  } finally {
-    isLoadingReject.value = false; // Reset loading state
   }
-}
-
-// New validation function for rejection
-async function validateAndReject(id) {
-  // Check if a reason is selected
-  if (!reasons.value) {
-    // Show a message or handle the error appropriately
-    toasted(false, 'Validation Error', 'Please select a reason for rejection.');
-    return;
-  }
-  // Call the original reject function if validation passes
-  await rejectEachSelection(id);
 }
 
 // Modal control functions
@@ -154,7 +134,6 @@ watch(reasons, (newVal) => {
 
 // Function to trigger file viewing
 </script>
-
 
 <template>
   <div class="flex flex-col p-5  gap-4">
@@ -250,14 +229,7 @@ watch(reasons, (newVal) => {
 		</div>
 
 		<div class="flex   justify-end items-center p-4  text-[#4E585F] font-dm-sans text-[16px] font-bold leading-[24px] text-left">
-      <div class="flex justify-end items-center p-4 space-x-4">
-  <button @click="showModalReject(contractId)" class="btn-reject">
-    Reject
-  </button>
-  <button @click="showModalApprove(contractId)" class="btn-approve">
-    Approve
-  </button>
-</div>
+   
 
 
     <!-- Reject Modal -->
@@ -278,7 +250,6 @@ watch(reasons, (newVal) => {
     <select
       v-model="reasons"
       class="border w-[829px] border-[#D9D9D9] bg-[#FBFBFB] rounded p-2 mb-4"
-      required
     >
       <option value="" disabled>Select a reason for Rejection</option>
       <option value="Id is Blurred">Id is Blurred</option>
@@ -296,12 +267,9 @@ watch(reasons, (newVal) => {
     />
 
     <div class="flex justify-end">
-      <button 
-  class="bg-[#FF4040] h-[40px] w-[82px] text-white px-4 py-2 rounded mr-2" 
-  @click="validateAndReject(selectedId)"
->
-  {{ isLoading ? '...' : 'Reject' }}  <!-- Change button text based on loading state -->
-</button>
+      <button class="bg-[#FF4040] h-[40px] w-[82px] text-white px-4 py-2 rounded mr-2" @click="rejectEachSelection(selectedId)">
+        Reject
+      </button>
       <button class="bg-gray-300 text-gray-700 px-4 py-2 rounded" @click="closeModal">
         Cancel
       </button>
@@ -326,9 +294,8 @@ watch(reasons, (newVal) => {
         <div class="flex justify-end gap-2">
           
           <button @click="confirmEachSelection(selectedId)" class="btn-confirm-approve text-left">
-  {{ isLoadingApprove ? '...' : 'Yes' }}  <!-- Change button text based on loading state -->
-</button>
-
+            Yes
+          </button>
           <button @click="closeModal" class="btn-cancel">
             No
           </button>

@@ -21,7 +21,7 @@ const pagination = usePagination({
       <div class="flex justify-between p-5 shadow-md ">
       <input
     class="rounded-lg border w-[60%]  p-2 focus:outline-none focus:ring-2 focus:ring-[#21618C] placeholder-gray-500"
-        placeholder="search by ErnpId,FullName,Email,Phone"
+        placeholder="Search by Id full name email and phone"
         v-model="serachKey"
          @input="pagination.send()"
       />

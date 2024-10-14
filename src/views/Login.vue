@@ -41,7 +41,7 @@ async function loginUser() {
       } else if (Array.isArray(auth.auth.user?.privileges) && auth.auth.user?.privileges.includes('ROLE_update_role')) {
         router.push('/users');
       }
-      else if (Array.isArray(auth.auth.user?.privileges) && auth.auth.user?.privileges.includes('ROLE_read_image')) {
+      else if (Array.isArray(auth.auth.user?.privileges) && auth.auth.user?.privileges.includes('ROLE_update_contract_status')) {
         router.push('/contracts');
       }
       else {

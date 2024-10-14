@@ -74,9 +74,28 @@ function submit(values) {
       <div class="p-2 border-l-4 border-red-500 bg-orange-200" v-if="!pending && !isRegistered">
         you need to be registered.
       </div>
-      <ResidentForm v-if="!contract" :disabled="!isRegistered" :filter="filter" :on-submit="submit" />
+      <ResidentForm :pending="req.pending.value" v-if="!contract" :disabled="!isRegistered" :filter="filter" :on-submit="submit" />
       <p v-else-if="contract.contractStatus == 'Inprogress'" class="capitalize font-bold text-lg">
-        You Have already submitted the documents required. go to <RouterLink to="/signNow" class="text-primary italic" > Upload Contract </RouterLink>
+         Now click here to <RouterLink to="/signNow" class="text-primary italic" > Upload Contract File </RouterLink>
+      </p>
+      <p v-else-if="contract.contractStatus == 'Declined'" class="capitalize font-bold text-lg">
+        You have Been Declined click here to <RouterLink to="/editsignindocuments" class="text-primary italic" > Resubmit your Contract File </RouterLink>
+      </p>
+      <p v-else-if="contract.contractStatus == 'Submitted'" class="capitalize font-bold text-lg">
+
+        
+        <p style="text-align: center; margin: 40px auto; max-width: 600px;">
+    You have successfully submitted the document for your contract. Please wait while the legal department of the Ministry of Health reviews it. You will be notified via email with the review results.
+</p>
+
+<p style="text-align: center; margin: 20px auto; max-width: 600px;">
+    If you wish to change any details of the document you submitted, you can 
+    <button @click="$router.push('/editsignindocuments')" class="italic underline text-primary">click here.</button>
+</p>
+
+      </p>
+      <p v-else-if="contract.contractStatus == 'Approved'"  class="capitalize font-bold text-lg">
+        Your Documents for contract have been approved by legal department of Ministry of Health.
       </p>
       <p v-else class="capitalize font-bold text-lg">
         You Have already submitted the documents required.

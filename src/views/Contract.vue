@@ -421,72 +421,6 @@ const isRoleHrdi = computed(
               />
             </div>
 
-            <!-- University Name -->
-            <div class="col-span-1">
-              <label
-                for="totalSalary"
-                class="block text-sm font-medium text-gray-700"
-                >Region</label
-              >
-              <input
-                v-model="currentRow.region"
-                id="totalSalary"
-                readonly
-                class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-              />
-            </div>
-            <div class="col-span-1">
-              <label
-                for="totalSalary"
-                class="block text-sm font-medium text-gray-700"
-                >Woreda</label
-              >
-              <input
-                v-model="currentRow.woreda"
-                id="totalSalary"
-                readonly
-                class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-              />
-            </div>
-            <div class="col-span-1">
-              <label
-                for="totalSalary"
-                class="block text-sm font-medium text-gray-700"
-                >City</label
-              >
-              <input
-                v-model="currentRow.city"
-                id="totalSalary"
-                readonly
-                class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-              />
-            </div>
-            <div class="col-span-1">
-              <label
-                for="totalSalary"
-                class="block text-sm font-medium text-gray-700"
-                >Subcity</label
-              >
-              <input
-                v-model="currentRow.subCity"
-                id="totalSalary"
-                readonly
-                class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-              />
-            </div>
-            <div class="col-span-1">
-              <label
-                for="totalSalary"
-                class="block text-sm font-medium text-gray-700"
-                >House Number</label
-              >
-              <input
-                v-model="currentRow.houseNumber"
-                id="totalSalary"
-                readonly
-                class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-              />
-            </div>
             <!-- Action Buttons -->
             <div class="flex justify-end gap-3 pt-4 col-span-3">
               <button
@@ -498,7 +432,7 @@ const isRoleHrdi = computed(
                 "
                 class="bg-[#092537] text-white px-4 py-2 rounded-md  transition"
               >
-                See Sponsorship Letter
+                See Contract Approval Letter
               </button>
             </div>
           </form>

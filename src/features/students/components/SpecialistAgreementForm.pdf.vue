@@ -168,42 +168,17 @@ const docDefinition = {
       columns: [
         {
           width: 'auto',
-          text: 'በሚኒስቴሩ የትምህርት እና ሥልጠና መመሪያ ቁጥር',
+          text: 'በሚኒስቴሩ የትምህርት እና ሥልጠና መመሪያ ቁጥር ስፔሻሊቲ ሥልጠና ዕድል ተጠቃሚ እንዲሆንና ትምህርቱን',
         },
-        {
-          width: 'auto',
-          stack: [
-            {
-              text: '  ',
-            },
-            {
-              canvas: [
-                {
-                  type: 'line',
-                  x1: 0,
-                  y1: 3,
-                  x2: 50,
-                  y2: 2,
-                  lineWidth: 0.1,
-                },
-              ],
-            },
-          ],
-        },
-        {
-          width: 'auto',
-          text: `${new Date().getFullYear()} መሠረት ውል ተቀባይ የሕክምና`,
-        },
+      
+      
       ],
     },
     {
       marginTop: 5,
-      text: 'ስፔሻሊቲ ሥልጠና ዕድል ተጠቃሚ እንዲሆንና ትምህርቱን ወይም ሥልጠናዉን ካጠናቀቀ በኋላ ሚኒስቴሩ',
+      text: 'ወይም ሥልጠናዉን ካጠናቀቀ በኋላ ሚኒስቴሩ በሚመድበው ቦታ እንዲያገለግል ማስቻል ነዉ፡፡',
     },
-    {
-      marginTop: 5,
-      text: ' በሚመድበው ቦታ እንዲያገለግል ማስቻል ነዉ፡፡',
-    },
+   
     {
       marginTop: 20,
       decoration: 'underline',
@@ -332,7 +307,7 @@ const docDefinition = {
       marginTop: 5,
       columns: [
         {
-          text: 'ስሌክ ቁጥር፡- የቤት፡',
+          text: 'ስልክ ቁጥር፡- የቤት፡',
           value: ' ',
         },
         {
@@ -600,16 +575,20 @@ const docDefinition = {
           stack: [
             {
               marginLeft: 5,
-              text: 'የህክምና ስፔሻሉቲ ስሌጠናውን አጠናቅቆ በዚህ ዉል የገባዉን የአገልግሎት ግዴታ ሳሌወጣ ቢቀር'
+              text: 'የህክምና ስፔሻሉቲ ስልጠናውን አጠናቅቆ በዚህ ዉል የገባዉን የአገልግሎት ግዴታ ሳያወጣ ቢቀር'
             },
             {
               columns: [
                 {
                   width: 'auto',
                   stack: [
-                    {
-                      text: '  ',
-                    },
+                     {
+                        marginLeft: 5,
+                        text: formatCurrency(props.contract?.totalTrainingCost || props.data?.totalTrainingCost || props.student?.totalTrainingCost)
+          
+                        // text: formatCurrency(!auth.auth?.user?.privileges.includes('ROLE_create_contract') ? (props.student?.totalTrainingCost || props.data?.totalTrainingCost || props.contract?.totalTrainingCost) ||' ': auth.auth?.user?.totalTrainingCost||' ',)
+                      
+                      },
                     {
                       canvas: [
                         {
@@ -626,7 +605,7 @@ const docDefinition = {
                 },
                 {
                   marginLeft: 5,
-                  text: 'ብር ለዉል ሰጪ የመክፈሌ ግዴታ አለበት፡፡',
+                  text: 'ብር ለዉል ሰጪ የመክፈል ግዴታ አለበት፡፡',
                   pageBreak: 'after'
                 }
               ]
@@ -791,14 +770,14 @@ const docDefinition = {
         columns: [
           {
             width: 'auto',
-            text: 'እኛ ስማችን ከዚህ በታች የተገለፀው ምስክሮች የዉሌ ሰጪ፤ የዉሌ ተቀባይ፤ እና የዉሌ ተቀባይ',
+            text: 'እኛ ስማችን ከዚህ በታች የተገለፀው ምስክሮች የዉል ሰጪ፤ የዉል ተቀባይ፤ እና የዉል ተቀባይ',
           },
 
         ],
       },
       {
         marginTop: 5,
-        text: 'ባለቤት ይህን ውሌ በፍቃዯኝነት መፈረማቸውን መመሌከታችንን በፊርማችን እናረጋግጣለን፡፡፡፡',
+        text: 'ባለቤት ይህን ውል በፍቃዯኝነት መፈረማቸውን መመልከታችንን በፊርማችን እናረጋግጣለን፡፡፡፡',
       },
       {
         marginTop: 5,
@@ -812,7 +791,7 @@ const docDefinition = {
         columns: [
           {
             width: 'auto',
-            text: '  ስም    ፊርማ    ከተማ    ክ/ከተማ   ወረዳ   የቤት    ቁጥር',
+            text: ' .       ስም                                ፊርማ        ከተማ         ክ/ከተማ      ወረዳ      የቤትቁጥር',
           },
 
         ],
@@ -822,8 +801,8 @@ const docDefinition = {
         columns: [
           {
             width: 'auto',
-            text: ' 1) ----------------፣-----------------፤------------------፤-------------፤ -------------፤----------- ',
-          },
+            text: ' 1) _______________________  ________  _________  _________ ________ ____________  '
+                },
 
         ],
       },
@@ -832,8 +811,8 @@ const docDefinition = {
         columns: [
           {
             width: 'auto',
-            text: ' 2) ----------------፣-----------------፤------------------፤-------------፤ -------------፤----------- ',
-          },
+            text: ' 2) _______________________  ________  _________  _________ ________ ____________  '
+                },
 
         ],
       },
@@ -842,8 +821,8 @@ const docDefinition = {
         columns: [
           {
             width: 'auto',
-            text: ' 3) ----------------፣-----------------፤------------------፤-------------፤ -------------፤----------- ',
-          },
+            text: ' 3) _______________________  ________  _________  _________ ________ ____________  '
+                },
 
         ],
       },

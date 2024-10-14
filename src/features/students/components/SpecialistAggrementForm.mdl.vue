@@ -24,16 +24,33 @@ const goToNext = () => {
 
 <template>
 	<div class="w-full h-full bg-black/50">
-		<p class="fixed top-4 left-4 text-white bg-primary p-4  rounded-md shadow-lg">Dont Forget to Download this PDF</p>
 		<SpecialistAggrementFormPdf
 		v-bind="data"
 		/>
 		<div class='fixed z-10 bottom-2 right-2 flex items-center gap-4'>
-			<Button v-if="data?.showBtn ?? true" @click="goToNext" type="primary" class="shadow-xl">
-				Next
-			</Button>
-			<Button class="bg-red-500" @click="closeModal()">
-				Cancel
+		<p class="fixed top-4 my-12 right-4 text-white bg-primary p-4  rounded-md shadow-lg">Download or print this document to sign.</p>
+		<h1 
+      class="notification font-bold fixed bottom-4 my-[136px] mx-2 text-black bg-yellow-300 p-2 rounded-md shadow-lg transition-transform duration-300 hover:scale-105" 
+      style="text-decoration: underline;">
+    Note!
+		</h1>
+
+		<p 
+      class="notification fixed bottom-2 my-16 mx-2  text-black bg-yellow-300 p-2 rounded-md shadow-lg transition-transform duration-300 hover:scale-105"
+    >
+	Please download this PDF, sign it after printing, and don’t forget to re-upload the signed document to the system.
+    </p>
+			
+	<Button 
+    v-if="data?.showBtn ?? true" 
+    @click="goToNext" 
+    type="primary" 
+    class="shadow-xl border border-white">
+    Upload Signed Document
+</Button>
+
+			<Button class="bg-yellow-500 shadow-xl border border-white" @click="closeModal()">
+				Re-enter Details
 			</Button>
 		</div>
 	</div>

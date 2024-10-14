@@ -48,12 +48,12 @@ const search = ref('')
             >
               Open
             </button>
-            <button
+            <!-- <button
               class="text-[#21618C] text-sm hover:italic hover:underline"
               @click="$router.push(`/add_university`)"
             >
               Edit
-            </button>
+            </button> -->
           </div>
         </template>
       </Table>

@@ -110,7 +110,7 @@ watch(
           />
           Married
         </div>
-        <div
+        <!-- <div
           :class="[married == 'Divorced' && 'bg-primary text-white']"
           class="rounded px-2 flex items-center gap-2 flex-1 h-10 border"
         >
@@ -135,137 +135,177 @@ watch(
             type="checkbox"
           />
           Widow(er)
-        </div>
+        </div> -->
       </div>
     </div>
-    <Form v-slot="{ submit }" id="contract" class="grid grid-cols-3 gap-4">
-      <Select
-        :value="contract?.region"
-        label="Region"
-        name="region"
-        :options="[
-          'Addis Ababa',
-          'Tigray',
-          'Afar',
-          'Amahara',
-          'Oromia',
-          'Somali',
-          'Benishangul Gumz',
-          'Centeral Ethiopia',
-          'Gambela',
-          'Harari',
-          'Sidama',
-          'South West Ethiopia',
-          'South Ethiopia',
-          'Dire Dawa',
-        ]"
-        :attributes="{
-          placeholder: 'Region',
-          type: 'text',
-          ...dis,
-        }"
-        validation="required"
-      />
-      <Input
-        :value="contract?.woreda"
-        label="Woreda"
-        name="woreda"
-        validation="required"
-        :attributes="{
-          placeholder: 'Woreda',
-          ...dis,
-        }"
-      />
-      <Input
-        label="City"
-        name="city"
-        :value="contract?.city"
-        validation="required"
-        :attributes="{
-          placeholder: 'City',
-          ...dis,
-        }"
-      />
-      <Input
-        label="Sub City"
-        name="subCity"
-        :value="contract?.subCity"
-        :attributes="{
-          placeholder: 'Sub City',
-          ...dis,
-        }"
-      />
-      <Input
-        label="House Number"
-        name="houseNumber"
-        :value="contract?.houseNumber"
-        :attributes="{
-          placeholder: 'House Number',
-          ...dis,
-        }"
-      />
-      <div class="col-span-2 border-t py-2 grid grid-cols-4 gap-4">
-        <InputFile
-          v-if="_filter.marriage_file"
-          :value="martialCertName"
-          :label="isSingle ? 'UnMarriage File' : 'Marriage'"
-          name="marriage_file"
-          :attributes="{
-            placeholder: isSingle ? 'UnMarriage File' : 'Marriage',
-            ...dis,
-          }"
-          validation="required"
-        />
-        <InputFile
-          v-if="_filter.nonmarriage_file"
-          label="Non-Marriage File"
-          name="marriage_file"
-          :attributes="{
-            placeholder: 'Non-Marriage file',
-            ...dis,
-          }"
-          validation="required"
-        />
-        <InputFile
-          v-if="_filter.identity_file"
-          label="Identity File"
-          :value="identityCertName"
-          name="identity_file"
-          :attributes="{
-            placeholder: 'Identity File',
-            ...dis,
-          }"
-          validation="required"
-        />
-        <InputFile
-          v-if="_filter.agent_file"
-          label="Agent File"
-          name="agent_file"
-          :attributes="{
-            placeholder: 'Agent File',
-            ...dis,
-          }"
-          validation="required"
-        />
-        <InputFile
-          v-if="_filter.agent_file"
-          label="spouseIdentity_file"
-          name="spouseIdentity_file"
-          :attributes="{
-            placeholder: 'spouseIdentity_file',
-            ...dis,
-          }"
-          validation="required"
-        />
-      </div>
-      <Button
-        :pending="pending"
-        @click.prevent="submit(submitForm)"
-        class="col-span-3"
-        type="primary"
-      >
-        Submit
-      </Button>
-    </Form>
+    <Form v-slot="{ submit }" id="contract" class="grid grid-cols-1 md:grid-cols-3 gap-6 p-4 bg-gray-50 rounded-lg shadow-sm">
+  <Select
+    :value="contract?.region"
+    label="Region"
+    name="region"
+    :options="[
+      'Addis Ababa',
+      'Tigray',
+      'Afar',
+      'Amahara',
+      'Oromia',
+      'Somali',
+      'Benishangul Gumz',
+      'Centeral Ethiopia',
+      'Gambela',
+      'Harari',
+      'Sidama',
+      'South West Ethiopia',
+      'South Ethiopia',
+      'Dire Dawa'
+    ]"
+    :attributes="{
+      placeholder: 'Region',
+      type: 'text',
+      ...dis,
+    }"
+    validation="required"
+  />
+  <Input
+    :value="contract?.woreda"
+    label="Woreda"
+    name="woreda"
+    validation="required"
+    :attributes="{
+      placeholder: 'Woreda',
+      ...dis,
+    }"
+  />
+  <Input
+    label="City"
+    name="city"
+    :value="contract?.city"
+    validation="required"
+    :attributes="{
+      placeholder: 'City',
+      ...dis,
+    }"
+  />
+  <Input
+    label="Sub City"
+    name="subCity"
+    :value="contract?.subCity"
+    :attributes="{
+      placeholder: 'Sub City',
+      ...dis,
+    }"
+  />
+  <Input
+    label="House Number"
+    name="houseNumber"
+    :value="contract?.houseNumber"
+    :attributes="{
+      placeholder: 'House Number',
+      ...dis,
+    }"
+  />
+  
+  <div class="col-span-2 border-t py-2 grid grid-cols-4  gap-4">
+    <div class="col-span-4 mb-4">
+    <div class="upload-message">
+      <p>
+        When you upload the files, please Make sure the images are clear and readable..
+      </p>
+    </div>
+  </div>
+  <div class="col-span-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <InputFile
+      v-if="_filter.marriage_file"
+      :value="martialCertName"
+      :label="isSingle ? 'UnMarriage Certificate' : 'Marriage Certificate'"
+      name="marriage_file"
+      :attributes="{
+        placeholder: isSingle ? 'UnMarriage Certificate' : 'Marriage Certificate',
+        ...dis,
+      }"
+      validation="required"
+    />
+    <InputFile
+      v-if="_filter.nonmarriage_file"
+      label="Non-Marriage File"
+      name="nonmarriage_file"
+      :attributes="{
+        placeholder: 'Non-Marriage file',
+        ...dis,
+      }"
+      validation="required"
+    />
+    <InputFile
+      v-if="_filter.identity_file"
+      label=" Identity card"
+      :value="identityCertName"
+      name="identity_file"
+      :attributes="{
+        placeholder: 'Identity Card',
+        ...dis,
+      }"
+      validation="required"
+    />
+    <InputFile
+      v-if="_filter.agent_file"
+      label="power of attorney"
+      name="agent_file"
+      :attributes="{
+        placeholder: 'power of attorney',
+        ...dis,
+      }"
+      validation="required"
+    />
+    <InputFile
+      v-if="_filter.agent_file"
+      label="Spouse Identity Card"
+      name="spouseIdentity_file"
+      :attributes="{
+        placeholder: 'Spouse Identity Card',
+        ...dis,
+      }"
+      validation="required"
+    />
+  </div>
+  </div>
+  </div>
+  <Button
+    :pending="pending"
+    @click.prevent="submit(submitForm)"
+    class="col-span-3 py-2 text-lg font-semibold rounded-md transition-shadow duration-200 hover:shadow-lg"
+    type="primary"
+  >
+    Next
+  </Button>
+</Form>
+
   </div>
 </template>
+<style scoped>
+.upload-message {
+  background-color: #f0f8ff; /* Light background color */
+  border-left: 4px solid #007bff; /* Highlighted left border */
+  padding: 15px 20px; /* Increased padding for more spacious feel */
+  border-radius: 8px; /* Slightly more rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* More prominent shadow for depth */
+  font-size: 15px; /* Slightly larger font size */
+  color: #333; /* Text color */
+}
+
+.upload-message p {
+  margin: 0; /* Remove default margin */
+}
+
+.bg-gray-50 {
+  background-color: #f9fafb; /* Light gray background for the overall container */
+}
+
+.btn-primary {
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.btn-primary:hover {
+  background-color: #0056b3; /* Darker color on hover */
+}
+</style>

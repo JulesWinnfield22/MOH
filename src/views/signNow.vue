@@ -80,27 +80,42 @@ watch(() => props.disabled, () => {
 </script>
 
 <template>
-  <div class="flex flex-col p-5 gap-2">
-    <RouterLink class="p-2 bg-primary self-start text-white rounded-md" to="/editsignindocuments">Go to Edit Contract</RouterLink>
+  <div class="flex flex-col p-5 gap-4 bg-gray-50 rounded-lg shadow-md">
+    <RouterLink class="p-3 p-2 self-start text-white rounded-md bg-primary text-white rounded-md shadow hover:bg-[#216160] transition duration-200" to="/editsignindocuments">
+      Go to Edit Contract
+    </RouterLink>
+
     <StudentDataProvider v-slot="{ contract, pending, isRegistered }">
-      {{ console.log(contract) }}
-      <div class="p-2 border-l-4 border-red-500 bg-orange-200" v-if="!pending && !isRegistered">
-        You need to be registered
+      <div class="upload-message mb-4">
+        <p>
+          When you upload the contract file, please ensure it is signed.
+        </p>
       </div>
-      <Form v-slot="{ submit }" id="contract" class="grid grid-cols-3 gap-4">
-        <div class="col-span-2 border-t py-2 grid grid-cols-4 gap-4">
-          <InputFile v-if="_filter.identity_file" label="Signed Contract File" :value="identityCertName"
-            name="signed_contract_file" :attributes="{
-              placeholder: 'Signed Contract File',
-              ...dis,
-            }" validation="required" />
-          <InputFile v-if="_filter.agent_file" label="Agent File" name="agent_file" :attributes="{
-            placeholder: 'Agent File',
-            ...dis,
-          }" validation="required" />
+
+      <Form v-slot="{ submit }" id="contract" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="col-span-2 border-t py-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <InputFile 
+            v-if="_filter.identity_file" 
+            label="Signed Contract File" 
+            :value="identityCertName"
+            name="signed_contract_file" 
+            :attributes="{ placeholder: 'Signed Contract File', ...dis }" 
+            validation="required" 
+          />
+          <InputFile 
+            v-if="_filter.agent_file" 
+            label="Agent File" 
+            name="agent_file" 
+            :attributes="{ placeholder: 'Agent File', ...dis }" 
+            validation="required" 
+          />
         </div>
-        <Button :pending="req.pending.value" @click.prevent="submit(({ values }) => submitForm(contract.id, values))"
-          class="col-span-3" type="primary">
+        <Button 
+          :pending="req.pending.value" 
+          @click.prevent="submit(({ values }) => submitForm(contract.id, values))"
+          class="col-span-3 py-3 text-lg font-semibold bg-primary text-white rounded-md shadow hover:bg-[#216160] transition duration-200" 
+          type="primary"
+        >
           Submit
         </Button>
       </Form>
@@ -109,8 +124,29 @@ watch(() => props.disabled, () => {
 </template>
 
 <style scoped>
-.bg-blue-200 {
-  background-color: #bfdbfe;
-  /* Tailwind CSS color class for bg-blue-200 */
+.upload-message {
+  background-color: #f0f8ff; /* Light background color */
+  border-left: 4px solid #007bff; /* Highlighted left border */
+  padding: 15px 20px; /* Increased padding for more spacious feel */
+  border-radius: 8px; /* Slightly more rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* More prominent shadow for depth */
+  font-size: 15px; /* Slightly larger font size */
+  color: #333; /* Text color */
+}
+
+.upload-message p {
+  margin: 0; /* Remove default margin */
+}
+
+.bg-gray-50 {
+  background-color: #f9fafb; /* Light gray background for the overall container */
+}
+
+.btn-primary {
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.btn-primary:hover {
+  background-color: #0056b3; /* Darker color on hover */
 }
 </style>
